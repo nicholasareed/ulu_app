@@ -95,14 +95,17 @@ body {
 
 .sentence-normal-button-default {
   color: white; 
-  background: #2ecc71; 
+  background: #2ecc71;
+
+  font-size: 18px;
+
 }
 
 .sentence-normal-button-separator-default {
   color: white;
   background: #2ecc71; 
 
-  text-size: 12px;
+  font-size: 12px;
 
 }
 
