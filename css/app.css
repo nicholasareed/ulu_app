@@ -83,9 +83,10 @@ body {
 /* Sentence */
 
 .sentence-normal-default {
+  text-align: center;
   font-family: 'Circular Light', serif;
-  line-height: 70px;
-  font-size: 36px;
+  line-height: 60px;
+  font-size: 48px;
 }
 
 .sentence-normal-default span {
@@ -93,7 +94,16 @@ body {
 }
 
 .sentence-normal-button-default {
-  color: #2ecc71; 
+  color: white; 
+  background: #2ecc71; 
+}
+
+.sentence-normal-button-separator-default {
+  color: white;
+  background: #2ecc71; 
+
+  text-size: 12px;
+
 }
 
 
@@ -583,6 +593,11 @@ body {
   font-size: 12px;
   line-height: 14px;
   text-transform: uppercase;
+}
+
+.header-tab-icon-text-big i {
+  font-size: 30px;
+  line-height: 50px;
 }
 
 

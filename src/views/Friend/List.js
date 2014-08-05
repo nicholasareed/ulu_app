@@ -82,9 +82,9 @@ define(function(require, exports, module) {
         // Invite somebody
         this.headerContent = new View();
         this.headerContent.Invite = new Surface({
-            content: '<i class="icon ion-plus-round"></i><div>New</div>',
+            content: '<i class="icon ion-plus-round"></i>',
             size: [60, undefined],
-            classes: ['header-tab-icon-text']
+            classes: ['header-tab-icon-text-big']
         });
         this.headerContent.Invite.on('click', function(){
             // App.Cache.FriendListOptions = {
@@ -221,9 +221,9 @@ define(function(require, exports, module) {
 
         // This depends on the previously selected! 
         var default_selected = 'all';
-        try {
-            default_selected = App.Cache.FriendListOptions.default || 'all';
-        }catch(err){console.error(err);}
+        // try {
+        //     default_selected = App.Cache.FriendListOptions.default || 'all';
+        // }catch(err){console.error(err);}
         this.TopTabs.Bar.select(default_selected);
 
         this.layout.content.add(this.ContentStateModifier).add(this.contentScrollView);

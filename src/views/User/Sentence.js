@@ -64,11 +64,12 @@ define(function(require, exports, module) {
         // create the layout
         this.layout = new HeaderFooterLayout({
             headerSize: 50,
-            footerSize: 0
+            footerSize: 60
         });
 
         this.createHeader();
         this.createContent();
+        this.createFooter();
         
         // Attach to render tree
         this.add(this.layout);
@@ -102,9 +103,9 @@ define(function(require, exports, module) {
         // Invite somebody
         this.headerContent = new View();
         this.headerContent.Settings = new Surface({
-            content: '<i class="icon ion-gear-a"></i><div>Settings</div>',
+            content: '<i class="icon ion-gear-a"></i>',
             size: [60, undefined],
-            classes: ['header-tab-icon-text']
+            classes: ['header-tab-icon-text-big']
         });
         this.headerContent.Settings.on('click', function(){
             App.history.navigate('settings');
@@ -133,6 +134,114 @@ define(function(require, exports, module) {
 
         // Attach header to the layout        
         this.layout.header.add(this.header);
+
+    };
+
+    PageView.prototype.createFooter = function(){
+        var that = this;
+        
+        // Everyone or Select
+        this.EveryoneOrSelectLayout = new FlexibleLayout({
+            ratios: [1,true,1]
+        });
+        this.EveryoneOrSelectLayout.Views = [];
+        this.EveryoneOrSelectLayout.View = new View();
+        this.EveryoneOrSelectLayout.SizeMod = new StateModifier({
+            size: [undefined, 60]
+        });
+        this.EveryoneOrSelectLayout.StateModifier = new StateModifier();
+        this.EveryoneOrSelectLayout.View.add(this.EveryoneOrSelectLayout.StateModifier).add(this.EveryoneOrSelectLayout.SizeMod).add(this.EveryoneOrSelectLayout);
+
+        // Everyone
+        this.EveryoneSurface = new Surface({
+            content: "All Friends",
+            size: [undefined, undefined],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default']
+        });
+        this.EveryoneSurface.on('click', function(){
+            // Submit your sentence
+            // - loading dialogue
+
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
+            var Sentence = new SentenceModel.Sentence({
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
+                location: null,
+                activities: that.sentence.activities
+            });
+
+            Utils.Notification.Toast('OK, Wait a Moment');
+
+            Sentence.save()
+            .then(function(result){
+                // Send invites to everybody
+                // - todo...
+                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
+            });
+
+            // App.history.navigate('user/sentence_friends');
+            
+        });
+        this.EveryoneOrSelectLayout.Views.push(this.EveryoneSurface);
+
+        // "or" text
+        this.Content_OrSurface = new Surface({
+            content: "or",
+            size: [60, undefined],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-normal-button-separator-default']
+        });
+        this.EveryoneOrSelectLayout.Views.push(this.Content_OrSurface);
+
+        // Select Friends
+        this.SelectSurface = new Surface({
+            content: "Select 'em",
+            size: [undefined, undefined],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default']
+        });
+        this.SelectSurface.on('click', function(){
+            // Submit your sentence
+            // - loading dialogue
+
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
+            var Sentence = new SentenceModel.Sentence({
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
+                location: null,
+                activities: that.sentence.activities
+            });
+
+            Utils.Notification.Toast('OK, Wait a Moment');
+
+            Sentence.save()
+            .then(function(result){
+                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
+            });
+
+            // App.history.navigate('user/sentence_friends');
+            
+        });
+        this.EveryoneOrSelectLayout.Views.push(this.SelectSurface);
+
+        this.EveryoneOrSelectLayout.sequenceFrom(this.EveryoneOrSelectLayout.Views);
+
+        this.layout.footer.add(this.EveryoneOrSelectLayout.View);
+        // this.scrollSurfaces.push(this.EveryoneOrSelectLayout.View);
 
     };
 
@@ -285,101 +394,6 @@ define(function(require, exports, module) {
         this.createActivities();
 
 
-        // Everyone or Select
-        this.EveryoneOrSelectLayout = new FlexibleLayout({
-            ratios: [1,1]
-        });
-        this.EveryoneOrSelectLayout.Views = [];
-        this.EveryoneOrSelectLayout.View = new View();
-        this.EveryoneOrSelectLayout.SizeMod = new StateModifier({
-            size: [undefined, 60]
-        });
-        this.EveryoneOrSelectLayout.StateModifier = new StateModifier();
-        this.EveryoneOrSelectLayout.View.add(this.EveryoneOrSelectLayout.StateModifier).add(this.EveryoneOrSelectLayout.SizeMod).add(this.EveryoneOrSelectLayout);
-
-        // Everyone
-        this.EveryoneSurface = new Surface({
-            content: "All Friends",
-            size: [undefined, undefined],
-            classes: ['sentence-normal-default', 'sentence-normal-button-default']
-        });
-        this.EveryoneSurface.pipe(this.contentScrollView);
-        this.EveryoneSurface.on('click', function(){
-            // Submit your sentence
-            // - loading dialogue
-
-            var start_time = new Date();
-            if(that.sentence.start_time.value != 'now'){
-                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
-            }
-            console.log(that.sentence.activities);
-            var Sentence = new SentenceModel.Sentence({
-                start_time: start_time, // Javascript new Date
-                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
-                duration: that.sentence.duration.text, // just a string
-                location: null,
-                activities: that.sentence.activities
-            });
-
-            Utils.Notification.Toast('OK, Wait a Moment');
-
-            Sentence.save()
-            .then(function(result){
-                // Send invites to everybody
-                // - todo...
-                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
-                // SentenceModel.set(result);
-                // App.Cache.current_sentence = SentenceModel;
-                // App.history.navigate('user/sentence_friends');
-            });
-
-            // App.history.navigate('user/sentence_friends');
-            
-        });
-        this.EveryoneOrSelectLayout.Views.push(this.EveryoneSurface);
-
-        // Select Friends
-        this.SelectSurface = new Surface({
-            content: "Select 'em",
-            size: [undefined, undefined],
-            classes: ['sentence-normal-default', 'sentence-normal-button-default']
-        });
-        this.SelectSurface.pipe(this.contentScrollView);
-        this.SelectSurface.on('click', function(){
-            // Submit your sentence
-            // - loading dialogue
-
-            var start_time = new Date();
-            if(that.sentence.start_time.value != 'now'){
-                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
-            }
-            console.log(that.sentence.activities);
-            var Sentence = new SentenceModel.Sentence({
-                start_time: start_time, // Javascript new Date
-                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
-                duration: that.sentence.duration.text, // just a string
-                location: null,
-                activities: that.sentence.activities
-            });
-
-            Utils.Notification.Toast('OK, Wait a Moment');
-
-            Sentence.save()
-            .then(function(result){
-                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
-                // SentenceModel.set(result);
-                // App.Cache.current_sentence = SentenceModel;
-                // App.history.navigate('user/sentence_friends');
-            });
-
-            // App.history.navigate('user/sentence_friends');
-            
-        });
-        this.EveryoneOrSelectLayout.Views.push(this.SelectSurface);
-
-        this.EveryoneOrSelectLayout.sequenceFrom(this.EveryoneOrSelectLayout.Views);
-        this.scrollSurfaces.push(this.EveryoneOrSelectLayout.View);
-
     };
 
     PageView.prototype.createActivities = function(){
@@ -507,11 +521,11 @@ define(function(require, exports, module) {
         // Duration
         switch(this.sentence.duration.value){
             case 'today':
-                that.durationSurface.setContent('for <span>tonight</span>');
+                that.durationSurface.setContent('for <span>tonight</span>.');
                 break;
             default:
                 // time chosen
-                that.durationSurface.setContent('for <span>'+ this.sentence.duration.text +'</span>');
+                that.durationSurface.setContent('for <span>'+ this.sentence.duration.text +'</span>.');
                 break;
         }
 
