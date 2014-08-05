@@ -216,7 +216,7 @@ define(function(require, exports, module) {
             userView.Surface.setContent(
                 '<div>' +name+'</div><div> ' + 
                 (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>' +
-                '<div>' + moment(Model.get('Sentence.end_time')).format('h:ma') + '</div><div> '
+                '<div>' + moment(Model.get('Sentence.end_time')).format('h:mma') + '</div><div> '
             );
         };
         setThatContent();

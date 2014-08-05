@@ -220,7 +220,7 @@ define(function(require, exports, module) {
         userView.Surface = new Surface({
              content: '<div>' +name+'</div>',
              size: [undefined, 60],
-             classes: ['player-list-item-default']
+             classes: ['select-friends-list-item-default']
         });
         userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){

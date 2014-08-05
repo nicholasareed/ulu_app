@@ -90,7 +90,7 @@ define(function(require, exports, module) {
                 App.history.navigate('user/sentence');
             } else {
                 // Update time on navbar title
-                that.header.navBar.title.setContent(moment(that.model.get('end_time')).format('h:ma'));
+                that.header.navBar.title.setContent(moment(that.model.get('end_time')).format('h:mma'));
             }
 
         });

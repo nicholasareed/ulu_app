@@ -109,6 +109,30 @@ body {
 
 }
 
+/* Select Friends for Sentence */
+  
+.select-friends-list-item-default {
+  line-height: 44px;
+  background: white;
+
+  padding: 0px 8px;
+
+  border-bottom: 1px dashed #ddd;
+}
+
+.select-friends-list-item-default > div:nth-child(1) {
+  font-size: 28px;
+  line-height: 60px;
+  color: #333;
+}
+
+/*
+.select-friends-list-item-default > div:nth-child(2) {
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+}*/
+
 
 /* Matched Sentence Friends */
 
