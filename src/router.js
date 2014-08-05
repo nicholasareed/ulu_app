@@ -87,6 +87,10 @@ define(function(require, exports, module) {
                     defaultRoute('Popover', 'Misc/Popover', arguments, {cache: false, popover: true});
                 },
 
+                'misc/help' : function(){
+                    defaultRoute('MiscHelp', 'Misc/HelpStatic', arguments, {cache: false});
+                },
+
                 'login' : function(){
                     // eh, I should be able to cache this route before login, then destroy after login
                     defaultRoute('Login', 'Misc/Login', arguments, {cache: false});

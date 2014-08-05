@@ -135,6 +135,12 @@ define(function(require, exports, module) {
             //     desc: 'Change your look',
             //     href: 'photo'
             // },
+
+            {
+                title: 'How does it work?',
+                desc: 'Shoot, we hoped it was clear. our fault.',
+                href: 'misc/help'
+            },
             
             {
                 title: 'Logout and Exit',
