@@ -5,6 +5,7 @@ define(function(require, exports, module) {
     var View = require('famous/core/View');
     var ScrollView = require('famous/views/Scrollview');
     var SequentialLayout = require('famous/views/SequentialLayout');
+    var FlexibleLayout = require('famous/views/FlexibleLayout');
     var Surface = require('famous/core/Surface');
     var Modifier = require('famous/core/Modifier');
     var StateModifier = require('famous/modifiers/StateModifier');
@@ -203,35 +204,56 @@ define(function(require, exports, module) {
     SubView.prototype.addOne = function(Model){
         var that = this;
 
-        var userView = new View(),
-            name = Model.get('profile.name') || '&nbsp;none';
+        var userView = new View();
+        userView.SizeMod = new StateModifier({
+            size: [undefined, 80]
+        });
+        userView.SeqLayout = new FlexibleLayout({
+            ratios: [1, true]
+        });
+        userView.SeqLayout.Views = [];
+
+        var name = Model.get('profile.name') || '&nbsp;none';
 
         userView.Model = Model;
-        userView.Surface = new Surface({
+        userView.LeftSurface = new Surface({
              content: '',
              size: [undefined, 80],
              classes: ['matched-list-item-default']
         });
-        var setThatContent = function(){
-            userView.Surface.setContent(
-                '<div>' +name+'</div><div> ' + 
-                (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>' +
+        var setLeftContent = function(){
+            userView.LeftSurface.setContent(
+                '<div><span class="ellipsis-all">' +name+'</span></div><div><span class="ellipsis-all">' + 
+                (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</span></div>' +
                 '<div>' + moment(Model.get('Sentence.end_time')).format('h:mma') + '</div><div> '
             );
         };
-        setThatContent();
+        setLeftContent();
         Model.on('change', function(){
-            setThatContent();
+            setLeftContent();
         });
-        userView.Surface.pipe(that.contentLayout);
-        userView.Surface.on('click', function(){
+        userView.LeftSurface.pipe(that.contentLayout);
+        userView.LeftSurface.on('click', function(){
             // Message the person or something?
             // - let them link the person to a contact in their address book? 
 
             Utils.Notification.Toast('Messaging not yet supported');
 
         });
-        userView.add(userView.Surface);
+        userView.SeqLayout.Views.push(userView.LeftSurface);
+
+        userView.RightSurface = new Surface({
+            content: '<i class="icon ion-ios7-chatboxes-outline"></i>',
+            size: [80, 80],
+            classes: ['matched-list-item-message-default']
+        });
+        userView.RightSurface.pipe(that.contentLayout);
+
+        userView.SeqLayout.Views.push(userView.RightSurface);
+
+        userView.SeqLayout.sequenceFrom(userView.SeqLayout.Views);
+
+        userView.add(userView.SizeMod).add(userView.SeqLayout);
 
         this.contentLayout.Views.splice(this.contentLayout.Views.length-1, 0, userView);
         this.collection.infiniteResults += 1;

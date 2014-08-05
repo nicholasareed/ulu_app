@@ -212,6 +212,19 @@ body {
 }
 
 
+.matched-list-item-message-default {
+  line-height: 80px;
+  font-size: 40px;
+
+  text-align: center;
+
+  background: white;
+
+  padding: 0px 8px;
+
+  border-bottom: 1px dashed #ddd;
+}
+
 
 /* Waiting list */
 
