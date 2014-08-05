@@ -776,9 +776,13 @@ define(function (require) {
             // Processing a single Push Notification
             // - not meant for handling a bunch in a row
 
+            console.log(payload);
+
             if(typeof payload === typeof ""){
                 payload = JSON.parse(payload);
             }
+
+            console.log(payload);
 
             switch(payload.type){
                 case 'new_friend':
