@@ -88,7 +88,11 @@ define(function(require, exports, module) {
                 // Navigate back to home
                 App.history.eraseUntilTag('all-of-em');
                 App.history.navigate('user/sentence');
+            } else {
+                // Update time on navbar title
+                that.header.navBar.title.setContent(moment(that.model.get('Sentence.end_time')).format('h:ma'));
             }
+
         });
         this.model.on('error', function(res, xhr, res3){
             if(xhr.status == 409){
@@ -161,7 +165,7 @@ define(function(require, exports, module) {
 
     PageView.prototype.goBack = function(){
         var that = this;
-        
+
         // Erase the existing Sentence, if one exists
         if(that.model.get('active') || that.model.get('end_time') > new Date()){
 
