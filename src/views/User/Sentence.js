@@ -184,6 +184,7 @@ define(function(require, exports, module) {
             size: [undefined, true],
             classes: ['sentence-normal-default']
         });
+        this.startTimeSurface.pipe(this.contentScrollView);
         this.startTimeSurface.on('click', function(){
             var timeOptions = [{
                 text: 'Now',
@@ -239,6 +240,7 @@ define(function(require, exports, module) {
             size: [undefined, true],
             classes: ['sentence-normal-default']
         });
+        this.durationSurface.pipe(this.contentScrollView);
         this.durationSurface.on('click', function(){
             var durationOptions = [{
                 text: '30m',
@@ -300,6 +302,7 @@ define(function(require, exports, module) {
             size: [undefined, undefined],
             classes: ['sentence-normal-default', 'sentence-normal-button-default']
         });
+        this.EveryoneSurface.pipe(this.contentScrollView);
         this.EveryoneSurface.on('click', function(){
             // Submit your sentence
             // - loading dialogue
@@ -334,7 +337,36 @@ define(function(require, exports, module) {
         this.SelectSurface = new Surface({
             content: "Select 'em",
             size: [undefined, undefined],
-            classes: ['sentence-normal-default']
+            classes: ['sentence-normal-default', 'sentence-normal-button-default']
+        });
+        this.SelectSurface.pipe(this.contentScrollView);
+        this.SelectSurface.on('click', function(){
+            // Submit your sentence
+            // - loading dialogue
+
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
+            var Sentence = new SentenceModel.Sentence({
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
+                location: null,
+                activities: that.sentence.activities
+            });
+
+            Sentence.save()
+            .then(function(result){
+                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
+            });
+
+            // App.history.navigate('user/sentence_friends');
+            
         });
         this.EveryoneOrSelectLayout.Views.push(this.SelectSurface);
 
@@ -351,10 +383,11 @@ define(function(require, exports, module) {
 
 
         this.activitiesInstrSurface = new Surface({
-            content: "I'm down to",
+            content: "How about",
             size: [window.innerWidth, true],
             classes: ['sentence-normal-default']
         });
+        this.activitiesInstrSurface.pipe(this.contentScrollView);
         this.activitiesInstrSurface.View = new View();
         this.activitiesInstrSurface.View.getSize = function(){
             return that.activitiesInstrSurface.getSize(true);
@@ -374,6 +407,7 @@ define(function(require, exports, module) {
             size: [window.innerWidth, true],
             classes: ['sentence-normal-default']
         });
+        this.activitiesAddSurface.pipe(this.contentScrollView);
         this.activitiesAddSurface.on('click', function(){
             // Choose a few activities via popup
             var tmpactivities = ['whatever','just chill','outside','competition','movie','go out','a drink or two','lets rage'];
@@ -496,6 +530,7 @@ define(function(require, exports, module) {
             size: [undefined, true],
             classes: ['sentence-normal-default']
         });
+        tmpSurface.pipe(this.contentScrollView);
         tmpSurface.on('click', function(){
             // remove it
             that.sentence.activities = _.without(that.sentence.activities, chosen_type.value);
