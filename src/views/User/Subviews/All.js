@@ -232,7 +232,6 @@ define(function(require, exports, module) {
             // Fade out this view
             // - or just yank it out
             that.collection.remove(Model.get('_id'));
-            that.updateCollectionStatus();
 
             Timer.setTimeout(function(){
                 that.collection.fetch();
@@ -353,7 +352,7 @@ define(function(require, exports, module) {
         this.infinityLoadedAllSurface.setContent(this.collection.totalResults + ' total');
 
         var nextRenderable;
-        if(this.collection.length == 0 && this.collection.infiniteResults == 0){
+        if(this.collection.length == 0){
             nextRenderable = this.emptyListSurface;
             if(App.Data.User.get('friends').length == 0){
                 nextRenderable = this.emptyListSurfaceNoFriends;
