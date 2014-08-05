@@ -320,6 +320,8 @@ define(function(require, exports, module) {
                 activities: that.sentence.activities
             });
 
+            Utils.Notification.Toast('OK, Wait a Moment');
+
             Sentence.save()
             .then(function(result){
                 App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));

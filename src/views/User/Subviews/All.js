@@ -121,7 +121,16 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "None to Show",
+            content: "You've invited all your friends!",
+            size: [undefined, 100],
+            classes: ['empty-list-surface-default'],
+            properties: {
+                // backgroundColor: 'red'
+            }
+        });
+        this.emptyListSurface.pipe(this._eventOutput);
+        this.emptyListSurfaceNoFriends = new Surface({
+            content: "You should add some friends to hang out with!",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
@@ -346,6 +355,9 @@ define(function(require, exports, module) {
         var nextRenderable;
         if(this.collection.length == 0 && this.collection.infiniteResults == 0){
             nextRenderable = this.emptyListSurface;
+            if(App.Data.User.get('friends').length == 0){
+                nextRenderable = this.emptyListSurfaceNoFriends;
+            }
         } else {
             nextRenderable = this.contentLayout;
         }

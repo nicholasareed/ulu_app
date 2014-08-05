@@ -120,7 +120,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "None to Show",
+            content: "Friends will show up here (and you'll get a Push Notification)",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
