@@ -796,18 +796,12 @@ define(function (require) {
                     });
                     
                     break;
-                case 'new_game':
+                case 'friend_hangout_match':
                     Utils.Popover.Buttons({
-                        title: 'New Game',
+                        title: 'A friend can hang',
                         buttons: [
                             {
-                                text: 'Ignore'
-                            },
-                            {
-                                text: 'Visit Game',
-                                success: function(){
-                                    App.history.navigate('game/' + payload.id);
-                                }
+                                text: 'OK'
                             }
                         ]
                     });
