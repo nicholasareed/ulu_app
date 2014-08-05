@@ -91,6 +91,8 @@ define(function(require, exports, module) {
         this.collection.infiniteResults = 0;
         this.collection.totalResults = 0;
 
+        this.collection.fetch();
+
         this.prior_list = [];
 
         // Listen for 'showing' events
@@ -206,13 +208,26 @@ define(function(require, exports, module) {
 
         userView.Model = Model;
         userView.Surface = new Surface({
-             content: '<div>' +name+'</div>',
+             content: '<div>' +name+'</div><div> ' + (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>',
              size: [undefined, 60],
-             classes: ['player-list-item-default']
+             classes: ['matched-list-item-default']
         });
         userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){
             // App.history.navigate('player/' + Model.get('_id'));
+
+            var UserSelect = new UserSelectModel.UserSelect();
+            UserSelect.select(Model.get('_id'));
+
+            // Fade out this view
+            // - or just yank it out
+            that.collection.remove(Model.get('_id'));
+            that.updateCollectionStatus();
+
+            Timer.setTimeout(function(){
+                that.collection.fetch();
+            });
+
         });
         userView.add(userView.Surface);
 
@@ -222,9 +237,13 @@ define(function(require, exports, module) {
     };
 
     SubView.prototype.removeOne = function(Model){
+        var that = this;
 
         this.contentLayout.Views = _.filter(this.contentLayout.Views, function(tmpView){
-            return true;
+            if(!tmpView.Model){
+                return true;
+            }
+            return tmpView.Model.get('_id') === Model.get('_id') ? false: true;
         });
 
         this.updateCollectionStatus();
@@ -365,13 +384,16 @@ define(function(require, exports, module) {
 
         // at the end?
         if(this.collection.infiniteResults == this.collection.totalResults){
-            this.lightboxButtons.show(this.infinityLoadedAllSurface);
-            // this.$('.loaded-all').removeClass('nodisplay');
+            // this.lightboxButtons.show(this.infinityLoadedAllSurface);
+            this.lightboxButtons.hide();
+
         } else {
             // Show more
             // - also includes the number more to show :)
-            this.lightboxButtons.show(this.infinityShowMoreSurface);
-            // this.$('.show-more').removeClass('nodisplay');
+            // this.lightboxButtons.show(this.infinityShowMoreSurface);
+            this.lightboxButtons.hide();
+
+
         }
 
     };

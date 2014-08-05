@@ -322,9 +322,13 @@ define(function(require, exports, module) {
                     return;
                 },
                 success: function(resp, p2){
-                    SentenceModel.fetch();
-                    App.Cache.current_sentence = SentenceModel;
-                    App.history.navigate('user/sentence_friends');
+                    SentenceModel.fetch({
+                        success: function(){
+                            debugger;
+                            App.Cache.current_sentence = SentenceModel;
+                            App.history.navigate('user/sentence_friends');
+                        }
+                    });
                 }
             }).then(function(result, p2){
                 console.log('THEN result');

@@ -222,6 +222,11 @@ define(function(require, exports, module) {
             // Fade out this view
             // - or just yank it out
             that.collection.remove(Model.get('_id'));
+            that.updateCollectionStatus();
+
+            Timer.setTimeout(function(){
+                that.collection.fetch();
+            });
 
         });
         userView.add(userView.Surface);
@@ -232,9 +237,13 @@ define(function(require, exports, module) {
     };
 
     SubView.prototype.removeOne = function(Model){
+        var that = this;
 
         this.contentLayout.Views = _.filter(this.contentLayout.Views, function(tmpView){
-            return true;
+            if(!tmpView.Model){
+                return true;
+            }
+            return tmpView.Model.get('_id') === Model.get('_id') ? false: true;
         });
 
         this.updateCollectionStatus();
@@ -375,13 +384,13 @@ define(function(require, exports, module) {
 
         // at the end?
         if(this.collection.infiniteResults == this.collection.totalResults){
-            this.lightboxButtons.show(this.infinityLoadedAllSurface);
-            // this.$('.loaded-all').removeClass('nodisplay');
+            // this.lightboxButtons.show(this.infinityLoadedAllSurface);
+            this.lightboxButtons.hide();
         } else {
             // Show more
             // - also includes the number more to show :)
-            this.lightboxButtons.show(this.infinityShowMoreSurface);
-            // this.$('.show-more').removeClass('nodisplay');
+            // this.lightboxButtons.show(this.infinityShowMoreSurface);
+            this.lightboxButtons.hide();
         }
 
     };
