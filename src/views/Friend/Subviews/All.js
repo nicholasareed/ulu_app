@@ -92,6 +92,7 @@ define(function(require, exports, module) {
         this.collection.on("add", this.addOne, this);
         // this.collection.on("remove", this.removeOne, this);
         this.collection.infiniteResults = 0;
+        this.collection.totalResults = 0;
 
         this.prior_list = [];
 
@@ -241,26 +242,23 @@ define(function(require, exports, module) {
     SubView.prototype.addOne = function(Model){
         var that = this;
 
-        console.log(Model);
-        debugger;
-
         var userView = new View(),
-            name = Model.get('profile.name') || '&nbsp;',
-            username = Model.get('username');
+            name = Model.get('profile.name') || '&nbsp;none';
 
         userView.Model = Model;
         userView.Surface = new Surface({
-             content: '<div>@' +username+'</div><div>' + name + '</div>',
+             content: '<div>' +name+'</div>',
              size: [undefined, 60],
              classes: ['player-list-item-default']
         });
-        userView.Surface.pipe(that.contentScrollView);
+        userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){
-            App.history.navigate('player/' + Model.get('_id'));
+            // App.history.navigate('player/' + Model.get('_id'));
         });
         userView.add(userView.Surface);
 
-        that.contentScrollView.Views.push(userView);
+        this.contentLayout.Views.splice(this.contentLayout.Views.length-1, 0, userView);
+        this.collection.infiniteResults += 1;
 
     };
 
@@ -349,6 +347,8 @@ define(function(require, exports, module) {
     SubView.prototype.updateCollectionStatus = function() { 
         console.info('updateCollectionStatus');
 
+        this.collection.totalResults = App.Data.User.get('friends').length;
+
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;
         this.infinityShowMoreSurface.setContent(amount_left + ' more');
@@ -366,36 +366,21 @@ define(function(require, exports, module) {
             this.lightboxContent.show(nextRenderable);
         }
 
-        // // Splice out the lightboxButtons before sorting
-        // this.contentLayout.Views.pop();
+        // Splice out the lightboxButtons before sorting
+        var popped = this.contentLayout.Views.pop();
 
         // Resort the contentLayout.Views
         this.contentLayout.Views = _.sortBy(this.contentLayout.Views, function(v){
-            try {
-                var m = moment(v.Surface.Model.get('created'));
-                return m.format('X') * -1;
-            }catch(err){
-                // normal view?
-                if(v.Surface){
-                    console.error('====', v);
-                }
-                return 1000000;
-            }
+            console.log(v.Model.get('profile.name').toLowerCase());
+            return v.Model.get('profile.name').toLowerCase();
         });
 
-        // this.contentLayout.Views.push();
+        this.contentLayout.Views.push(popped);
+
+        console.log(this.contentLayout.Views);
 
         // Re-sequence?
-        if(this.contentLayout.Views.length > 0){
-            this.contentLayout.sequenceFrom(this.contentLayout.Views);
-        }
-
-        // this.layout.sequenceFrom([]);
-        // this.layout.sequenceFrom([
-        //     // this.contentLayout, // another SequentialLayout
-        //     this.lightboxContent,
-        //     this.lightboxButtons
-        // ]);
+        this.contentLayout.sequenceFrom(this.contentLayout.Views);
 
         // Show correct infinity buttons (More, All, etc.)
         this.render_infinity_buttons();
@@ -409,21 +394,15 @@ define(function(require, exports, module) {
         // // - unnecessary?
         // this.$('.load-list').addClass('nodisplay');
 
-        if(this.collection.hasFetched){
-            // at the end?
-            if(this.collection.infiniteResults == this.collection.totalResults){
-                this.lightboxButtons.show(this.infinityLoadedAllSurface);
-                // this.$('.loaded-all').removeClass('nodisplay');
-            } else {
-                // Show more
-                // - also includes the number more to show :)
-                this.lightboxButtons.show(this.infinityShowMoreSurface);
-                // this.$('.show-more').removeClass('nodisplay');
-            }
+        // at the end?
+        if(this.collection.infiniteResults == this.collection.totalResults){
+            this.lightboxButtons.show(this.infinityLoadedAllSurface);
+            // this.$('.loaded-all').removeClass('nodisplay');
         } else {
-            // not yet fetched, so display the "loading" one
-            this.lightboxButtons.show(this.infinityLoadingSurface);
-            // this.$('.loading-progress').removeClass('nodisplay');
+            // Show more
+            // - also includes the number more to show :)
+            this.lightboxButtons.show(this.infinityShowMoreSurface);
+            // this.$('.show-more').removeClass('nodisplay');
         }
 
     };

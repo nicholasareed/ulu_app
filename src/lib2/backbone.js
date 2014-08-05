@@ -1097,7 +1097,7 @@
     _prepareModel: function(attrs, options) {
 
       if (attrs instanceof Model){
-        debugger;
+        // debugger;
         return attrs;
       }
       options = options ? _.clone(options) : {};
