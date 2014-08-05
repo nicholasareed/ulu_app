@@ -139,7 +139,7 @@ define(function(require, exports, module) {
                 },
 
                 'user/sentence' : function(){
-                    defaultRoute('UserSentence', 'User/Sentence', arguments, {cache: true});
+                    defaultRoute('UserSentence', 'User/Sentence', arguments, {cache: false});
                 },
                 'user/sentence_friends/:hash' : function(){
                     defaultRoute('UserSentenceFriends', 'User/SentenceFriends', arguments, {cache: true});

@@ -137,10 +137,12 @@ define(function(require, exports, module) {
             // moreContent: "New", //'<span class="icon ion-navicon-round"></span>'
         });
         this.header._eventOutput.on('back',function(){
-            App.history.back();
+            // App.history.back();
+            that.goBack();
         });
         this.header.navBar.title.on('click',function(){
-            App.history.back();
+            // App.history.back();
+            that.goBack();
         });
 
         this._eventOutput.on('inOutTransition', function(args){
@@ -154,6 +156,45 @@ define(function(require, exports, module) {
 
         // Attach header to the layout        
         this.layout.header.add(this.header);
+
+    };
+
+    PageView.prototype.goBack = function(){
+        var that = this;
+        
+        // Erase the existing Sentence, if one exists
+        if(that.model.get('active') || that.model.get('end_time') > new Date()){
+
+            Utils.Popover.Buttons({
+                title: 'Clear Previous?',
+                buttons: [
+                    {
+                        text: 'Nah, stay here'
+                    },
+                    {
+                        text: 'Yup, go back',
+                        success: function(){
+
+                            Utils.Notification.Toast('One moment please');
+
+                            // Clear previous
+                            that.model.disable();
+
+                            // redirect
+                            App.history.eraseUntilTag('all-of-em');
+                            App.history.navigate('user/sentence');
+                        }
+                    }
+                ]
+            });
+
+            return;
+
+        }
+
+        // Doesn't seem to exist, just go back
+        App.history.eraseUntilTag('all-of-em');
+        App.history.navigate('user/sentence');
 
     };
     
@@ -334,6 +375,10 @@ define(function(require, exports, module) {
         }
         
         return transitionOptions;
+    };
+
+    PageView.prototype.backButtonHandler = function(){
+        this.goBack();
     };
 
 

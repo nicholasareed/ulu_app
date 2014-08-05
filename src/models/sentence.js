@@ -19,6 +19,27 @@ define(function (require) {
                 if(this.id){
                     this.url = this.urlRoot + '/' + this.id;
                 }
+            },
+
+            disable: function(){
+
+              var def = $.Deferred();
+
+              $.ajax({
+                url: Credentials.server_root + 'sentence/disable',
+                method: 'POST',
+                success: function(resp){
+                  console.log(resp);
+                  if(resp == true){
+                    def.resolve();
+                  } else {
+                    def.reject();
+                  }
+                }
+              });
+
+              return def.promise();
+
             }
 
         });

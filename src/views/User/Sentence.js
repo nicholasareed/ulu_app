@@ -44,8 +44,7 @@ define(function(require, exports, module) {
         View.apply(this, arguments);
         this.options = options;
 
-        // Model
-        this.model = App.Data.User;
+        this.loadModels();
 
         this._activityViews = {};
         this.old_sentence = {};
@@ -94,6 +93,47 @@ define(function(require, exports, module) {
 
     PageView.prototype = Object.create(View.prototype);
     PageView.prototype.constructor = PageView;
+
+    PageView.prototype.loadModels = function(){
+        var that = this;
+        
+        // Model
+        this.model = App.Data.User;
+
+        // Pre-existing Sentence Model
+        this.sentenceModel = new SentenceModel.Sentence();
+        this.sentenceModel.populated().then(function(){
+            // sentence expired?
+            // - if one exists that is active, go to it!
+            // - ask the user if they want to visit it, or erase the existing one? 
+            App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+        });
+        this.sentenceModel.once('sync', function(){
+
+            // debugger;
+        });
+        this.sentenceModel.once('error', function(res, xhr, res3){
+            // if(xhr.status == 404){
+            //     // None found!
+            //     return;
+            // }
+            // if(xhr.status == 409){
+
+            //     Utils.Notification.Toast('Expired');
+
+            //     // Navigate back to home
+            //     App.history.eraseUntilTag('all-of-em');
+            //     App.history.navigate('user/sentence');
+            // }
+
+            that.showFooter();
+
+            console.info('ok to create another one');
+
+        });
+        this.sentenceModel.fetch();
+
+    };
 
     PageView.prototype.createHeader = function(){
         var that = this;
@@ -240,9 +280,26 @@ define(function(require, exports, module) {
 
         this.EveryoneOrSelectLayout.sequenceFrom(this.EveryoneOrSelectLayout.Views);
 
-        this.layout.footer.add(this.EveryoneOrSelectLayout.View);
+        this.FooterPositionMod = new StateModifier({
+            transform: Transform.translate(0,60,0)
+        });
+        this.layout.footer.add(this.FooterPositionMod).add(this.EveryoneOrSelectLayout.View);
         // this.scrollSurfaces.push(this.EveryoneOrSelectLayout.View);
 
+    };
+
+    PageView.prototype.showFooter = function(){
+        this.FooterPositionMod.setTransform(Transform.translate(0,0,0), {
+            curve: 'linear',
+            duration: 250
+        });
+    };
+
+    PageView.prototype.hideFooter = function(){
+        this.FooterPositionMod.setTransform(Transform.translate(0,60,0), {
+            curve: 'linear',
+            duration: 250
+        });
     };
 
     PageView.prototype.createContent = function(){
