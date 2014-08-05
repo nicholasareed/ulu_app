@@ -258,10 +258,10 @@ define(function(require, exports, module) {
         this.contentScrollView.sequenceFrom(this.scrollSurfaces);
 
         // Content Modifiers
-        this.layout.content.StateModifier = new StateModifier();
+        this.ContentStateModifier = new StateModifier();
 
         // Now add content
-        this.layout.content.add(this.layout.content.StateModifier).add(this.contentScrollView);
+        this.layout.content.add(this.ContentStateModifier).add(this.contentScrollView);
 
 
     };
@@ -594,11 +594,16 @@ define(function(require, exports, module) {
                         // Overwriting and using default identity
                         transitionOptions.outTransform = Transform.identity;
 
+                        that.ContentStateModifier.setOpacity(0);
+
                         // Hide/move elements
                         window.setTimeout(function(){
+                            
+                            // // Fade header
+                            // that.header.StateModifier.setOpacity(0, transitionOptions.outTransition);
 
-                            // Slide content left
-                            that.layout.content.StateModifier.setTransform(Transform.translate(0,window.innerHeight,0), transitionOptions.outTransition);
+                            // Slide content down
+                            that.ContentStateModifier.setOpacity(1, transitionOptions.outTransition);
 
                         }, delayShowing);
 
@@ -618,35 +623,34 @@ define(function(require, exports, module) {
                         // No animation by default
                         transitionOptions.inTransform = Transform.identity;
 
+                        // // Default header opacity
+                        // that.header.StateModifier.setOpacity(0);
+
                         // // Default position
                         // if(goingBack){
-                        //     that.layout.content.StateModifier.setTransform(Transform.translate(window.innerWidth * -1,0,0));
+                        //     that.ContentStateModifier.setTransform(Transform.translate(window.innerWidth * -1,0,0));
                         // } else {
-                        //     that.layout.content.StateModifier.setTransform(Transform.translate(window.innerWidth + 100,0,0));
+                        //     that.ContentStateModifier.setTransform(Transform.translate(window.innerWidth + 100,0,0));
                         // }
-                        that.layout.content.StateModifier.setTransform(Transform.translate(0,0,0));
-                        // that.scrollSurfaces.forEach(function(surf, index){
-                        //     surf.StateModifier.setTransform(Transform.translate(0,window.innerHeight,0));
-                        // });
+                        that.ContentStateModifier.setOpacity(0);
 
-                        // Content
-                        // - extra delay for other content to be gone
+                        // Header
+                        // - no extra delay
                         window.setTimeout(function(){
 
-                            // // Bring content back
-                            // that.layout.content.StateModifier.setTransform(Transform.translate(0,0,0), transitionOptions.inTransition);
+                            // // Change header opacity
+                            // that.header.StateModifier.setOpacity(1, transitionOptions.outTransition);
 
-                            // // Bring in button surfaces individually
-                            // that.scrollSurfaces.forEach(function(surf, index){
-                            //     window.setTimeout(function(){
-                            //         surf.StateModifier.setTransform(Transform.translate(0,0,0), {
-                            //             duration: 1500,
-                            //             curve: Easing.inOutElastic
-                            //         });
-                            //     }, index * 50);
-                            // });
+                        }, delayShowing);
 
-                        }, delayShowing); // + transitionOptions.outTransition.duration);
+                        // Content
+                        // - extra delay for content to be gone
+                        window.setTimeout(function(){
+
+                            // Bring map content back
+                            that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
+
+                        }, delayShowing + transitionOptions.outTransition.duration);
 
                         break;
                 }

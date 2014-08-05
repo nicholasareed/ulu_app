@@ -260,31 +260,26 @@ define(function(require, exports, module) {
     PageView.prototype.inOutTransition = function(direction, otherViewName, transitionOptions, delayShowing, otherView, goingBack){
         var that = this;
 
-        var args = arguments;
-
         this._eventOutput.emit('inOutTransition', arguments);
-
-        // emit on subviews
-        _.each(this._subviews, function(obj, index){
-            obj._eventInput.emit('inOutTransition', args);
-        });
 
         switch(direction){
             case 'hiding':
-
                 switch(otherViewName){
 
                     default:
                         // Overwriting and using default identity
                         transitionOptions.outTransform = Transform.identity;
 
-                        window.setTimeout(function(){
+                        that.ContentStateModifier.setOpacity(0);
 
+                        // Hide/move elements
+                        window.setTimeout(function(){
+                            
                             // // Fade header
                             // that.header.StateModifier.setOpacity(0, transitionOptions.outTransition);
 
-                            // Slide down
-                            // that.ContentStateModifier.setTransform(Transform.translate(0, window.innerHeight,0), transitionOptions.outTransition);
+                            // Slide content down
+                            that.ContentStateModifier.setOpacity(1, transitionOptions.outTransition);
 
                         }, delayShowing);
 
@@ -292,10 +287,9 @@ define(function(require, exports, module) {
                 }
 
                 break;
-
             case 'showing':
                 if(this._refreshData){
-                    window.setTimeout(this.refreshData.bind(this), 1000);
+                    // window.setTimeout(that.refreshData.bind(that), 1000);
                 }
                 this._refreshData = true;
                 switch(otherViewName){
@@ -314,43 +308,25 @@ define(function(require, exports, module) {
                         // } else {
                         //     that.ContentStateModifier.setTransform(Transform.translate(window.innerWidth + 100,0,0));
                         // }
-                        // that.ContentStateModifier.setTransform(Transform.translate(0, window.innerHeight, 0));
+                        that.ContentStateModifier.setOpacity(0);
 
                         // Header
+                        // - no extra delay
                         window.setTimeout(function(){
 
                             // // Change header opacity
                             // that.header.StateModifier.setOpacity(1, transitionOptions.outTransition);
 
-
                         }, delayShowing);
 
                         // Content
-                        // - extra delay
+                        // - extra delay for content to be gone
                         window.setTimeout(function(){
 
-                            // // Bring content back
-                            // that.ContentStateModifier.setTransform(Transform.translate(0,0,0), transitionOptions.inTransition);
+                            // Bring map content back
+                            that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
 
                         }, delayShowing + transitionOptions.outTransition.duration);
-
-                        // //Fade out the header
-                        // // var previousTransform = transitionOptions.outTransform;
-                        // transitionOptions.outTransform = Transform.identity;
-
-                        // // Move the content to the left
-                        // // - not the footer
-                        // // console.log(transitionOptions.outTransform);
-                        // // debugger;
-                        // window.setTimeout(function(){
-
-                        //     // Bring map content back
-                        //     that.layout.content.StateModifier.setTransform(Transform.translate(0,0,0), transitionOptions.inTransition);
-
-                        //     // Bring Footer Up
-                        //     that.layout.footer.StateModifier.setTransform(Transform.translate(0,0,0), transitionOptions.outTransition);
-
-                        // }, delayShowing);
 
                         break;
                 }
