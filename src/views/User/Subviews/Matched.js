@@ -212,6 +212,9 @@ define(function(require, exports, module) {
              size: [undefined, 60],
              classes: ['matched-list-item-default']
         });
+        Model.on('change', function(){
+            userView.Surface.setContent('<div>' +name+'</div><div> ' + (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>');
+        });
         userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){
             // App.history.navigate('player/' + Model.get('_id'));
