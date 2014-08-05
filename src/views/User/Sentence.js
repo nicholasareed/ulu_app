@@ -36,6 +36,7 @@ define(function(require, exports, module) {
 
     // Models
     var UserModel = require('models/user');
+    var UserSelectModel = require('models/user_select');
     var SentenceModel = require('models/sentence');
 
 
@@ -96,7 +97,7 @@ define(function(require, exports, module) {
 
     PageView.prototype.loadModels = function(){
         var that = this;
-        
+
         // Model
         this.model = App.Data.User;
 
@@ -220,8 +221,15 @@ define(function(require, exports, module) {
             Sentence.save()
             .then(function(result){
                 // Send invites to everybody
+
+
+                var UserSelect = new UserSelectModel.UserSelect();
+                UserSelect.select('all')
+                .then(function(){
+                    App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                });
+
                 // - todo...
-                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
                 // SentenceModel.set(result);
                 // App.Cache.current_sentence = SentenceModel;
                 // App.history.navigate('user/sentence_friends');
