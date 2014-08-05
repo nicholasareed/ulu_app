@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.dth.app.pub" version="0.0.1.60" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Down to Hang?</name>
+    <name>Hang</name>
     <description>
-        YC Hacks 2014
+        I'm free, you're free, let's hang. 
     </description>
     <author email="nick@getemailbox.com" href="http://cordova.io">
         Nick Reed + Team
