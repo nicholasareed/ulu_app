@@ -208,12 +208,20 @@ define(function(require, exports, module) {
 
         userView.Model = Model;
         userView.Surface = new Surface({
-             content: '<div>' +name+'</div><div> ' + (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>',
-             size: [undefined, 60],
+             content: '',
+             size: [undefined, 80],
              classes: ['matched-list-item-default']
         });
+        var setThatContent = function(){
+            userView.Surface.setContent(
+                '<div>' +name+'</div><div> ' + 
+                (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>' +
+                '<div>' + moment(Model.get('Sentence.end_time')).format('h:ma') + '</div><div> '
+            );
+        };
+        setThatContent();
         Model.on('change', function(){
-            userView.Surface.setContent('<div>' +name+'</div><div> ' + (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</div>');
+            setThatContent();
         });
         userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){

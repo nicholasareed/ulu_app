@@ -122,6 +122,13 @@ body {
   color: #333;
 }
 
+.matched-list-item-default > div:nth-child(3) {
+  font-size: 11px;
+  line-height: 20px;
+  /*color: #333;*/
+  color: #E74C3C;
+}
+
 
 
 /* Waiting list */
