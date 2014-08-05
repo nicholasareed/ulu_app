@@ -6,6 +6,10 @@ define(function(require, exports, module) {
 
     var readyDeferred = $.Deferred();
 
+    // require('famous/inputs/FastClick');
+    // var attachFastClick = require('fastclick');
+    
+
     module.exports = {
 
         test: "hello",
@@ -74,7 +78,16 @@ define(function(require, exports, module) {
             }
             this.isReady = true;
 
-            // alert('onReady!');
+            // // FastClick attachment to document.body
+            // console.log(document.body);
+            // attachFastClick.attach(document.body);
+
+            // Android or iOS stylesheet?
+            var devicePlatform = 'android';
+            try {
+                devicePlatform = device.platform.toLowerCase();
+            }catch(err){}
+            $('head').append('<link rel="stylesheet" href="css/'+ devicePlatform +'.css" type="text/css" />');
 
             // Resolve deferred
             this.readyDeferred.resolve();
@@ -291,7 +304,7 @@ define(function(require, exports, module) {
                         // alert(err);
                     }, 
                     {
-                        "senderID": "690693430367", //"312360250527",
+                        "senderID": "303243217649", //"312360250527",
                         "ecb": "onNotificationGCM"
                     });
                 } else if (device.platform.toLowerCase() == 'ios') {
@@ -392,28 +405,62 @@ define(function(require, exports, module) {
 
 });
 
-function onNotificationAPN(event) {
-    var pushNotification = window.plugins.pushNotification;
-    console.log("Received a notification! " + event.alert);
-    console.log("event sound " + event.sound);
-    console.log("event badge " + event.badge);
-    console.log("event " + event);
-    if (event.alert) {
-        navigator.notification.alert(event.alert);
-    }
-    if (event.badge) {
-        console.log("Set badge on  " + pushNotification);
-        pushNotification.setApplicationIconBadgeNumber(function(){
-            console.log('succeeded at something in pushNotification for iOS');
-        }, event.badge);
-    }
-    if (event.sound) {
-        var snd = new Media(event.sound);
-        snd.play();
-    }
+// iOS (Apple Push Notifications - APN)
+function onNotificationAPN(e) {
+
+    require(['utils'], function(Utils){
+
+        Utils.process_push_notification_message(e.payload);
+        return;
+
+        // Utils.PushNotification.HandlePush();
+
+        // Utils.Notification.Toast('New APN');
+
+        // // alert(2);
+        // // try {
+        // //     alert(event);
+        // // }catch(err){};
+
+        // // alert(3);
+        // // try {
+        // //     alert(event.event);
+        // // }catch(err){};
+
+        // alert(4);
+        // try {
+        //     alert(JSON.stringify(Object.keys(event)));
+        // }catch(err){};
+
+        // Object.keys(event).forEach(function(key){
+        //     alert(event[key]);
+        // });
+
+
+        // var pushNotification = window.plugins.pushNotification;
+        // console.log("Received a notification! " + event.alert);
+        // console.log("event sound " + event.sound);
+        // console.log("event badge " + event.badge);
+        // console.log("event " + event);
+
+        // if (event.alert) {
+        //     navigator.notification.alert(event.alert);
+        // }
+        // if (event.badge) {
+        //     console.log("Set badge on  " + pushNotification);
+        //     pushNotification.setApplicationIconBadgeNumber(function(){
+        //         console.log('succeeded at something in pushNotification for iOS');
+        //     }, event.badge);
+        // }
+        // if (event.sound) {
+        //     var snd = new Media(event.sound);
+        //     snd.play();
+        // }
+
+    });
 };
 
-// GCM = Google Cloud Messag[something]
+// GCM = Google Cloud Messag[something] for Android
 function onNotificationGCM(e){
     // Received a notification from GCM
     // - multiple types of notifications
@@ -422,121 +469,126 @@ function onNotificationGCM(e){
     // alert('onNotificationGCM');
     console.log('onNotificationGCM');
 
-    switch( e.event ){
-        case 'registered':
-            // alert('registered');
-            // Registered with GCM
-            if ( e.regid.length > 0 ) {
-                // Your GCM push server needs to know the regID before it can push to this device
-                // here is where you might want to send it the regID for later use.
-                // alert('registration id: ' + e.regid);
-                // App.Utils.Notification.debug.temp('Reg ID:' + e.regid.substr(0,25) + '...');
-                console.log('Android registration ID for device');
-                console.log(e.regid);
+    require(['utils'], function(Utils){
 
-                // // Got the registration ID
-                // // - we're assuming this happens before we've done alot of other stuff
-                // App.Credentials.android_reg_id = e.regid;
+        switch( e.event ){
+            case 'registered':
+                // Registered with GCM
+                if ( e.regid.length > 0 ) {
+                    // Your GCM push server needs to know the regID before it can push to this device
+                    // here is where you might want to send it the regID for later use.
+                    // alert('registration id: ' + e.regid);
+                    // App.Utils.Notification.debug.temp('Reg ID:' + e.regid.substr(0,25) + '...');
+                    console.log('Android registration ID for device');
+                    console.log(e.regid);
 
-                // Write the key
-                // - see if the user is logged in
-                var i = 0;
-                var pushRegInterval = function(){
+                    // // Got the registration ID
+                    // // - we're assuming this happens before we've done alot of other stuff
+                    // App.Credentials.android_reg_id = e.regid;
+
+                    // Write the key
+                    // - see if the user is logged in
+                    var i = 0;
+                    var pushRegInterval = function(){
+                        window.setTimeout(function(){
+                            // See if logged in
+                            if(App.Data.User.get('_id')){
+                                // Sweet, logged in, update user's android_reg_id
+                                // alert('saving user!'); // ...
+                                // alert(App.Data.User.get('_id'));
+                                // alert(e.regid);
+                                App.Data.User.set({android: [{reg_id: e.regid, last: new Date()}]});
+                                App.Data.User.save(); // update the user
+                                // App.Plugins.Minimail.updateAndroidPushRegId(App.Credentials.android_reg_id);
+
+                            } else {
+                                // Try running again
+                                // App.Utils.Notification.debug.temp('NLI - try again' + i);
+                                console.log('Not logged in - try android registration update again');
+                                console.log(App.Data.User.get('_id'));
+                                i++;
+                                pushRegInterval();
+                            }
+                        },3000);
+                    };
+                    pushRegInterval();
+
+                }
+            break;
+
+            case 'message':
+                // if this flag is set, this notification happened while we were in the foreground.
+                // you might want to play a sound to get the user's attention, throw up a dialog, etc.
+
+                // alert('message received');
+                // alert(JSON.stringify(e.payload));
+
+                // Capture and then wait for a half-second to see if any other messages are incoming
+                // - don't want to overload the person
+
+                Utils.process_push_notification_message(e.payload.payload);
+
+                return;
+
+
+                // alert('Message!');
+                console.log(e);
+                console.log(JSON.stringify(e));
+                console.log(e.payload.payload);
+
+                if (e.foreground || 1==1){
+                    // // We were in the foreground when it was incoming
+                    // // - process right away
+                    // console.log('In FOREground');
+
+                    // // alert('Alert Triggered');
+
+                    // var payload = e.payload.payload;
+                    // var alert_trigger_id = payload.alert_trigger_id;
+
+                    // // Go to alert_trigger
+                    // App.history.navigate('alert_trigger/' + alert_trigger_id, {trigger: true});
+
+                    // require(["utils"], function (Utils) {
+                    //     // Utils.process_push_notification_message(e);
+                    // });
+
+                // } else {
+                    // Not in the foreground
+                    // - they clicked the notification
+                    // - process all of them at once
+                    // alert('in background');
+
                     window.setTimeout(function(){
-                        // See if logged in
-                        if(App.Data.User.get('_id')){
-                            // Sweet, logged in, update user's android_reg_id
-                            // alert('saving user!'); // ...
-                            // alert(App.Data.User.get('_id'));
-                            // alert(e.regid);
-                            App.Data.User.set({android: [{reg_id: e.regid, last: new Date()}]});
-                            App.Data.User.save(); // update the user
 
-                            // App.Plugins.Minimail.updateAndroidPushRegId(App.Credentials.android_reg_id);
-                        } else {
-                            // Try running again
-                            // App.Utils.Notification.debug.temp('NLI - try again' + i);
-                            console.log('Not logged in - try android registration update again');
-                            console.log(App.Data.User.get('_id'));
-                            i++;
-                            pushRegInterval();
-                        }
-                    },3000);
-                };
-                pushRegInterval();
+                    }, 1000);
 
-            }
-        break;
+                    // console.log('In BACKground!');
+                    // if (e.coldstart){
+                    //     // App wasn't previously running, so it is starting up
+                    //     console.log('In COLDstart');
+                    // } else {
+                    //     // App is probably already displaying some other page
+                    // }
 
-        case 'message':
-            // if this flag is set, this notification happened while we were in the foreground.
-            // you might want to play a sound to get the user's attention, throw up a dialog, etc.
+                    // // add to process queue
+                    // // - the last/latest one gets analyzed
+                    // console.log('ADDING TO PUSH QUEUE');
+                    // // App.Data.notifications_queue.push(e);
 
-            // alert('message received');
-            // alert(JSON.stringify(e.payload));
-
-            // Capture and then wait for a half-second to see if any other messages are incoming
-            // - don't want to overload the person
-
-            // alert('Message!');
-            console.log(e);
-            console.log(JSON.stringify(e));
-
-            if (e.foreground){
-                // We were in the foreground when it was incoming
-                // - process right away
-                console.log('In FOREground');
-
-                // alert('Alert Triggered');
-
-                var payload = e.payload.payload;
-                var alert_trigger_id = payload.alert_trigger_id;
-
-                // Go to alert_trigger
-                Backbone.history.navigate('alert_trigger/' + alert_trigger_id, {trigger: true});
-
-                require(["utils"], function (Utils) {
-                    // Utils.process_push_notification_message(e);
-                });
-
-            } else {
-                // Not in the foreground
-                // - they clicked the notification
-                // - process all of them at once
-                // alert('in background');
-
-                var payload = e.payload.payload;
-                var alert_trigger_id = payload.alert_trigger_id;
-
-                // Go to alert_trigger
-                Backbone.history.navigate('alert_trigger/' + alert_trigger_id, {trigger: true});
-
-                console.log('In BACKground!');
-                if (e.coldstart){
-                    // App wasn't previously running, so it is starting up
-                    console.log('In COLDstart');
-                } else {
-                    // App is probably already displaying some other page
                 }
 
-                // add to process queue
-                // - the last/latest one gets analyzed
-                console.log('ADDING TO PUSH QUEUE');
-                // App.Data.notifications_queue.push(e);
+            break;
 
-            }
+            case 'error':
+                alert('GCM error');
+                alert(e.msg);
+            break;
 
+            default:
+                alert('An unknown GCM event has occurred');
+            break;
+        }
+    });
 
-
-        break;
-
-        case 'error':
-            alert('GCM error');
-            alert(e.msg);
-        break;
-
-        default:
-            alert('An unknown GCM event has occurred');
-        break;
-    }
 };

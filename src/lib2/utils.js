@@ -178,6 +178,50 @@ define(function (require) {
 
         },
 
+        Popover: {
+            Help: function(opts){
+                // default options
+                opts = _.defaults(opts, {
+                    title: null,
+                    body: null,
+                    on_done: function(){
+                        App.history.navigate('random2',{history: false});
+                    }
+                });
+                App.Cache.HelpPopoverModal = opts;
+                // navigate
+                App.history.navigate('modal/helppopover', {history: false});
+            },
+            Buttons: function(opts){
+                // default options
+                opts = _.defaults(opts, {
+                    title: null,
+                    text: null,
+                    buttons: []
+                });
+
+                // opts.on_cancel
+
+                // Options and details
+                App.Cache.OptionModal = opts;
+
+                // Change history (must)
+                App.history.navigate('modal/popoverbuttons', {history: false});
+            },
+            List: function(data){
+
+                // opts.on_cancel
+
+                // Options and details
+                App.Cache.OptionModal = {
+                    list: data
+                }
+
+                // Change history (must)
+                App.history.navigate('modal/list', {history: false});
+            },
+        },
+
         Analytics: {
             init: function(){
                 try {
@@ -728,60 +772,47 @@ define(function (require) {
 
         },
 
-        process_push_notification_message : function(e){
+        process_push_notification_message : function(payload){
             // Processing a single Push Notification
             // - not meant for handling a bunch in a row
 
-            if (e.foreground) {
-                // Launched 
-                // alert('app in foreground');
-
-                switch(e.payload.type){
-                    // no case: statements yet
-                    case 'default':
-                        // nothing
-                        console.log('default');
-                    default:
-                        break;
-                }
-
-                // // if the notification contains a soundname, play it.
-                // var my_media = new Media("/android_asset/www/"+e.soundname);
-                // my_media.play();
-
-            } else {    
-                // Launched because the user touched a notification in the notification tray.
-                // alert('app NOT in foreground');
-
-
+            if(typeof payload === typeof ""){
+                payload = JSON.parse(payload);
             }
 
-            // Default actions to follow
-
-            // Is there a URL we should be visiting?
-            switch(e.payload.type){
-                case 'url':
-                    // Visit an internal url
-                    App.history.navigate(e.payload.url, {trigger: true});
+            switch(payload.type){
+                case 'new_friend':
+                    Utils.Popover.Buttons({
+                        title: 'New Friend!',
+                        buttons: [
+                            {
+                                text: 'OK'
+                            }
+                        ]
+                    });
+                    
                     break;
-
-                case 'trip':
-                    App.history.navigate('trip/' + e.payload._id, {trigger: true});
+                case 'new_game':
+                    Utils.Popover.Buttons({
+                        title: 'New Game',
+                        buttons: [
+                            {
+                                text: 'Ignore'
+                            },
+                            {
+                                text: 'Visit Game',
+                                success: function(){
+                                    App.history.navigate('game/' + payload.id);
+                                }
+                            }
+                        ]
+                    });
                     break;
-
-                case 'driver':
-                    App.history.navigate('driver/' + e.payload._id, {trigger: true});
-                    break;
-
-                case 'car':
-                    App.history.navigate('car/' + e.payload._id, {trigger: true});
-                    break;
-
                 default:
-                    // Unknown type
-                    // - don't do anything
-                    alert('Unable to process Push Notification');
-                    break;
+                    alert('Unknown type');
+                    alert(payload.type);
+                    alert(JSON.stringify(payload));
+                    return;
             }
 
         },
