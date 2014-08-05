@@ -244,7 +244,7 @@ define(function(require, exports, module) {
             offClasses: ['select-friends-tabbar-default', 'off']
         });
         this.TopTabs.Bar.defineSection('matched', {
-            content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Matched</div>',
+            content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Time Match</div>',
             onClasses: ['select-friends-tabbar-default', 'on'],
             offClasses: ['select-friends-tabbar-default', 'off']
         });
