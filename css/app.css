@@ -891,72 +891,109 @@ body {
   font-weight: bold;
 }
 
-input[type="text"] {
+.button-outwards-default {
+  padding: 4px 8px;
+
+  color: white;
+  text-align: center;
+  line-height: 48px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.outward-button.with-icon i {
+  font-size: 24px;
+  line-height: 30px;
+  /*padding-top: 4px;*/
+}
+
+.outward-button {
+  border: 0;
+  background: #5786c1;
+  color: white;
+  /*padding: 8px 14px;*/
+  padding: 0px 8px;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  display: inline-block;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  /* needed for anchors */
+  position: relative;
+  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae, 3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae, 5px 4px #3a587f, 4px 5px #4171ae, 6px 5px #3a587f, 5px 6px #4171ae;
+}
+.outward-button-auto {
+  width: auto;
+}
+.outward-button:hover, .outward-button:focus {
+  transform: translate(2px, 2px);
+  -webkit-transform: translate(2px, 2px);
+  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae, 3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae;
+}
+/*.outward-button:active {
+  transform: translate(4px, 4px);
+  -webkit-transform: translate(4px, 4px);
+  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae;
+}*/
+
+
+
+input[type="text"],
+input[type="text"]:focus,
+input[type="text"]:active {
   border: 1px solid #ddd;
   border-bottom: 2px solid #999;
   border-shadow: none;
   padding: 0 8px;
   font-size: 16px;
   line-height: 40px;
+
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
 }
-input[type="password"] {
+input[type="email"],
+input[type="email"]:focus,
+input[type="email"]:active {
   border: 1px solid #ddd;
   border-bottom: 2px solid #999;
   border-shadow: none;
   padding: 0 8px;
   font-size: 16px;
   line-height: 40px;
+
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+}
+textarea,
+textarea:focus,
+textarea:active {
+  border: 1px solid #ddd;
+  border-bottom: 2px solid #999;
+  border-shadow: none;
+  padding: 4px 8px;
+  font-size: 16px;
+  line-height: 20px;
+
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+}
+input[type="password"],
+input[type="password"]:focus,
+input[type="password"]:active {
+  border: 1px solid #ddd;
+  border-bottom: 2px solid #999;
+  border-shadow: none;
+  padding: 0 8px;
+  font-size: 16px;
+  line-height: 40px;
+
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
 }
 
-
-.save-game-button-default {
-  background: #FF7940;
-}
-
-.won-next-button-default {
-  background: #00B23F;
-  border-top: 4px solid #0A652A;
-}
-.lost-next-button-default {
-  background: #FF0900;
-  border-top: 4px solid #B21812;
-}
-.tied-next-button-default {
-  background: #FFAE06;
-  border-top: 4px solid #B28016;
-}
-
-
-/* Rankings Page */
-
-/* Rankings buttons at top */
-.ranking-group-button-default {
-  font-weight: bold;
-  line-height: 60px;
-  font-size: 20px;
-  padding: 10px;
-  border-bottom: 2px solid #eee;
-  border-radius: 3px;
-
-  /*background: red;*/
-
-}
-
-/* Win Place Switcher Button */
-.win-place-switcher-button-default {
-  font-weight: bold;
-  line-height: 60px;
-  font-size: 20px;
-  padding: 10px;
-  border-bottom: 2px solid #eee;
-  border-radius: 3px;
-}
-
-.win-place-switcher-button-default.off {
-  /*background: blue;*/
-  /*background: #222;*/
-  /*color: white;*/
-}
 
 
 /* Footer */
