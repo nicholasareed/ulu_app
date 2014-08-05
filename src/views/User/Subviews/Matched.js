@@ -225,19 +225,10 @@ define(function(require, exports, module) {
         });
         userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){
-            // App.history.navigate('player/' + Model.get('_id'));
+            // Message the person or something?
+            // - let them link the person to a contact in their address book? 
 
-            var UserSelect = new UserSelectModel.UserSelect();
-            UserSelect.select(Model.get('_id'));
-
-            // Fade out this view
-            // - or just yank it out
-            that.collection.remove(Model.get('_id'));
-            that.updateCollectionStatus();
-
-            Timer.setTimeout(function(){
-                that.collection.fetch();
-            });
+            Utils.Notification.Toast('Messaging not yet supported');
 
         });
         userView.add(userView.Surface);
