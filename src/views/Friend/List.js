@@ -82,7 +82,7 @@ define(function(require, exports, module) {
         // Invite somebody
         this.headerContent = new View();
         this.headerContent.Invite = new Surface({
-            content: '<i class="icon ion-plus-round"></i>',
+            content: '<i class="icon ion-ios7-plus-outline"></i>',
             size: [60, undefined],
             classes: ['header-tab-icon-text-big']
         });
@@ -152,7 +152,7 @@ define(function(require, exports, module) {
         this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
-            content: '<i class="icon ion-android-friends"></i><div>All</div>',
+            content: '<i class="icon ion-android-friends"></i><div>All Friends</div>',
             onClasses: ['inbox-tabbar-default', 'on'],
             offClasses: ['inbox-tabbar-default', 'off']
         });

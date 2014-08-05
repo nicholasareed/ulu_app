@@ -247,9 +247,9 @@ define(function(require, exports, module) {
 
         userView.Model = Model;
         userView.Surface = new Surface({
-             content: '<div>' +name+'</div>',
+             content: '<div><span class="ellipsis-all">' +name+'</span></div>',
              size: [undefined, 60],
-             classes: ['player-list-item-default']
+             classes: ['select-friends-list-item-default']
         });
         userView.Surface.pipe(that.contentLayout);
         userView.Surface.on('click', function(){

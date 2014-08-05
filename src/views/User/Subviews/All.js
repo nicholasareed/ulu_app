@@ -218,7 +218,7 @@ define(function(require, exports, module) {
 
         userView.Model = Model;
         userView.Surface = new Surface({
-             content: '<div>' +name+'</div>',
+             content: '<div><span class="ellipsis-all">' +name+'</span></div>',
              size: [undefined, 60],
              classes: ['select-friends-list-item-default']
         });

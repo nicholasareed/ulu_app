@@ -141,7 +141,7 @@ define(function(require, exports, module) {
         
         // Icons
 
-        // Invite somebody
+        // Settings
         this.headerContent = new View();
         this.headerContent.Settings = new Surface({
             content: '<i class="icon ion-ios7-gear-outline"></i>',

@@ -129,6 +129,16 @@ define(function(require, exports, module) {
             App.history.navigate('friend/add');
         });
 
+        // Settings
+        this.headerContent.Settings = new Surface({
+            content: '<i class="icon ion-ios7-gear-outline"></i>',
+            size: [60, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.Settings.on('click', function(){
+            App.history.navigate('settings');
+        });
+
         // create the header
         this.header = new StandardHeader({
             content: "",
@@ -137,7 +147,8 @@ define(function(require, exports, module) {
             // backContent: false,
             moreClasses: ["normal-header"],
             moreSurfaces: [
-                this.headerContent.Invite
+                this.headerContent.Invite,
+                this.headerContent.Settings
             ]
             // moreContent: "New", //'<span class="icon ion-navicon-round"></span>'
         });
