@@ -117,15 +117,16 @@ define(function(require, exports, module) {
         // Invite somebody
         this.headerContent = new View();
         this.headerContent.Invite = new Surface({
-            content: '<i class="icon ion-plus-round">',
+            content: '<i class="icon ion-ios7-plus-outline">',
             size: [60, undefined],
             classes: ['header-tab-icon-text-big']
         });
         this.headerContent.Invite.on('click', function(){
-            App.Cache.FriendListOptions = {
-                default: 'outgoing'
-            };
-            App.history.navigate('friend/list');
+            // App.Cache.FriendListOptions = {
+            //     default: 'outgoing'
+            // };
+            // App.history.navigate('friend/list');
+            App.history.navigate('friend/add');
         });
 
         // create the header
@@ -219,22 +220,22 @@ define(function(require, exports, module) {
         this.TopTabs = new View();
         this.TopTabs.Bar = new TabBar();
         this.TopTabs.BarSizeMod = new StateModifier({
-            size: [undefined, 50]
+            size: [undefined, 80]
         });
         this.TopTabs.getSize = function(){
-            return [undefined, 50];
+            return [undefined, 80];
         };
         this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
-            content: '<i class="icon ion-android-friends"></i><div>All</div>',
-            onClasses: ['inbox-tabbar-default', 'on'],
-            offClasses: ['inbox-tabbar-default', 'off']
+            content: '<i class="icon ion-android-friends"></i><div>All Friends</div>',
+            onClasses: ['select-friends-tabbar-default', 'on'],
+            offClasses: ['select-friends-tabbar-default', 'off']
         });
         this.TopTabs.Bar.defineSection('matched', {
             content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Matched</div>',
-            onClasses: ['inbox-tabbar-default', 'on'],
-            offClasses: ['inbox-tabbar-default', 'off']
+            onClasses: ['select-friends-tabbar-default', 'on'],
+            offClasses: ['select-friends-tabbar-default', 'off']
         });
 
         // Add tabs to sequence

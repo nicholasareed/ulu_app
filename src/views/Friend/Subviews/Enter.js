@@ -53,10 +53,10 @@ define(function(require, exports, module) {
         this.bgSurface = new Surface({
             size: [undefined, undefined]
         });
-        // this.bgSurface.BackMod = new StateModifier({
-        //     transform: Transform.behind
-        // });
-        this.add(this.bgSurface);
+        this.bgSurface.BackMod = new StateModifier({
+            transform: Transform.translate(0,0,-0.00001)
+        });
+        this.add(this.bgSurface.BackMod).add(this.bgSurface);
         // this.add(this.bgSurface.BackMod).add(this.bgSurface);
 
         // Scrollview

@@ -79,6 +79,30 @@ body {
   color: "#111";
 }
 
+/* Selected Friends Tabbar */
+
+.select-friends-tabbar-default {
+  /*border-top: 2px solid #444;*/
+  border-bottom: 1px solid #ddd;
+  background: white;
+  text-align: center;
+  line-height: 15px;
+  font-size: 12px;
+  color: #444;
+
+  text-transform: uppercase;
+}
+.select-friends-tabbar-default.on {
+  color: #339bcb;
+}
+.select-friends-tabbar-default i {
+  font-size: 32px;
+  line-height: 50px;
+}
+
+.select-friends-tabbar-default div {
+  font-size: 12px;
+}
 
 /* Sentence */
 
@@ -91,6 +115,10 @@ body {
 
 .sentence-normal-default span {
   color: #2ecc71;
+  display: inline-block;
+  border: 1px solid rgba(46,204,113,0.5);
+  padding: 0px 16px;
+  margin: 4px;
 }
 
 .sentence-normal-button-default {
@@ -101,9 +129,26 @@ body {
 
 }
 
+.sentence-footer-button {
+  border-bottom: 4px solid #114C2A;
+  font-weight: bold;
+}
+
+.sentence-footer-button.left-button {
+  border-right: 1px solid #114C2A;
+}
+
+.sentence-footer-button.right-button {
+  border-left: 1px solid #114C2A;
+}
+
 .sentence-normal-button-separator-default {
-  color: white;
-  background: #2ecc71; 
+  /*color: white;
+  background: #2ecc71; */
+  background: none;
+  color: #888;
+
+
 
   font-size: 12px;
 
@@ -882,7 +927,6 @@ body {
   line-height: 30px;
   font-size: 18px;
 }
-
 
 /* Inbox */
 

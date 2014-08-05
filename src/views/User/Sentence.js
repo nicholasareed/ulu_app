@@ -51,7 +51,7 @@ define(function(require, exports, module) {
         this.old_sentence = {};
         this.sentence = {
             start_time: {
-                text: 'now',
+                text: 'Now',
                 value: 'now'
             },
             duration: {
@@ -144,7 +144,7 @@ define(function(require, exports, module) {
         // Invite somebody
         this.headerContent = new View();
         this.headerContent.Settings = new Surface({
-            content: '<i class="icon ion-gear-a"></i>',
+            content: '<i class="icon ion-ios7-gear-outline"></i>',
             size: [60, undefined],
             classes: ['header-tab-icon-text-big']
         });
@@ -195,9 +195,9 @@ define(function(require, exports, module) {
 
         // Everyone
         this.EveryoneSurface = new Surface({
-            content: "All Friends",
+            content: "Open to All",
             size: [undefined, undefined],
-            classes: ['sentence-normal-default', 'sentence-normal-button-default']
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-footer-button', 'left-button']
         });
         this.EveryoneSurface.on('click', function(){
             // Submit your sentence
@@ -250,9 +250,9 @@ define(function(require, exports, module) {
 
         // Select Friends
         this.SelectSurface = new Surface({
-            content: "Select 'em",
+            content: "Be Choosy",
             size: [undefined, undefined],
-            classes: ['sentence-normal-default', 'sentence-normal-button-default']
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-footer-button', 'right-button']
         });
         this.SelectSurface.on('click', function(){
             // Submit your sentence
@@ -337,25 +337,25 @@ define(function(require, exports, module) {
         // Build Surfaces
         // - add to scrollView
 
-        // I'm down to hang (text)
-        this.surface1 = new Surface({
-            content: "I'm down to hang",
-            size: [undefined, true],
-            classes: ['sentence-normal-default']
-        });
-        this.surface1.pipe(this.contentScrollView);
-        this.surface1.View = new View();
-        this.surface1.View.getSize = function(){
-            return that.surface1.getSize(true);
-        };
-        this.surface1.View.StateModifier = new StateModifier();
-        this.surface1.View.add(this.surface1.View.StateModifier).add(this.surface1);
-        this.scrollSurfaces.push(this.surface1.View);
+        // // I'm down to hang (text)
+        // this.surface1 = new Surface({
+        //     content: "",
+        //     size: [undefined, true],
+        //     classes: ['sentence-normal-default']
+        // });
+        // this.surface1.pipe(this.contentScrollView);
+        // this.surface1.View = new View();
+        // this.surface1.View.getSize = function(){
+        //     return that.surface1.getSize(true);
+        // };
+        // this.surface1.View.StateModifier = new StateModifier();
+        // this.surface1.View.add(this.surface1.View.StateModifier).add(this.surface1);
+        // this.scrollSurfaces.push(this.surface1.View);
 
 
         // at START TIME
         this.startTimeSurface = new Surface({
-            content: "at <span></span>",
+            content: "At <span></span>",
             size: [undefined, true],
             classes: ['sentence-normal-default']
         });
@@ -371,15 +371,15 @@ define(function(require, exports, module) {
                 value: '12'
                 });
             }
-            if(moment().hour() < 5){
+            if(moment().hour() < 17){
                 timeOptions.push({
-                text: 'Evening',
+                text: '5pm',
                 value: '17'
                 });
             }
-            if(moment().hour() < 10){
+            if(moment().hour() < 22){
                 timeOptions.push({
-                text: 'Late Night',
+                text: '10pm',
                 value: '22'
                 });
             }
@@ -469,7 +469,7 @@ define(function(require, exports, module) {
 
 
         this.activitiesInstrSurface = new Surface({
-            content: "How about",
+            content: "i'm up for",
             size: [window.innerWidth, true],
             classes: ['sentence-normal-default']
         });
@@ -489,7 +489,7 @@ define(function(require, exports, module) {
 
         // wanna ACTIVITIES
         this.activitiesAddSurface = new Surface({
-            content: '<i class="icon ion-plus"></i>',
+            content: '<span><i class="icon ion-ios7-plus-empty"></i></span>',
             size: [window.innerWidth, true],
             classes: ['sentence-normal-default']
         });
@@ -575,7 +575,7 @@ define(function(require, exports, module) {
         // Start Time
         switch(this.sentence.start_time.value){
             case 'now':
-                that.startTimeSurface.setContent('<span>now</span>');
+                that.startTimeSurface.setContent('starting...<span>now</span>');
                 break;
             default:
                 // time chosen
@@ -586,11 +586,11 @@ define(function(require, exports, module) {
         // Duration
         switch(this.sentence.duration.value){
             case 'today':
-                that.durationSurface.setContent('for <span>tonight</span>.');
+                that.durationSurface.setContent('for <span>tonight</span>');
                 break;
             default:
                 // time chosen
-                that.durationSurface.setContent('for <span>'+ this.sentence.duration.text +'</span>.');
+                that.durationSurface.setContent('for <span>'+ this.sentence.duration.text +'</span>');
                 break;
         }
 
@@ -627,7 +627,7 @@ define(function(require, exports, module) {
         });
         tmpSurface.View = new View();
         tmpSurface.View.getSize = function(){
-            return that.surface1.getSize(true);
+            return tmpSurface.getSize(true);
         };
         tmpSurface.View.StateModifier = new StateModifier();
         tmpSurface.View.add(tmpSurface.View.StateModifier).add(tmpSurface);
