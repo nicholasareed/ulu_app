@@ -30,7 +30,8 @@ define(function(require, exports, module) {
     // Views
     var StandardHeader = require('views/common/StandardHeader');
     
-    var EventHandler = require('famous/core/EventHandler');
+    // Extras
+    var crypto = require('lib2/crypto');
 
     // Models
     var UserModel = require('models/user');
@@ -316,26 +317,15 @@ define(function(require, exports, module) {
                 activities: that.sentence.activities
             });
 
-            Sentence.save({
-                error: function(){
-                    alert('failed saving sentence');
-                    return;
-                },
-                success: function(resp, p2){
-                    SentenceModel.fetch({
-                        success: function(){
-                            debugger;
-                            App.Cache.current_sentence = SentenceModel;
-                            App.history.navigate('user/sentence_friends');
-                        }
-                    });
-                }
-            }).then(function(result, p2){
-                console.log('THEN result');
-                console.log(result, p2);
+            Sentence.save()
+            .then(function(result){
+                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
             });
 
-            App.history.navigate('user/sentence_friends');
+            // App.history.navigate('user/sentence_friends');
             
         });
         this.EveryoneOrSelectLayout.Views.push(this.EveryoneSurface);

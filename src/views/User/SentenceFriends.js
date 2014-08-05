@@ -223,12 +223,12 @@ define(function(require, exports, module) {
 
                 case 'all':
                     that.TopTabs.Content.show(that.TopTabs.Content.AllFriends);
-                    // that.TopTabs.Content.AllFriends.View.collection.pager();
+                    that.TopTabs.Content.AllFriends.View.collection.fetch();
                     break;
 
                 case 'matched':
                     that.TopTabs.Content.show(that.TopTabs.Content.MatchedFriends);
-                    // that.TopTabs.Content.MatchedFriends.View.collection.pager();
+                    that.TopTabs.Content.MatchedFriends.View.collection.fetch();
                     break;
 
                 default:

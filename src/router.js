@@ -133,7 +133,7 @@ define(function(require, exports, module) {
                 'user/sentence' : function(){
                     defaultRoute('UserSentence', 'User/Sentence', arguments, {cache: true});
                 },
-                'user/sentence_friends' : function(){
+                'user/sentence_friends/:hash' : function(){
                     defaultRoute('UserSentenceFriends', 'User/SentenceFriends', arguments, {cache: true});
                 },
                 // 'sentence/matches' : function(){

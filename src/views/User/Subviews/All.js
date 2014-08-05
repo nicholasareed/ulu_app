@@ -17,6 +17,7 @@ define(function(require, exports, module) {
     var RenderController = require('famous/views/RenderController');
 
     var Utility = require('famous/utilities/Utility');
+    var Timer = require('famous/utilities/Timer');
 
     var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
     var NavigationBar = require('famous/widgets/NavigationBar');
