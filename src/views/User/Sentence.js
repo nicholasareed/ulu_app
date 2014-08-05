@@ -31,6 +31,7 @@ define(function(require, exports, module) {
     var StandardHeader = require('views/common/StandardHeader');
     
     // Extras
+    var Utils = require('utils');
     var crypto = require('lib2/crypto');
 
     // Models
@@ -324,6 +325,8 @@ define(function(require, exports, module) {
 
             Sentence.save()
             .then(function(result){
+                // Send invites to everybody
+                // - todo...
                 App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
                 // SentenceModel.set(result);
                 // App.Cache.current_sentence = SentenceModel;
@@ -358,6 +361,8 @@ define(function(require, exports, module) {
                 location: null,
                 activities: that.sentence.activities
             });
+
+            Utils.Notification.Toast('OK, Wait a Moment');
 
             Sentence.save()
             .then(function(result){
