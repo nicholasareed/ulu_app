@@ -34,6 +34,12 @@ define(function(require, exports, module) {
                         window.location = window.location.href.split('#')[0];
                     }
                 },
+                'random' : function(){
+                    console.info('homeAlso');
+                    if(App.history.data.length == 0){
+                        window.location = window.location.href.split('#')[0];
+                    }
+                },
 
                 'logout' : function(){
 

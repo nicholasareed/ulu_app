@@ -132,6 +132,14 @@ define(function (require) {
                 options = options || {};
                 this.options = options;
 
+                if(options.type == 'sentence_to_select'){
+                  this.url = Credentials.server_root + 'sentence/users/to_select';
+                }
+
+                if(options.type == 'sentence_matched'){
+                  this.url = Credentials.server_root + 'sentence/users/matched';
+                }
+
             }
 
         });

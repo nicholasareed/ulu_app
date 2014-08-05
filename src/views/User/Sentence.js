@@ -48,9 +48,15 @@ define(function(require, exports, module) {
         this._activityViews = {};
         this.old_sentence = {};
         this.sentence = {
-            start_time: 'now',
-            duration: '1 hour',
-            activites: []
+            start_time: {
+                text: 'now',
+                value: 'now'
+            },
+            duration: {
+                text: '1 hour',
+                value: ['h',1]
+            },
+            activities: []
         };
 
         // create the layout
@@ -70,7 +76,15 @@ define(function(require, exports, module) {
 
         // Wait for model to get populated, then add the input surfaces
         // - model should be ready immediately!
-        this.model.populated().then(this.addSurfaces.bind(this));
+        this.model.populated().then(function(){
+            that.addSurfaces();
+            that.add_activity({
+                text: 'whatever',
+                value: 'whatever'
+            });
+
+            that.update_content();
+        });
 
 
     }
@@ -165,7 +179,7 @@ define(function(require, exports, module) {
 
         // at START TIME
         this.startTimeSurface = new Surface({
-            content: "at <span>2pm</span>",
+            content: "at <span></span>",
             size: [undefined, true],
             classes: ['sentence-normal-default']
         });
@@ -173,21 +187,30 @@ define(function(require, exports, module) {
             var timeOptions = [{
                 text: 'Now',
                 value: 'now'
-            },{
+            }]
+            if(moment().hour() < 12){
+                timeOptions.push({
                 text: 'Noon',
-                value: '12pm'
-            },{
-                text: 'After Work (6p)',
-                value: '6pm'
-            },{
-                text: 'Late Night (10p)',
-                value: '10pm'
-            }];
+                value: '12'
+                });
+            }
+            if(moment().hour() < 5){
+                timeOptions.push({
+                text: 'Evening',
+                value: '17'
+                });
+            }
+            if(moment().hour() < 10){
+                timeOptions.push({
+                text: 'Late Night',
+                value: '22'
+                });
+            }
             // Launch popover/modal list of times
             App.Cache.OptionModal = {
                 list: timeOptions,
                 on_choose: function(chosen_type){
-                    that.sentence.start_time = chosen_type.value;
+                    that.sentence.start_time = chosen_type;
                     that.update_content();
                 },
                 on_cancel: function(){
@@ -218,22 +241,22 @@ define(function(require, exports, module) {
         this.durationSurface.on('click', function(){
             var durationOptions = [{
                 text: '30m',
-                value: '30m'
+                value: ['m',30]
             },{
                 text: '1 hour',
-                value: '1 hour'
+                value: ['h',1]
             },{
                 text: '2 hours',
-                value: '2 hours'
+                value: ['h',2]
             },{
                 text: '3 hours',
-                value: '3 hours'
+                value: ['h',3]
             }];
             // Launch popover/modal list of times
             App.Cache.OptionModal = {
                 list: durationOptions,
                 on_choose: function(chosen_type){
-                    that.sentence.duration = chosen_type.value;
+                    that.sentence.duration = chosen_type;
                     that.update_content();
                 },
                 on_cancel: function(){
@@ -274,33 +297,39 @@ define(function(require, exports, module) {
         this.EveryoneSurface = new Surface({
             content: "All Friends",
             size: [undefined, undefined],
-            classes: ['sentence-normal-default']
+            classes: ['sentence-normal-default', 'sentence-normal-button-default']
         });
         this.EveryoneSurface.on('click', function(){
             // Submit your sentence
             // - loading dialogue
 
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
             var Sentence = new SentenceModel.Sentence({
-                start: that.sentence.start_time, // Javascript new Date
-                duration: that.sentence.duration,
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
                 location: null,
-                activites: that.sentence.activities.join()
+                activities: that.sentence.activities
             });
 
-            // SentenceModel.save({
-            //     error: function(){
-            //         alert('failed saving sentence');
-            //         return;
-            //     },
-            //     success: function(resp, p2){
-            //         SentenceModel.fetch();
-            //         App.Cache.current_sentence = SentenceModel;
-            //         App.history.navigate('user/sentence_friends');
-            //     }
-            // }).then(function(result, p2){
-            //     console.log('THEN result');
-            //     console.log(result, p2);
-            // });
+            Sentence.save({
+                error: function(){
+                    alert('failed saving sentence');
+                    return;
+                },
+                success: function(resp, p2){
+                    SentenceModel.fetch();
+                    App.Cache.current_sentence = SentenceModel;
+                    App.history.navigate('user/sentence_friends');
+                }
+            }).then(function(result, p2){
+                console.log('THEN result');
+                console.log(result, p2);
+            });
 
             App.history.navigate('user/sentence_friends');
             
@@ -328,7 +357,7 @@ define(function(require, exports, module) {
 
 
         this.activitiesInstrSurface = new Surface({
-            content: "I'd prefer...",
+            content: "I'm down to",
             size: [window.innerWidth, true],
             classes: ['sentence-normal-default']
         });
@@ -353,36 +382,35 @@ define(function(require, exports, module) {
         });
         this.activitiesAddSurface.on('click', function(){
             // Choose a few activities via popup
+            var tmpactivities = ['whatever','just chill','outside','competition','movie','go out','a drink or two','lets rage'];
 
-            var activityOptions = [{
-                text: 'Outside',
-                value: 'outside'
-            },{
-                text: 'Drinking',
-                value: 'drinking'
-            },{
-                text: 'Just Chill',
-                value: 'just chill'
-            }];
+            var activityOptions = [];
+
+            tmpactivities.forEach(function(act){
+                activityOptions.push({
+                    text: act,
+                    value: act
+                });
+            });
+
+
             // Launch popover/modal list of times
             App.Cache.OptionModal = {
                 list: activityOptions,
                 on_choose: function(chosen_type){
 
-                    if(that.sentence.activites.indexOf(chosen_type.value) === -1){
-                        // add it
-                        that.sentence.activites.push(chosen_type.value);
-
+                    if(that.sentence.activities.indexOf(chosen_type.value) === -1){
                         // add to array
                         that.add_activity(chosen_type);
 
                     } else {
                         // remove it
-                        that.sentence.activites = _.without(that.sentence.activites, chosen_type.value);
+                        that.sentence.activities = _.without(that.sentence.activities, chosen_type.value);
 
                         // Remove an activity from SequentialLayout
                         that.activitiesLayout.Views = _.without(that.activitiesLayout.Views, that._activityViews[chosen_type.value]);
 
+                        that.activitiesLayout.sequenceFrom(that.activitiesLayout.Views);
                     }
 
                     // Already in list (remove it)
@@ -431,24 +459,24 @@ define(function(require, exports, module) {
         // Update the values
 
         // Start Time
-        switch(this.sentence.start_time){
+        switch(this.sentence.start_time.value){
             case 'now':
                 that.startTimeSurface.setContent('<span>now</span>');
                 break;
             default:
                 // time chosen
-                that.startTimeSurface.setContent('at <span>'+ this.sentence.start_time +'</span>');
+                that.startTimeSurface.setContent('at <span>'+ this.sentence.start_time.text +'</span>');
                 break;
         }
 
         // Duration
-        switch(this.sentence.duration){
+        switch(this.sentence.duration.value){
             case 'today':
                 that.durationSurface.setContent('for <span>tonight</span>');
                 break;
             default:
                 // time chosen
-                that.durationSurface.setContent('for <span>'+ this.sentence.duration +'</span>');
+                that.durationSurface.setContent('for <span>'+ this.sentence.duration.text +'</span>');
                 break;
         }
 
@@ -456,7 +484,6 @@ define(function(require, exports, module) {
         // - handled 
 
         this.old_sentence = _.clone(this.sentence);
-
 
     };
 
@@ -466,6 +493,9 @@ define(function(require, exports, module) {
         // Activities (things to do)
         // - need to resequence them
 
+        // add it to sentence summary obj
+        that.sentence.activities.push(chosen_type.value);
+
         // I'm down to hang (text)
         var tmpSurface = new Surface({
             content: '<span>' + chosen_type.value + '</span>',
@@ -474,7 +504,7 @@ define(function(require, exports, module) {
         });
         tmpSurface.on('click', function(){
             // remove it
-            that.sentence.activites = _.without(that.sentence.activites, chosen_type.value);
+            that.sentence.activities = _.without(that.sentence.activities, chosen_type.value);
             // Remove an activity from SequentialLayout
             that.activitiesLayout.Views = _.without(that.activitiesLayout.Views, tmpSurface.View);
             that.activitiesLayout.sequenceFrom(that.activitiesLayout.Views);

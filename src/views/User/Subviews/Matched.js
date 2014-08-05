@@ -25,7 +25,8 @@ define(function(require, exports, module) {
     var Backbone = require('backbone-adapter');
 
     // Models
-    var MessageModel = require("models/message");
+    var SentenceModel = require("models/sentence");
+    var UserSelectModel = require("models/user_select");
 
     // Extras
     var Utils = require('utils');
@@ -48,7 +49,7 @@ define(function(require, exports, module) {
         // - it would make it easy to switch between Loading / No Results / RealResults
 
         // this.contentLayout = new SequentialLayout();
-        this.contentLayout = new ScrollView(App.Defaults.ScrollView);
+        this.contentLayout = new ScrollView();
         this.contentLayout.Views = [];
         this.contentLayout.sequenceFrom(this.contentLayout.Views);
 
@@ -70,44 +71,38 @@ define(function(require, exports, module) {
     SubView.prototype.loadModels = function(player_id){
         var that = this;
 
-        // Clear loading, if it exists
+        // App.Data.User contains friends
 
-        // Create collection of Games for player_id
+        // Get latest Sentence
+        this.model = this.options.model;
+
+        // Create collection 
         var options = {};
-        if(this.options && this.options.filter){
-            options['$filter'] = this.options.filter;
-        }
-        this.collection = new MessageModel.MessageCollection([],options);
-        this.collection.infiniteResults = 0;
+        // if(this.options && this.options.filter){
+        //     options['$filter'] = this.options.filter;
+        // }
+        this.collection = new UserSelectModel.UserSelectCollection([],{
+            type: 'sentence_matched'
+        });
         this.collection.on("sync", that.updateCollectionStatus.bind(this), this);
         this.collection.on("add", this.addOne, this);
-        this.collection.on("error", function(){
-            console.error('Collection error');
-            // // Already fetched successfully?
-            // if(this.collection.hasFetched){
-            //     Utils.Notification.Toast('Error when updating');
-            // } else {
-            //     Utils.Notification.Toast('Attempting to reload games');
-            //     this.collection.pager({reset: true});
-            // }
-        });
+        this.collection.on("remove", this.removeOne, this);
 
-        this.collection.on("request", function(){
-            // todo
+        this.collection.infiniteResults = 0;
+        this.collection.totalResults = 0;
 
-        });
-
-        this.collection.pager({prefill: true});
+        this.prior_list = [];
 
         // Listen for 'showing' events
         this._eventInput.on('inOutTransition', function(args){
             // 0 = direction
             if(args[0] == 'showing'){
-                that.collection.pager();
+                // that.collection.fetch();
             }
         });
 
-    }
+    };
+
     SubView.prototype.createDefaultSurfaces = function(){
         var that = this;
 
@@ -203,7 +198,40 @@ define(function(require, exports, module) {
 
     };
 
-    SubView.prototype.addOne = function(Message) { 
+    SubView.prototype.addOne = function(Model){
+        var that = this;
+
+        var userView = new View(),
+            name = Model.get('profile.name') || '&nbsp;none';
+
+        userView.Model = Model;
+        userView.Surface = new Surface({
+             content: '<div>' +name+'</div>',
+             size: [undefined, 60],
+             classes: ['player-list-item-default']
+        });
+        userView.Surface.pipe(that.contentLayout);
+        userView.Surface.on('click', function(){
+            // App.history.navigate('player/' + Model.get('_id'));
+        });
+        userView.add(userView.Surface);
+
+        this.contentLayout.Views.splice(this.contentLayout.Views.length-1, 0, userView);
+        this.collection.infiniteResults += 1;
+
+    };
+
+    SubView.prototype.removeOne = function(Model){
+
+        this.contentLayout.Views = _.filter(this.contentLayout.Views, function(tmpView){
+            return true;
+        });
+
+        this.updateCollectionStatus();
+
+    };
+
+    SubView.prototype.addOne2 = function(Message) { 
         var that = this;
 
         var messageView = new View();
@@ -286,6 +314,9 @@ define(function(require, exports, module) {
     };
 
     SubView.prototype.updateCollectionStatus = function() { 
+        console.info('updateCollectionStatus');
+
+        this.collection.totalResults = App.Data.User.get('friends').length;
 
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;
@@ -304,36 +335,21 @@ define(function(require, exports, module) {
             this.lightboxContent.show(nextRenderable);
         }
 
-        // // Splice out the lightboxButtons before sorting
-        // this.contentLayout.Views.pop();
+        // Splice out the lightboxButtons before sorting
+        var popped = this.contentLayout.Views.pop();
 
         // Resort the contentLayout.Views
         this.contentLayout.Views = _.sortBy(this.contentLayout.Views, function(v){
-            try {
-                var m = moment(v.Surface.Model.get('created'));
-                return m.format('X') * -1;
-            }catch(err){
-                // normal view?
-                if(v.Surface){
-                    console.error('====', v);
-                }
-                return 1000000;
-            }
+            console.log(v.Model.get('profile.name').toLowerCase());
+            return v.Model.get('profile.name').toLowerCase();
         });
 
-        // this.contentLayout.Views.push();
+        this.contentLayout.Views.push(popped);
+
+        console.log(this.contentLayout.Views);
 
         // Re-sequence?
-        if(this.contentLayout.Views.length > 0){
-            this.contentLayout.sequenceFrom(this.contentLayout.Views);
-        }
-
-        // this.layout.sequenceFrom([]);
-        // this.layout.sequenceFrom([
-        //     // this.contentLayout, // another SequentialLayout
-        //     this.lightboxContent,
-        //     this.lightboxButtons
-        // ]);
+        this.contentLayout.sequenceFrom(this.contentLayout.Views);
 
         // Show correct infinity buttons (More, All, etc.)
         this.render_infinity_buttons();
@@ -347,21 +363,15 @@ define(function(require, exports, module) {
         // // - unnecessary?
         // this.$('.load-list').addClass('nodisplay');
 
-        if(this.collection.hasFetched){
-            // at the end?
-            if(this.collection.infiniteResults == this.collection.totalResults){
-                this.lightboxButtons.show(this.infinityLoadedAllSurface);
-                // this.$('.loaded-all').removeClass('nodisplay');
-            } else {
-                // Show more
-                // - also includes the number more to show :)
-                this.lightboxButtons.show(this.infinityShowMoreSurface);
-                // this.$('.show-more').removeClass('nodisplay');
-            }
+        // at the end?
+        if(this.collection.infiniteResults == this.collection.totalResults){
+            this.lightboxButtons.show(this.infinityLoadedAllSurface);
+            // this.$('.loaded-all').removeClass('nodisplay');
         } else {
-            // not yet fetched, so display the "loading" one
-            this.lightboxButtons.show(this.infinityLoadingSurface);
-            // this.$('.loading-progress').removeClass('nodisplay');
+            // Show more
+            // - also includes the number more to show :)
+            this.lightboxButtons.show(this.infinityShowMoreSurface);
+            // this.$('.show-more').removeClass('nodisplay');
         }
 
     };

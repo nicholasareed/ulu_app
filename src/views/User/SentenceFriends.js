@@ -43,12 +43,15 @@ define(function(require, exports, module) {
     var MatchedView      = require('./Subviews/Matched');
 
     // Models
+    var SentenceModel = require("models/sentence");
     var MediaModel = require('models/media');
 
     function PageView(params) {
         var that = this;
         View.apply(this, arguments);
         this.params = params;
+
+        this.loadModels();
 
         // create the layout
         this.layout = new HeaderFooterLayout({
@@ -71,6 +74,36 @@ define(function(require, exports, module) {
 
     PageView.prototype = Object.create(View.prototype);
     PageView.prototype.constructor = PageView;
+
+    PageView.prototype.loadModels = function(){
+        var that = this;
+
+        this.model = new SentenceModel.Sentence();
+        this.model.on('sync', function(){
+            // sentence expired?
+            if(that.model.get('end_time') < new Date()){
+                
+                Utils.Notification.Toast('Expired');
+
+                // Navigate back to home
+                App.history.eraseUntilTag('all-of-em');
+                App.history.navigate('user/sentence');
+            }
+        });
+        this.model.on('error', function(res, xhr, res3){
+            if(xhr.status == 409){
+
+                Utils.Notification.Toast('Expired');
+
+                // Navigate back to home
+                App.history.eraseUntilTag('all-of-em');
+                App.history.navigate('user/sentence');
+            }
+        });
+        this.model.fetch();
+
+
+    };
     
     PageView.prototype.createHeader = function(){
         var that = this;
@@ -167,13 +200,17 @@ define(function(require, exports, module) {
 
         // All 
         this.TopTabs.Content.AllFriends = new View();
-        this.TopTabs.Content.AllFriends.View = new AllView();
+        this.TopTabs.Content.AllFriends.View = new AllView({
+            model: this.model
+        });
         this.TopTabs.Content.AllFriends.add(this.TopTabs.Content.AllFriends.View);
         this._subviews.push(this.TopTabs.Content.AllFriends.View);
 
         // Matched
         this.TopTabs.Content.MatchedFriends = new View();
-        this.TopTabs.Content.MatchedFriends.View = new MatchedView();
+        this.TopTabs.Content.MatchedFriends.View = new MatchedView({
+            model: this.model
+        });
         this.TopTabs.Content.MatchedFriends.add(this.TopTabs.Content.MatchedFriends.View);
         this._subviews.push(this.TopTabs.Content.MatchedFriends.View);
 
@@ -186,12 +223,12 @@ define(function(require, exports, module) {
 
                 case 'all':
                     that.TopTabs.Content.show(that.TopTabs.Content.AllFriends);
-                    that.TopTabs.Content.AllFriends.View.collection.pager();
+                    // that.TopTabs.Content.AllFriends.View.collection.pager();
                     break;
 
                 case 'matched':
                     that.TopTabs.Content.show(that.TopTabs.Content.MatchedFriends);
-                    that.TopTabs.Content.MatchedFriends.View.collection.pager();
+                    // that.TopTabs.Content.MatchedFriends.View.collection.pager();
                     break;
 
                 default:

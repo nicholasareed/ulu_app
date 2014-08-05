@@ -146,7 +146,7 @@ define(function(require, exports, module) {
         var friend_count = 0;
 
         settings.unshift({
-            title: 'Friends (' + friend_count + ')',
+            title: 'Friends', // (' + friend_count + ')',
             desc: 'Invite new people',
             href: 'friend/list'
         });
@@ -155,13 +155,13 @@ define(function(require, exports, module) {
 
         settings.forEach(function(setting){
             var surface = new Surface({
-                content: '<div>'+setting.title+'</div><div>'+setting.desc+'</div>',
+                content: '<div>'+setting.title+'</div>', //<div>'+setting.desc+'</div>',
                 size: [undefined, 60],
                 classes: ["settings-list-item"],
                 properties: {
                     lineHeight: '20px',
                     padding: '5px',
-                    paddingTop: '10px',
+                    paddingTop: '20px',
                     borderBottom: '1px solid #ddd',
                     backgroundColor: "white"
                 }
