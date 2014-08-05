@@ -181,7 +181,7 @@ define(function(require, exports, module) {
 
         this.inputFullnameSurface = new InputSurface({
             name: 'fullname',
-            placeholder: '',
+            placeholder: ' ',
             type: 'text',
             size: [undefined, 50],
             value: '',

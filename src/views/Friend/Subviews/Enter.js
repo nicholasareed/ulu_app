@@ -169,15 +169,14 @@ define(function(require, exports, module) {
                 // - or am the Owner of a player now
                 //      - go edit the player
 
-                if(response.type == 'player'){
-                    alert('You have successfully added a player!');
+                if(response.type == 'friend'){
+                    alert('You have successfully added a friend!');
 
                     // Update list of players
-                    App.Data.Players.fetch();
+                    App.Data.User.fetch();
 
-                    // Erase until
-                    App.history.eraseUntilTag('Dash');
-                    App.history.navigate('player/' + response._id);
+                    App.history.back();
+
                     return;
                 }
 
