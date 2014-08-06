@@ -105,6 +105,8 @@ var App = {};
 define(function(require, exports, module) {
     'use strict';
 
+    var FastClick = require('famous/inputs/FastClick');
+    
     // import dependencies
     var Engine = require('famous/core/Engine');
     var View = require('famous/core/View');
