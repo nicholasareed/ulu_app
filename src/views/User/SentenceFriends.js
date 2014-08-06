@@ -150,7 +150,7 @@ define(function(require, exports, module) {
 
             // checkflag (todo) 
 
-            Utils.Notification.Toast('Not Done Yet');
+            Utils.Notification.Toast('SMS Blast (not done)');
 
             // parse the sentence and display it
             var parsed_sentence = '';
