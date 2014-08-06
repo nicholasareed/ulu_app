@@ -150,6 +150,15 @@ define(function(require, exports, module) {
 
             // checkflag (todo) 
 
+            Utils.Notification.Toast('Not Done Yet');
+
+            // parse the sentence and display it
+            var parsed_sentence = '';
+
+            window.plugins.socialsharing.shareViaSMS(parsed_sentence, '', function(msg) {console.log('ok: ' + msg)}, function(msg) {Utils.Notification.Toast('error: ' + msg)})
+
+            return;
+
             // pick the contact to send the sms to
             navigator.contacts.pickContact(function(contact){
 
