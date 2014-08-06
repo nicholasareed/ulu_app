@@ -56,6 +56,7 @@
 
     <gap:plugin name="com.plugin.datepicker" />
     <gap:plugin name="nl.x-services.plugins.socialsharing" />
+    <gap:plugin name="info.asankan.phonegap.smsplugin" />
     <gap:plugin name="nl.x-services.plugins.toast" version="1.0" />
     <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
 

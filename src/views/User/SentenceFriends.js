@@ -146,7 +146,46 @@ define(function(require, exports, module) {
             classes: ['header-tab-icon-text-big']
         });
         this.headerContent.SendSms.on('click', function(){
-            // Send an SMS to 
+            // Send an SMS to a group of friends (sends each sms in the background?)
+
+            // checkflag (todo) 
+
+            // pick the contact to send the sms to
+            navigator.contacts.pickContact(function(contact){
+
+                console.log(contact);
+                console.log(JSON.stringify(contact));
+
+
+                // Multiple numbers?
+                if(contact.phoneNumbers.length < 1){
+                    // No phone numbers
+                    Utils.Notification.Toast('No phone number');
+                    return;
+                }
+
+                var listData = [];
+                contact.phoneNumbers.forEach(function(ptn){
+                    listData.push({
+                        text: JSON.stringify(ptn),
+                        value: ptn,
+                        success: function(){
+
+                            var number = ptn;
+                            var message = 'testing a message';
+                            var intent = ""; //leave empty for sending sms using default intent
+                            var success = function () { Utils.Notification.Toast('Message sent successfully'); };
+                            var error = function (e) { Utils.Notification.Toast('Message Failed:' + e); };
+                            sms.send(number, message, intent, success, error);
+
+
+                        }
+                    });
+                });
+
+                Utils.Popover.List(listData);
+
+            });
 
             // App.history.navigate('settings');
         });
