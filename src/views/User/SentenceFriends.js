@@ -171,6 +171,38 @@ define(function(require, exports, module) {
             // parse the sentence and display it
             var parsed_sentence = '';
 
+            // Started?
+            if(moment(that.model.get('start_time')).format('X') < moment().format('X')){
+                parsed_sentence += "right now I have ";
+            } else {
+                parsed_sentence += 'at ' + moment(that.model.get('start_time')).format('ha') + " i have ";
+            }
+
+            switch(that.model.get('duration')){
+                case '30m':
+                    parsed_sentence += '30m';
+                    break;
+                case '1 hour':
+                    parsed_sentence += 'an hour';
+                    break;
+                case '2 hours':
+                    parsed_sentence += 'a couple hours';
+                    break;
+                case '3 hours':
+                    parsed_sentence += 'a few hours';
+                    break;
+                default:
+                    parsed_sentence += that.model.get('duration');
+                    debugger;
+                    break;
+            }
+
+
+            parsed_sentence += '. want to hang out?';
+
+            console.log(that.model.toJSON());
+            console.log(parsed_sentence);
+
             window.plugins.socialsharing.shareViaSMS(parsed_sentence, '', function(msg) {console.log('ok: ' + msg)}, function(msg) {Utils.Notification.Toast('error: ' + msg)})
 
             return;
