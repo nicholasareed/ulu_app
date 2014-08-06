@@ -139,18 +139,33 @@ define(function(require, exports, module) {
             App.history.navigate('settings');
         });
 
+        // Send SMS
+        this.headerContent.SendSms = new Surface({
+            content: '<i class="icon ion-ios7-chatboxes-outline"></i>',
+            size: [60, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.SendSms.on('click', function(){
+            // Send an SMS to 
+
+            // App.history.navigate('settings');
+        });
+
+        
+
         // create the header
         this.header = new StandardHeader({
             content: "",
             classes: ["normal-header"],
             backClasses: ["normal-header"],
-            // backContent: false,
+            backContent: '<i class="icon ion-close-round"></i>',
             moreClasses: ["normal-header"],
             moreSurfaces: [
+                this.headerContent.SendSms,
                 this.headerContent.Invite,
                 this.headerContent.Settings
             ]
-            // moreContent: "New", //'<span class="icon ion-navicon-round"></span>'
+            
         });
         this.header._eventOutput.on('back',function(){
             // App.history.back();
@@ -244,7 +259,7 @@ define(function(require, exports, module) {
             offClasses: ['select-friends-tabbar-default', 'off']
         });
         this.TopTabs.Bar.defineSection('matched', {
-            content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Matches!</div>',
+            content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Available</div>',
             onClasses: ['select-friends-tabbar-default', 'on'],
             offClasses: ['select-friends-tabbar-default', 'off']
         });
