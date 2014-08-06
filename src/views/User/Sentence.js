@@ -6,6 +6,7 @@ define(function(require, exports, module) {
     var ScrollView = require('famous/views/Scrollview');
     var SequentialLayout = require('famous/views/SequentialLayout');
     var FlexibleLayout = require('famous/views/FlexibleLayout');
+    var RenderController = require('famous/views/RenderController');
     var Surface = require('famous/core/Surface');
     var InputSurface = require('famous/surfaces/InputSurface');
     var Modifier = require('famous/core/Modifier');
@@ -79,6 +80,10 @@ define(function(require, exports, module) {
 
         // Wait for model to get populated, then add the input surfaces
         // - model should be ready immediately!
+        if(!this.model.hasFetched){
+            this.contentContainer.show(this.loadingView);
+            this.model.fetch();
+        }
         this.model.populated().then(function(){
             that.addSurfaces();
             that.add_activity({
@@ -87,6 +92,8 @@ define(function(require, exports, module) {
             });
 
             that.update_content();
+
+            that.contentContainer.show(that.contentScrollView);
         });
 
 
@@ -319,14 +326,30 @@ define(function(require, exports, module) {
 
         // link endpoints of layout to widgets
 
-        // Sequence
+        // Scrollview (Sentence)
         this.contentScrollView.sequenceFrom(this.scrollSurfaces);
 
         // Content Modifiers
         this.ContentStateModifier = new StateModifier();
 
+        // RenderControl (loading, or loaded?)
+        this.contentContainer = new RenderController();
+
+        this.loadingView = new View();
+        this.loadingView.Surface = new Surface({
+            content: 'Refreshing, please wait',
+            size: [undefined, true],
+            classes: ['sentence-loading-default']
+        });
+        this.loadingView.OriginMod = new StateModifier({
+            origin: [0, 0.5]
+        });
+        this.loadingView.add(this.loadingView.OriginMod).add(this.loadingView.Surface);
+
+        // this.contentContainer.show(this.loadingView);
+
         // Now add content
-        this.layout.content.add(this.ContentStateModifier).add(this.contentScrollView);
+        this.layout.content.add(this.ContentStateModifier).add(this.contentContainer);
 
 
     };
@@ -659,7 +682,7 @@ define(function(require, exports, module) {
                         // Overwriting and using default identity
                         transitionOptions.outTransform = Transform.identity;
 
-                        that.ContentStateModifier.setOpacity(0);
+                        that.ContentStateModifier.setOpacity(1);
 
                         // Hide/move elements
                         window.setTimeout(function(){
@@ -668,7 +691,7 @@ define(function(require, exports, module) {
                             // that.header.StateModifier.setOpacity(0, transitionOptions.outTransition);
 
                             // Slide content down
-                            that.ContentStateModifier.setOpacity(1, transitionOptions.outTransition);
+                            that.ContentStateModifier.setOpacity(0, transitionOptions.outTransition);
 
                         }, delayShowing);
 

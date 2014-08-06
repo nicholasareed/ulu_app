@@ -201,6 +201,24 @@ define(function(require, exports, module) {
     SubView.prototype.addOne = function(Model){
         var that = this;
 
+        moment.lang('en', {
+            relativeTime : {
+                future: "for %s",
+                past:   "%s ago",
+                s : "a few seconds",
+                m : "a minute",
+                mm : "%d minutes",
+                h : "an hour",
+                hh : "%d hours",
+                d : "a day",
+                dd : "%d days",
+                M : "a month",
+                MM : "%d months",
+                y : "a year",
+                yy : "%d years"
+            }
+        });
+
         var userView = new View();
         userView.SizeMod = new StateModifier({
             size: [undefined, 80]
@@ -224,11 +242,21 @@ define(function(require, exports, module) {
         };
         userView.LeftView.add(userView.LeftSurface);
         var setLeftContent = function(){
-            userView.LeftSurface.setContent(
-                '<div><span class="ellipsis-all">' +name+'</span></div><div><span class="ellipsis-all">' + 
-                (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</span></div>' +
-                '<div><span>'+ moment(Model.get('Sentence.end_time')).fromNow() +'</span> or until ' + moment(Model.get('Sentence.end_time')).format('h:mma') + '</div>'
-            );
+            var contentString = '<div><span class="ellipsis-all">' +name+'</span></div><div><span class="ellipsis-all">' + 
+                (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</span></div>';
+
+            // Time started yet?
+            if(Model.get('Sentence.start_time') && moment(Model.get('Sentence.start_time')).format('X') > moment().format('X')){
+                // no, time block in the future
+                contentString += '<div><span>'+ moment(Model.get('Sentence.start_time')).format('h:mma') +'</span><span>'+ moment(Model.get('Sentence.end_time')).format('h:mma') +'</span><span>'+ Model.get('Sentence.duration') +'</span></div>';
+            } else {
+                // yes, time block already started
+                // - use "for ..."
+                console.log(Model.get('Sentence.end_time'));
+                contentString += '<div><span>'+ moment(Model.get('Sentence.end_time')).fromNow() +'</span> or until <strong>' + moment(Model.get('Sentence.end_time')).format('h:mma') + '</strong></div>';
+            }
+
+            userView.LeftSurface.setContent(contentString);
         };
         setLeftContent();
         Model.on('change', function(){

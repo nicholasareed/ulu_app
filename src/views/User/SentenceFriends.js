@@ -17,6 +17,7 @@ define(function(require, exports, module) {
     var RenderNode         = require('famous/core/RenderNode')
 
     var Utility = require('famous/utilities/Utility');
+    var Timer = require('famous/utilities/Timer');
 
     // Helpers
     var Utils = require('utils');
@@ -63,10 +64,7 @@ define(function(require, exports, module) {
 
         this._subviews = [];
 
-        // Wait for User to be resolved
-        App.Data.User.populated().then((function(){
-            this.createContent();
-        }).bind(this));
+        this.createContent();
 
         this.add(this.layout);
 
@@ -83,6 +81,8 @@ define(function(require, exports, module) {
             // sentence expired?
             if(that.model.get('end_time') < new Date()){
                 
+                that.model.set('active',false);
+
                 Utils.Notification.Toast('Expired');
 
                 // Navigate back to home
@@ -97,6 +97,8 @@ define(function(require, exports, module) {
         this.model.on('error', function(res, xhr, res3){
             if(xhr.status == 409){
 
+                that.model.set('active',false);
+
                 Utils.Notification.Toast('Expired');
 
                 // Navigate back to home
@@ -104,8 +106,18 @@ define(function(require, exports, module) {
                 App.history.navigate('user/sentence');
             }
         });
+
         this.model.fetch();
 
+        var checkFetch = function(){
+            Timer.setTimeout(function(){
+                if(that.model.get('active') !== true){
+                    that.model.fetch();
+                    checkFetch();
+                }
+            }, 5000);
+        };
+        checkFetch();
 
     };
     
@@ -331,22 +343,6 @@ define(function(require, exports, module) {
         // Tab content
         this.TopTabs.Content = new RenderController();
 
-        // All 
-        this.TopTabs.Content.AllFriends = new View();
-        this.TopTabs.Content.AllFriends.View = new AllView({
-            model: this.model
-        });
-        this.TopTabs.Content.AllFriends.add(this.TopTabs.Content.AllFriends.View);
-        this._subviews.push(this.TopTabs.Content.AllFriends.View);
-
-        // Matched
-        this.TopTabs.Content.MatchedFriends = new View();
-        this.TopTabs.Content.MatchedFriends.View = new MatchedView({
-            model: this.model
-        });
-        this.TopTabs.Content.MatchedFriends.add(this.TopTabs.Content.MatchedFriends.View);
-        this._subviews.push(this.TopTabs.Content.MatchedFriends.View);
-
         // Add Lightbox to sequence
         this.contentScrollView.Views.push(this.TopTabs.Content);
 
@@ -370,8 +366,28 @@ define(function(require, exports, module) {
             }
         });
 
-        // This depends on the previously selected! 
-        this.TopTabs.Bar.select('all');
+        App.Data.User.populated().then((function(){
+
+            // All 
+            this.TopTabs.Content.AllFriends = new View();
+            this.TopTabs.Content.AllFriends.View = new AllView({
+                model: this.model
+            });
+            this.TopTabs.Content.AllFriends.add(this.TopTabs.Content.AllFriends.View);
+            this._subviews.push(this.TopTabs.Content.AllFriends.View);
+
+            // Matched
+            this.TopTabs.Content.MatchedFriends = new View();
+            this.TopTabs.Content.MatchedFriends.View = new MatchedView({
+                model: this.model
+            });
+            this.TopTabs.Content.MatchedFriends.add(this.TopTabs.Content.MatchedFriends.View);
+            this._subviews.push(this.TopTabs.Content.MatchedFriends.View);
+
+            // This depends on the previously selected! 
+            this.TopTabs.Bar.select('all');
+
+        }).bind(this));
 
         this.layout.content.add(this.ContentStateModifier).add(this.contentScrollView);
 

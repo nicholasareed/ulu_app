@@ -108,6 +108,12 @@ body {
 
 /* Sentence */
 
+.sentence-loading-default {
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center;
+}
+
 .sentence-normal-default {
   text-align: center;
   font-family: 'Circular Light', serif;
@@ -201,8 +207,8 @@ body {
 }
 
 .matched-list-item-default > div:nth-child(2) {
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 18px;
   color: #333;
 }
 
