@@ -278,6 +278,13 @@ define(function(require, exports, module) {
             classes: ['matched-list-item-message-default']
         });
         userView.RightSurface.pipe(that.contentLayout);
+        userView.RightSurface.on('click', function(){
+            // Message the person or something?
+            // - let them link the person to a contact in their address book? 
+
+            Utils.Notification.Toast('Messaging not yet supported');
+
+        });
 
         userView.SeqLayout.Views.push(userView.RightSurface);
 
