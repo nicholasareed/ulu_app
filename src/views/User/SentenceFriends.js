@@ -156,34 +156,47 @@ define(function(require, exports, module) {
                 console.log(contact);
                 console.log(JSON.stringify(contact));
 
-
-                // Multiple numbers?
-                if(contact.phoneNumbers.length < 1){
+                // Phone Numbers validation
+                if(!contact.phoneNumbers || contact.phoneNumbers.length < 1){
                     // No phone numbers
                     Utils.Notification.Toast('No phone number');
                     return;
                 }
 
-                var listData = [];
-                contact.phoneNumbers.forEach(function(ptn){
-                    listData.push({
-                        text: JSON.stringify(ptn),
-                        value: ptn,
-                        success: function(){
 
-                            var number = ptn;
-                            var message = 'testing a message';
-                            var intent = ""; //leave empty for sending sms using default intent
-                            var success = function () { Utils.Notification.Toast('Message sent successfully'); };
-                            var error = function (e) { Utils.Notification.Toast('Message Failed:' + e); };
-                            sms.send(number, message, intent, success, error);
+                var successFunction = function(ptn){
+                    var number = ptn;
+                    var message = 'testing a message';
+                    var intent = ""; //leave empty for sending sms using default intent
+                    var success = function () { Utils.Notification.Toast('Message sent successfully'); };
+                    var error = function (e) { Utils.Notification.Toast('Message Failed:' + e); };
+                    sms.send(number, message, intent, success, error);
+                }
+
+                // Single Number?
+                if(contact.phoneNumbers.length == 1){
+                    successFunction(contact.phoneNumbers[0]);
+                } else {
+
+                    // Multiple numbers (expected)
+
+                    var listData = [];
+                    contact.phoneNumbers.forEach(function(ptn){
+                        listData.push({
+                            text: JSON.stringify(ptn),
+                            value: ptn,
+                            success: function(){
+
+                                successFunction(ptn);
 
 
-                        }
+                            }
+                        });
                     });
-                });
 
-                Utils.Popover.List(listData);
+                    Utils.Popover.List(listData);
+
+                }
 
             });
 
