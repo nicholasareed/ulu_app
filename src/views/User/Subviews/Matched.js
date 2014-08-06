@@ -248,7 +248,7 @@ define(function(require, exports, module) {
             // Time started yet?
             if(Model.get('Sentence.start_time') && moment(Model.get('Sentence.start_time')).format('X') > moment().format('X')){
                 // no, time block in the future
-                contentString += '<div><span>'+ moment(Model.get('Sentence.start_time')).format('h:mma') +'</span><span>'+ moment(Model.get('Sentence.end_time')).format('h:mma') +'</span><span>'+ Model.get('Sentence.duration') +'</span></div>';
+                contentString += '<div><span>'+ moment(Model.get('Sentence.start_time')).format('h:mma') +'</span> - <span>'+ moment(Model.get('Sentence.end_time')).format('h:mma') +'</span> <strong>'+ Model.get('Sentence.duration') +'</strong></div>';
             } else {
                 // yes, time block already started
                 // - use "for ..."
