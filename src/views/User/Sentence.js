@@ -76,7 +76,6 @@ define(function(require, exports, module) {
         this.add(this.layout);
 
         // // Fetch
-        // this.model.fetch({prefill: true});
 
         // Wait for model to get populated, then add the input surfaces
         // - model should be ready immediately!
@@ -85,6 +84,7 @@ define(function(require, exports, module) {
             this.model.fetch();
         }
         this.model.populated().then(function(){
+
             that.addSurfaces();
             that.add_activity({
                 text: 'whatever',
@@ -92,8 +92,6 @@ define(function(require, exports, module) {
             });
 
             that.update_content();
-
-            that.contentContainer.show(that.contentScrollView);
         });
 
 
@@ -133,6 +131,8 @@ define(function(require, exports, module) {
             //     App.history.eraseUntilTag('all-of-em');
             //     App.history.navigate('user/sentence');
             // }
+            
+            that.contentContainer.show(that.contentScrollView);
 
             that.showFooter();
 
