@@ -90,8 +90,7 @@ define(function(require, exports, module) {
                 App.history.navigate('user/sentence');
             } else {
                 // Update time on navbar title
-                if(that.model.get('start_time')){
-                    // not started yet
+                if(moment(that.model.get('start_time')).format('X') > moment().format('X')){
                     that.header.navBar.title.setContent(moment(that.model.get('start_time')).format('ha') + ' - '+ moment(that.model.get('end_time')).format('ha'));
                 } else {
                     that.header.navBar.title.setContent(moment(that.model.get('end_time')).format('h:mma'));

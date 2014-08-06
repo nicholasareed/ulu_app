@@ -253,7 +253,7 @@ define(function(require, exports, module) {
                 // yes, time block already started
                 // - use "for ..."
                 console.log(Model.get('Sentence.end_time'));
-                contentString += '<div><span>'+ moment(Model.get('Sentence.end_time')).fromNow() +'</span> or until <strong>' + moment(Model.get('Sentence.end_time')).format('h:a') + '</strong></div>';
+                contentString += '<div><span>'+ moment(Model.get('Sentence.end_time')).fromNow() +'</span> or until <strong>' + moment(Model.get('Sentence.end_time')).format('ha') + '</strong></div>';
             }
 
             userView.LeftSurface.setContent(contentString);
