@@ -131,7 +131,7 @@ define(function(require, exports, module) {
             //     App.history.eraseUntilTag('all-of-em');
             //     App.history.navigate('user/sentence');
             // }
-            
+
             that.contentContainer.show(that.contentScrollView);
 
             that.showFooter();
@@ -407,20 +407,15 @@ define(function(require, exports, module) {
                 });
             }
             // Launch popover/modal list of times
-            App.Cache.OptionModal = {
+            Utils.Popover.List({
                 list: timeOptions,
+                type: 'scroll',
                 on_choose: function(chosen_type){
                     that.sentence.start_time = chosen_type;
                     that.update_content();
-                },
-                on_cancel: function(){
-                    // App.history.navigate(that.previousPage);
-                    // debugger;
-                },
-                title: 'Change Timeframe',
-                back_to_default_hint: false
-            };
-            App.history.navigate('modal/list', {history: false});
+                }
+            });
+            // App.history.navigate('modal/list', {history: false});
 
         });
         this.startTimeSurface.View = new View();
@@ -454,20 +449,14 @@ define(function(require, exports, module) {
                 value: ['h',3]
             }];
             // Launch popover/modal list of times
-            App.Cache.OptionModal = {
+            Utils.Popover.List({
                 list: durationOptions,
+                type: 'scroll',
                 on_choose: function(chosen_type){
                     that.sentence.duration = chosen_type;
                     that.update_content();
-                },
-                on_cancel: function(){
-                    // App.history.navigate(that.previousPage);
-                    // debugger;
-                },
-                title: 'Change Timeframe',
-                back_to_default_hint: false
-            };
-            App.history.navigate('modal/list', {history: false});
+                }
+            });
 
         });
         this.durationSurface.View = new View();
@@ -530,10 +519,10 @@ define(function(require, exports, module) {
                 });
             });
 
-
             // Launch popover/modal list of times
-            App.Cache.OptionModal = {
+            Utils.Popover.List({
                 list: activityOptions,
+                type: 'scroll',
                 on_choose: function(chosen_type){
 
                     if(that.sentence.activities.indexOf(chosen_type.value) === -1){
@@ -552,15 +541,8 @@ define(function(require, exports, module) {
 
                     // Already in list (remove it)
                     that.update_content();
-                },
-                on_cancel: function(){
-                    // App.history.navigate(that.previousPage);
-                    // debugger;
-                },
-                title: 'Change Timeframe',
-                back_to_default_hint: false
-            };
-            App.history.navigate('modal/list', {history: false});
+                }
+            });
 
         });
         this.activitiesAddSurface.View = new View();

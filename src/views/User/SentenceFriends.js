@@ -251,7 +251,10 @@ define(function(require, exports, module) {
                         });
                     });
 
-                    Utils.Popover.List(listData);
+                    Utils.Popover.List({
+                        list: listData,
+                        type: 'scroll'
+                    });
 
                 }
 

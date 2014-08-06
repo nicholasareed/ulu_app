@@ -208,14 +208,17 @@ define(function (require) {
                 // Change history (must)
                 App.history.navigate('modal/popoverbuttons', {history: false});
             },
-            List: function(data){
+            List: function(opts){
 
-                // opts.on_cancel
+                // defaults
+                opts = _.defaults(opts, {
+                    list: [],
+                    type: 'scroll'
+                });
 
                 // Options and details
-                App.Cache.OptionModal = {
-                    list: data
-                }
+                App.Cache.OptionModal = opts;
+
 
                 // Change history (must)
                 App.history.navigate('modal/list', {history: false});
