@@ -216,16 +216,21 @@ define(function(require, exports, module) {
         var name = Model.get('profile.name') || '&nbsp;none';
 
         userView.Model = Model;
+        userView.LeftView = new View();
         userView.LeftSurface = new Surface({
              content: '',
-             size: [undefined, 80],
+             size: [undefined, true],
              classes: ['matched-list-item-default']
         });
+        userView.LeftView.getSize = function(){
+            return [undefined, userView.LeftSurface._size ? userView.LeftSurface._size[1] : undefined];
+        };
+        userView.LeftView.add(userView.LeftSurface);
         var setLeftContent = function(){
             userView.LeftSurface.setContent(
                 '<div><span class="ellipsis-all">' +name+'</span></div><div><span class="ellipsis-all">' + 
                 (Model.toJSON().Sentence.activities.length ? Model.toJSON().Sentence.activities.join(', ') : 'whatever') + '</span></div>' +
-                '<div>' + moment(Model.get('Sentence.end_time')).format('h:mma') + '</div><div> '
+                '<div><span>'+ moment(Model.get('Sentence.end_time')).fromNow() +'</span> or until ' + moment(Model.get('Sentence.end_time')).format('h:mma') + '</div>'
             );
         };
         setLeftContent();
@@ -240,11 +245,11 @@ define(function(require, exports, module) {
             Utils.Notification.Toast('Messaging not yet supported');
 
         });
-        userView.SeqLayout.Views.push(userView.LeftSurface);
+        userView.SeqLayout.Views.push(userView.LeftView);
 
         userView.RightSurface = new Surface({
             content: '<i class="icon ion-ios7-chatboxes-outline"></i>',
-            size: [80, 80],
+            size: [80, 95],
             classes: ['matched-list-item-message-default']
         });
         userView.RightSurface.pipe(that.contentLayout);
@@ -367,7 +372,7 @@ define(function(require, exports, module) {
         this.infinityLoadedAllSurface.setContent(this.collection.totalResults + ' total');
 
         var nextRenderable;
-        if(this.collection.length == 0 && this.collection.infiniteResults == 0){
+        if(this.collection.length == 0){
             nextRenderable = this.emptyListSurface;
         } else {
             nextRenderable = this.contentLayout;

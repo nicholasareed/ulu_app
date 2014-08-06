@@ -239,12 +239,12 @@ define(function(require, exports, module) {
         this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
-            content: '<i class="icon ion-android-friends"></i><div>All Friends</div>',
+            content: '<i class="icon ion-android-friends"></i><div>Select Friends</div>',
             onClasses: ['select-friends-tabbar-default', 'on'],
             offClasses: ['select-friends-tabbar-default', 'off']
         });
         this.TopTabs.Bar.defineSection('matched', {
-            content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Time Match</div>',
+            content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Matches!</div>',
             onClasses: ['select-friends-tabbar-default', 'on'],
             offClasses: ['select-friends-tabbar-default', 'off']
         });
