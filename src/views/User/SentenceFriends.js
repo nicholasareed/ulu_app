@@ -81,7 +81,7 @@ define(function(require, exports, module) {
             // sentence expired?
             if(that.model.get('end_time') < new Date()){
                 
-                that.model.set('active',false);
+                that.model.set('expired',true);
 
                 Utils.Notification.Toast('Expired');
 
@@ -90,14 +90,19 @@ define(function(require, exports, module) {
                 App.history.navigate('user/sentence');
             } else {
                 // Update time on navbar title
-                that.header.navBar.title.setContent(moment(that.model.get('end_time')).format('h:mma'));
+                if(that.model.get('start_time')){
+                    // not started yet
+                    that.header.navBar.title.setContent(moment(that.model.get('start_time')).format('ha') + ' - '+ moment(that.model.get('end_time')).format('ha'));
+                } else {
+                    that.header.navBar.title.setContent(moment(that.model.get('end_time')).format('h:mma'));
+                }
             }
 
         });
         this.model.on('error', function(res, xhr, res3){
             if(xhr.status == 409){
 
-                that.model.set('active',false);
+                that.model.set('expired',true);
 
                 Utils.Notification.Toast('Expired');
 
@@ -111,11 +116,11 @@ define(function(require, exports, module) {
 
         var checkFetch = function(){
             Timer.setTimeout(function(){
-                if(that.model.get('active') !== true){
+                if(that.model.get('expired') !== true){
                     that.model.fetch();
                     checkFetch();
                 }
-            }, 5000);
+            }, 30000);
         };
         checkFetch();
 
