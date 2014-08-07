@@ -124,7 +124,7 @@ define(function(require, exports, module) {
             name: 'name',
             placeholder: 'Name',
             type: 'text',
-            size: [200, 50],
+            size: [undefined, 50],
             value: this.model.get('profile.name')
         });
         this.inputNameSurface.View = new View();
@@ -133,12 +133,9 @@ define(function(require, exports, module) {
         this.scrollSurfaces.push(this.inputNameSurface.View);
 
         this.submitButtonSurface = new Surface({
-            size: [undefined,40],
-            classes: ['button-surface'],
             content: 'Save Profile',
-            properties: {
-                lineHeight : "20px"
-            }
+            size: [undefined, 60],
+            classes: ['form-button-submit-default']
         });
         this.submitButtonSurface.View = new View();
         this.submitButtonSurface.View.StateModifier = new StateModifier();
@@ -258,7 +255,7 @@ define(function(require, exports, module) {
                             that.scrollSurfaces.forEach(function(surf, index){
                                 window.setTimeout(function(){
                                     surf.StateModifier.setTransform(Transform.translate(0,0,0), {
-                                        duration: 1500,
+                                        duration: 750,
                                         curve: Easing.inOutElastic
                                     });
                                 }, index * 50);

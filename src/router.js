@@ -43,10 +43,27 @@ define(function(require, exports, module) {
 
                 'logout' : function(){
 
-                    // Unregister from Push Notifications
-                    // - do this before exiting
-                    App.DeviceReady.ready.then(function(){
-                        Utils.logout();
+                    Utils.Popover.Buttons({
+                        title: 'Are you sure?',
+                        buttons: [
+                            {
+                                text: 'No',
+                                value: 'no'
+                            },
+                            {
+                                text: 'Yes, Logout',
+                                value: 'logout',
+                                success: function(){
+
+                                    // Unregister from Push Notifications
+                                    // - do this before exiting
+                                    App.DeviceReady.ready.then(function(){
+                                        Utils.logout();
+                                    });
+
+                                }
+                            }
+                        ]
                     });
 
                 },

@@ -137,11 +137,17 @@ define(function(require, exports, module) {
             // },
 
             {
+                title: 'Profile Edit',
+                desc: 'Change your display name',
+                href: 'profile/edit'
+            },
+
+            {
                 title: 'How does it work?',
                 desc: 'Shoot, we hoped it was clear. our fault.',
                 href: 'misc/help'
             },
-            
+
             {
                 title: 'Push Notifications',
                 desc: 'Finer control',
