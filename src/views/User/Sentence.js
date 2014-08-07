@@ -17,6 +17,13 @@ define(function(require, exports, module) {
     var RenderNode         = require('famous/core/RenderNode')
 
     var Utility = require('famous/utilities/Utility');
+    var Timer = require('famous/utilities/Timer');
+
+    // Mouse/touch
+    var GenericSync = require('famous/inputs/GenericSync');
+    var MouseSync = require('famous/inputs/MouseSync');
+    var TouchSync = require('famous/inputs/TouchSync');
+    GenericSync.register({'mouse': MouseSync, 'touch': TouchSync});
 
     var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
     var NavigationBar = require('famous/widgets/NavigationBar');
@@ -188,6 +195,95 @@ define(function(require, exports, module) {
     PageView.prototype.createFooter = function(){
         var that = this;
         
+        this.footerButtonView = new View();
+        
+        this.footerButtonView.Surface = new Surface({
+            content: 'Select Friends',
+            size: [undefined, 60],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-footer-button'],
+            properties: {
+                // backgroundColor: "red"
+            }
+
+        });
+        this.footerButtonView.Surface.on('click', function(){
+            // Submit your sentence
+            // - loading dialogue
+
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
+            var Sentence = new SentenceModel.Sentence({
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
+                location: null,
+                activities: that.sentence.activities
+            });
+
+            Utils.Notification.Toast('OK, Wait a Moment');
+
+            Sentence.save()
+            .then(function(result){
+                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
+            });
+
+            // App.history.navigate('user/sentence_friends');
+            
+        });
+
+        // Different sync for each messageView! (instead of a Sequentail/ScrollView-wide one)
+        this.footerButtonView.sync = new GenericSync(['mouse', 'touch']);
+
+        this.footerButtonView.Surface.pipe(this.footerButtonView.sync);
+
+        // this.sync.on('start', _handleStart.bind(this));
+        this.footerButtonView.sync.on('start', function(e){
+            // Create (or get cached) MessageView
+
+        });
+        this.footerButtonView.sync.on('update', function(e){
+            console.log(e);
+            // that.DraggedOverView._position += e.delta[0];
+            // if(that.DraggedOverView._position > window.innerWidth){
+            //     that.DraggedOverView._position = window.innerWidth;
+            // }
+            // that.DraggedOverView.position.set(that.DraggedOverView._position); 
+        });
+        this.footerButtonView.sync.on('end', function(e){
+            // Update position of other renderable
+            // - showing/hiding?
+            if(e.velocity[0] < -0.05 || that.DraggedOverView._position < window.innerWidth/2){
+                // that.DraggedOverView.position = 0;
+                // that.DraggedOverView._position = 0;
+            } else {
+                // that.DraggedOverView._position = window.innerWidth;
+            }
+            // that.DraggedOverView.position.set(that.DraggedOverView._position, {
+            //     method : 'spring',
+            //     period : 150,
+            //     dampingRatio: 0.9,
+            //     velocity : e.velocity
+            // });
+        });
+
+        this.footerButtonView.add(this.footerButtonView.Surface);
+
+        this.FooterPositionMod = new StateModifier({
+            transform: Transform.translate(0,60,0)
+        });
+        this.layout.footer.add(this.FooterPositionMod).add(this.footerButtonView);
+
+
+        return;
+
+
+
         // Everyone or Select
         this.EveryoneOrSelectLayout = new FlexibleLayout({
             ratios: [1,true,1]
@@ -202,7 +298,125 @@ define(function(require, exports, module) {
 
         // Everyone
         this.EveryoneSurface = new Surface({
-            content: "Open to All",
+            content: "Select All",
+            size: [undefined, undefined],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-footer-button', 'left-button']
+        });
+        this.EveryoneSurface.on('click', function(){
+            // Submit your sentence
+            // - loading dialogue
+
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
+            var Sentence = new SentenceModel.Sentence({
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
+                location: null,
+                activities: that.sentence.activities
+            });
+
+            Utils.Notification.Toast('OK, Wait a Moment');
+
+            Sentence.save()
+            .then(function(result){
+                // Send invites to everybody
+
+
+                var UserSelect = new UserSelectModel.UserSelect();
+                UserSelect.select('all')
+                .then(function(){
+                    App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                });
+
+                // - todo...
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
+            });
+
+            // App.history.navigate('user/sentence_friends');
+            
+        });
+        this.EveryoneOrSelectLayout.Views.push(this.EveryoneSurface);
+
+        // "or" text
+        this.Content_OrSurface = new Surface({
+            content: "or",
+            size: [60, undefined],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-normal-button-separator-default']
+        });
+        this.EveryoneOrSelectLayout.Views.push(this.Content_OrSurface);
+
+        // Select Friends
+        this.SelectSurface = new Surface({
+            content: "Be Choosy",
+            size: [undefined, undefined],
+            classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-footer-button', 'right-button']
+        });
+        this.SelectSurface.on('click', function(){
+            // Submit your sentence
+            // - loading dialogue
+
+            var start_time = new Date();
+            if(that.sentence.start_time.value != 'now'){
+                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+            }
+            console.log(that.sentence.activities);
+            var Sentence = new SentenceModel.Sentence({
+                start_time: start_time, // Javascript new Date
+                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                duration: that.sentence.duration.text, // just a string
+                location: null,
+                activities: that.sentence.activities
+            });
+
+            Utils.Notification.Toast('OK, Wait a Moment');
+
+            Sentence.save()
+            .then(function(result){
+                App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                // SentenceModel.set(result);
+                // App.Cache.current_sentence = SentenceModel;
+                // App.history.navigate('user/sentence_friends');
+            });
+
+            // App.history.navigate('user/sentence_friends');
+            
+        });
+        this.EveryoneOrSelectLayout.Views.push(this.SelectSurface);
+
+        this.EveryoneOrSelectLayout.sequenceFrom(this.EveryoneOrSelectLayout.Views);
+
+        this.FooterPositionMod = new StateModifier({
+            transform: Transform.translate(0,60,0)
+        });
+        this.layout.footer.add(this.FooterPositionMod).add(this.EveryoneOrSelectLayout.View);
+        // this.scrollSurfaces.push(this.EveryoneOrSelectLayout.View);
+
+    };
+
+    PageView.prototype.createFooter_old = function(){
+        var that = this;
+        
+        // Everyone or Select
+        this.EveryoneOrSelectLayout = new FlexibleLayout({
+            ratios: [1,true,1]
+        });
+        this.EveryoneOrSelectLayout.Views = [];
+        this.EveryoneOrSelectLayout.View = new View();
+        this.EveryoneOrSelectLayout.SizeMod = new StateModifier({
+            size: [undefined, 60]
+        });
+        this.EveryoneOrSelectLayout.StateModifier = new StateModifier();
+        this.EveryoneOrSelectLayout.View.add(this.EveryoneOrSelectLayout.StateModifier).add(this.EveryoneOrSelectLayout.SizeMod).add(this.EveryoneOrSelectLayout);
+
+        // Everyone
+        this.EveryoneSurface = new Surface({
+            content: "Select All",
             size: [undefined, undefined],
             classes: ['sentence-normal-default', 'sentence-normal-button-default', 'sentence-footer-button', 'left-button']
         });
@@ -580,7 +794,7 @@ define(function(require, exports, module) {
         // Start Time
         switch(this.sentence.start_time.value){
             case 'now':
-                that.startTimeSurface.setContent('starting...<span>now</span>');
+                that.startTimeSurface.setContent('starting <span>now</span>');
                 break;
             default:
                 // time chosen
