@@ -104,6 +104,10 @@ define(function(require, exports, module) {
                     defaultRoute('Forgot', 'Misc/Forgot', arguments, {cache: false});
                 },
 
+                'settings/push': function(){
+                    defaultRoute('PushDefault', 'Misc/PushDefault', arguments);
+                },
+
                 'settings': function(){
                     defaultRoute('Settings', 'Misc/Settings', arguments);
                 },

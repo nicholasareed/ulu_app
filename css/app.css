@@ -239,6 +239,56 @@ body {
 }
 
 
+/* Push Notifications */
+
+.push-list-text-default {
+  border-bottom: 1px dashed #ddd;
+  padding: 8px;
+}
+
+.push-list-text-default > div:nth-child(1) {
+  font-weight: 500;
+  font-size: 18px;
+}
+.push-list-text-default > div:nth-child(2) {
+  font-size: 12px;
+}
+
+.push-list-separator-default {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 32px;
+
+  padding: 0px 8px;
+  background: #E0E0E0;
+  border-bottom: 1px solid #777;
+  border-top: 1px solid #777;
+}
+
+.push-toggle {
+  margin-top: 8px;
+}
+
+
+/* Toggle buttons */
+
+.circle-toggle {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+
+.toggle-on {
+  background: #2ECC71;
+  color: white;
+}
+
+.toggle-off {
+  background: #E74C3C;
+  color: white;
+}
+
+
+
 /* Waiting list */
 
 .waiting-list-top-default {
@@ -1528,18 +1578,6 @@ textarea {
   font-family: 'Kaushan Script', cursive;
 }
 
-
-/* Toggle buttons */
-
-.toggle-on {
-  background: green;
-  color: white;
-}
-
-.toggle-off {
-  background: red;
-  color: white;
-}
 
 
 

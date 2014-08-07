@@ -143,6 +143,18 @@ define(function(require, exports, module) {
             },
             
             {
+                title: 'Push Notifications',
+                desc: 'Finer control',
+                href: 'settings/push'
+            },
+
+            {
+                title: 'Feedback',
+                desc: 'Please tell us how to improve!' + ' v' + App.ConfigImportant.Version,
+                href: 'feedback/settings'
+            },
+            
+            {
                 title: 'Logout and Exit',
                 desc: 'Buh-bye',
                 href: 'logout'
