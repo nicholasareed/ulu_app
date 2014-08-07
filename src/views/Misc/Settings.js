@@ -163,7 +163,10 @@ define(function(require, exports, module) {
             {
                 title: 'Logout and Exit',
                 desc: 'Buh-bye',
-                href: 'logout'
+                href: 'logout',
+                hrefOptions: {
+                    history: false
+                }
             }
         ];
 
