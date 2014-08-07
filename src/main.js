@@ -315,7 +315,7 @@ define(function(require, exports, module) {
             var colorIndices = [0,1,2,3];
 
             //transition speed
-            var gradientSpeed = 0.002;
+            var gradientSpeed = 0.008; //0.002;
 
             var updateBackgroundSurface = function(){
                 Timer.setTimeout(function(){
