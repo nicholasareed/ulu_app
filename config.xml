@@ -11,7 +11,7 @@
 
     <access origin="*" />
 
-    <preference name="phonegap-version" value="3.5.1" />
+    <preference name="phonegap-version" value="3.5.0" />
 
     <!-- Android SDK Version -->
     <preference name="android-minSdkVersion" value="14" />
