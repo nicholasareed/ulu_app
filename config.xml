@@ -177,7 +177,7 @@
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
     <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
-        <activity android:label="applabel" android:name="appName" android:launchMode="singleTask">
+        <activity android:label="applabel">
           <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
