@@ -37,7 +37,7 @@
     <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
-    <preference name="AndroidLaunchMode" value="SingleTask" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
@@ -176,13 +176,15 @@
     
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
-    <gap:config-file platform="android" parent="/manifest/application/activity" overwrite="false">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp.com" />
-      </intent-filter>
+    <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
+        <activity>
+          <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" android:host="uluapp.com" />
+          </intent-filter>
+      </activity>
     </gap:config-file>
 
 
