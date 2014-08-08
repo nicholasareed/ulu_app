@@ -11,7 +11,7 @@
 
     <access origin="*" />
 
-    <preference name="phonegap-version" value="3.5.0" />
+    <preference name="phonegap-version" value="3.5.1" />
 
     <!-- Android SDK Version -->
     <preference name="android-minSdkVersion" value="14" />
@@ -26,18 +26,25 @@
     <preference name="webviewbounce" value="false" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="detect-data-types" value="false" />
-    <preference name="StatusBarOverlaysWebview" value="false" />
+
+    <preference name="StatusBarOverlaysWebView" value="false"/>
+    <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
+    <preference name="StatusBarStyle" value="blacktranslucent" />
+
+    <preference name="AndroidLaunchMode" value="singleTop" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
 
     <!-- Hide Status Bar iOS -->
+    <!--
     <gap:config-file platform="ios" parent="UIViewControllerBasedStatusBarAppearance" overwrite="true">
         <false/>
     </gap:config-file>
     <gap:config-file platform="ios" parent="UIStatusBarHidden" overwrite="true">
         <true/>
     </gap:config-file>
+    -->
 
     <gap:plugin name="org.apache.cordova.device" />
     <gap:plugin name="org.apache.cordova.console" />
@@ -48,11 +55,10 @@
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="org.apache.cordova.geolocation" />
     <gap:plugin name="org.apache.cordova.globalization" />
+    <gap:plugin name="org.apache.cordova.statusbar" />
     <gap:plugin name="com.phonegap.plugins.pushplugin" />
     <gap:plugin name="com.phonegap.plugins.barcodescanner" />
-    <gap:plugin name="com.phonegap.plugin.statusbar" />
     <gap:plugin name="com.verso.cordova.clipboard" />
-
 
     <gap:plugin name="com.plugin.datepicker" />
     <gap:plugin name="nl.x-services.plugins.socialsharing" />
@@ -61,6 +67,10 @@
     <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
 
     <gap:plugin name="com.adobe.plugins.gaplugin" />
+
+    <gap:plugin name="nl.x-services.plugins.launchmyapp" version="3.2.0">
+        <param name="URL_SCHEME" value="ulu" />
+    </gap:plugin>
     
     
     <feature name="BarcodeScanner">

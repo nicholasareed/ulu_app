@@ -38,6 +38,16 @@ define(function(require, exports, module) {
                 that.onReady();
             }
 
+            // Listen for intent gathering
+            // - expecting you to be logged in?
+            // - add after-login redirection? 
+            App.Events.on('after-login', function(){
+                // hit up the after-login intent! 
+                // - todo    
+            });
+            App.Events.on('handle-open-url', function(){
+                alert('handling open url');
+            });
 
             // See if device is already ready
 

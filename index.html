@@ -82,6 +82,14 @@
                 }, false);
 
             }
+
+            function handleOpenURL(url) {
+              setTimeout(function() {
+                alert("received url: " + url);
+                App.Events.emit('handle-open-url', url);
+              }, 1000);
+            }
+
         </script>
 
         
