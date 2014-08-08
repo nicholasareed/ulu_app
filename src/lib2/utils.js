@@ -228,21 +228,29 @@ define(function (require) {
         Intent: {
             HandleOpenUrl: function(url){
                 // what type of a url are we looking at?
-                var parsed = Utils.parseUrl(url);
+                var tmpParsed = Utils.parseUrl(url);
 
+                var pathname = parsed.pathname.split('uluapp.com/');
 
+                var parsed = Utils.parseUrl('http://uluapp.com/' + pathname[1]);
+
+                console.log(parsed);
+                console.log(parsed.pathname);
+                console.log(parsed.pathname.split('/'));
+                console.log(parsed.pathname.split('/')[0]);
 
                 switch(parsed.pathname.split('/')[0]){
                     case 'i':
-                        Utils.Notification.Toast('Accepting an invite!');
+                        Utils.Notification.Toast('Accepting a Friend Invite!');
 
                         // Accept via ajax!
                         // - as long as logged in...
 
-                        
+
                         break;
                     default:
                         Utils.Notification.Toast('Unknown URL');
+                        console.log(parsed.pathname.split('/')[0]);
                         break;
                 }
 

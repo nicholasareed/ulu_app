@@ -83,16 +83,23 @@
 
             }
 
-            function handleOpenURL(url) {
+            function handleOpenURL(url, not_immediate) {
                 console.log('handleOpenURL');
                 console.log(url);
                 setTimeout(function() {
-                    console.log('setTimeout');
+                    // console.log('setTimeout');
                     if(App && App.Events){
                         // alert('OK');
-                        App.Events.emit('handle-open-url', url);
+                        if(not_immediate){
+                            setTimeout(function(){
+                                App.Events.emit('handle-open-url', url);
+                            },1000); // give it an extra second to finish loading everything
+                        } ese {
+                            // no delay in launching
+                            App.Events.emit('handle-open-url', url);
+                        }
                     } else {
-                        handleOpenURL(url);
+                        handleOpenURL(url, true);
                     }
 
                 }, 500);
