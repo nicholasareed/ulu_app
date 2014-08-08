@@ -176,12 +176,45 @@
     
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
-    <gap:config-file platform="android" parent="/manifest/application/activity[1]" overwrite="false">
+    <gap:config-file platform="android" parent="/manifest/application/activity" overwrite="false">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
         <data android:scheme="http" android:host="uluapp.com" />
+      </intent-filter>
+    </gap:config-file>
+
+    <gap:config-file platform="android" parent="/manifest/application/activity[0]" overwrite="false">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http" android:host="uluapp2.com" />
+      </intent-filter>
+    </gap:config-file>
+    <gap:config-file platform="android" parent="/*/application/activity" overwrite="false">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http" android:host="uluapp3.com" />
+      </intent-filter>
+    </gap:config-file>
+    <gap:config-file platform="android" parent="/*/application/activity[0]" overwrite="false">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http" android:host="uluapp4.com" />
+      </intent-filter>
+    </gap:config-file>
+    <gap:config-file platform="android" parent="/*/application/activity[1]" overwrite="false">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http" android:host="uluapp5.com" />
       </intent-filter>
     </gap:config-file>
 
