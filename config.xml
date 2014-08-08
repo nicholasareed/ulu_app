@@ -63,12 +63,12 @@
     <gap:plugin name="com.plugin.datepicker" />
     <gap:plugin name="nl.x-services.plugins.socialsharing" />
     <gap:plugin name="info.asankan.phonegap.smsplugin" />
-    <gap:plugin name="nl.x-services.plugins.toast" version="1.0" />
+    <gap:plugin name="nl.x-services.plugins.toast" />
     <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
 
     <gap:plugin name="com.adobe.plugins.gaplugin" />
 
-    <gap:plugin name="nl.x-services.plugins.launchmyapp" version="3.2.0">
+    <gap:plugin name="nl.x-services.plugins.launchmyapp">
         <param name="URL_SCHEME" value="ulu" />
     </gap:plugin>
     
