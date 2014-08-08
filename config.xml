@@ -31,7 +31,7 @@
     <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
-    <preference name="AndroidLaunchMode" value="singleTask" />
+    <preference name="AndroidLaunchMode" value="SingleTask" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
@@ -68,10 +68,23 @@
 
     <gap:plugin name="com.adobe.plugins.gaplugin" />
 
+    <!--
     <gap:plugin name="nl.x-services.plugins.launchmyapp">
         <param name="URL_SCHEME" value="ulu" />
     </gap:plugin>
+    -->
     
+    <preference name="URL_SCHEME" value="http" />
+    <preference name="HOST_NAME" value="uluapp.com" />
+
+    <config-file target="AndroidManifest.xml" parent="/*/application/activity">
+      <intent-filter>
+        <data android:scheme="$URL_SCHEME" android:host="$HOST_NAME" android:pathPattern=".*"/>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+      </intent-filter>
+    </config-file>
     
     <feature name="BarcodeScanner">
         <param name="ios-package" value="CDVBarcodeScanner" />
