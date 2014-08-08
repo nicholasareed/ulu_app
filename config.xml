@@ -176,7 +176,7 @@
     -->
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
-    <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
+    <gap:config-file platform="android" parent="/manifest/application/activity" overwrite="false">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -184,6 +184,18 @@
         <data android:scheme="http" android:host="uluapp.com" />
       </intent-filter>
     </gap:config-file>
+
+    <gap:config-file platform="android" parent="/manifest/application/activity" overwrite="false">
+        <activity android:label="loadintent3" android:name="loadintent3">
+          <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" android:host="uluapp3.com" />
+          </intent-filter>
+      </activity>
+    </gap:config-file>
+
 
 
 
