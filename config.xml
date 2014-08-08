@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="com.ulu.app.pub" 
-    version="0.0.1.71" 
+    version="0.0.1.70" 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -38,7 +38,8 @@
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
     <preference name="AndroidLaunchMode" value="singleInstance" />
-    <preference name="android-launchMode" value="singleInstance" />
+    <preference name="androidlaunchmode" value="singleInstance" />
+    <preference name="android-launch-mode" value="singleInstance" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
@@ -171,63 +172,21 @@
 
 
     
-    <!-- <gap:plugin name="nl.x-services.plugins.launchmyapp">
+    <gap:plugin name="nl.x-services.plugins.launchmyapp">
         <param name="URL_SCHEME" value="ulu" />
-    </gap:plugin> -->
+    </gap:plugin>
     
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
     <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
-        <activity android:label="@string/app_name" android:name="com.phonegap.DroidGap">
+        <activity android:label="ulu" android:name="com.ulu.app.pub">
           <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="http" android:host="uluapp2.com" />
+            <data android:scheme="http" android:host="uluapp.com" />
           </intent-filter>
       </activity>
-    </gap:config-file>
-
-    <gap:config-file platform="android" parent="/manifest/application/activity" overwrite="false">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp.com" />
-      </intent-filter>
-    </gap:config-file>
-
-    <gap:config-file platform="android" parent="/manifest/application/activity[0]" overwrite="false">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp2.com" />
-      </intent-filter>
-    </gap:config-file>
-    <gap:config-file platform="android" parent="/*/application/activity" overwrite="false">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp3.com" />
-      </intent-filter>
-    </gap:config-file>
-    <gap:config-file platform="android" parent="/*/application/activity[0]" overwrite="false">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp4.com" />
-      </intent-filter>
-    </gap:config-file>
-    <gap:config-file platform="android" parent="/*/application/activity[1]" overwrite="false">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp5.com" />
-      </intent-filter>
     </gap:config-file>
 
 
