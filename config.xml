@@ -79,14 +79,11 @@
         <param name="URL_SCHEME" value="ulu" />
     </gap:plugin>
     -->
-    
-    <preference name="URL_SCHEME" value="http" />
-    <preference name="HOST_NAME" value="uluapp.com" />
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
-    <gap:config-file platform="android" parent="/*/application/activity">
+    <gap:config-file platform="android" parent="/manifest/application/activity">
       <intent-filter>
-        <data android:scheme="$URL_SCHEME" android:host="$HOST_NAME" />
+        <data android:scheme="http" android:host="uluapp.com" />
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
