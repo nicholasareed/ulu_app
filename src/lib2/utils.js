@@ -230,7 +230,7 @@ define(function (require) {
                 // what type of a url are we looking at?
                 var tmpParsed = Utils.parseUrl(url);
 
-                var pathname = parsed.pathname.split('uluapp.com/');
+                var pathname = tmpParsed.pathname.split('uluapp.com/');
 
                 var parsed = Utils.parseUrl('http://uluapp.com/' + pathname[1]);
 
