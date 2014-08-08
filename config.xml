@@ -177,7 +177,7 @@
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
     <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
-        <activity android:label="ulu" android:name=".ulu">
+        <activity android:label="ulu" android:name="com.ulu.app.pub">
           <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
