@@ -88,14 +88,14 @@
                 console.log(url);
                 setTimeout(function() {
                     console.log('setTimeout');
-                    if(App){
-                        alert('OK');
+                    if(App && App.Events){
+                        // alert('OK');
                         App.Events.emit('handle-open-url', url);
                     } else {
                         handleOpenURL(url);
                     }
 
-                }, 100);
+                }, 500);
             }
 
         </script>
