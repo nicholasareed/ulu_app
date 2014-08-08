@@ -45,8 +45,8 @@ define(function(require, exports, module) {
                 // hit up the after-login intent! 
                 // - todo    
             });
-            App.Events.on('handle-open-url', function(){
-                alert('handling open url');
+            App.Events.on('handle-open-url', function(url){
+                Utils.Intent.HandleOpenUrl(url);
             });
 
             // See if device is already ready

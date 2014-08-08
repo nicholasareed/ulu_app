@@ -225,6 +225,30 @@ define(function (require) {
             },
         },
 
+        Intent: {
+            HandleOpenUrl: function(url){
+                // what type of a url are we looking at?
+                var parsed = Utils.parseUrl(url);
+
+
+
+                switch(parsed.pathname.split('/')[0]){
+                    case 'i':
+                        Utils.Notification.Toast('Accepting an invite!');
+
+                        // Accept via ajax!
+                        // - as long as logged in...
+
+                        
+                        break;
+                    default:
+                        Utils.Notification.Toast('Unknown URL');
+                        break;
+                }
+
+            }
+        },
+
         Analytics: {
             init: function(){
                 try {
@@ -304,6 +328,24 @@ define(function (require) {
                 // }, options);
 
             return false;
+
+        },
+
+        parseUrl: function(url){
+            var parser = document.createElement('a');
+
+            // parser.href = "http://example.com:3000/pathname/?search=test#hash";
+            parser.href = url;
+             
+            // parser.protocol; // => "http:"
+            // parser.hostname; // => "example.com"
+            // parser.port;     // => "3000"
+            // parser.pathname; // => "/pathname/"
+            // parser.search;   // => "?search=test"
+            // parser.hash;     // => "#hash"
+            // parser.host;     // => "example.com:3000"
+
+            return parser;
 
         },
 
