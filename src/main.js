@@ -292,7 +292,7 @@ define(function(require, exports, module) {
                 size: [undefined, undefined],
                 properties: {
                     // background: "url(img/mochaGrunge.png) repeat",
-                    // backgroundColor: "white",
+                    backgroundColor: "white",
                     zIndex : -10
                 }
             });
@@ -357,7 +357,7 @@ define(function(require, exports, module) {
 
                 },10);
             }
-            updateBackgroundSurface();
+            // updateBackgroundSurface();
 
             // Add Lightbox/RenderController to mainContext
             App.MainContext.add(App.MainController);

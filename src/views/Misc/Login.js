@@ -45,7 +45,7 @@ define(function(require, exports, module) {
         var surfaces = [];
 
         this.topWelcomeSurface = new Surface({
-            content: "Hang",
+            content: "ulu",
             size: [undefined, 80],
             classes: ['login-page-welcome-top-default']
         });

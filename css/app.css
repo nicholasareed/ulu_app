@@ -122,23 +122,25 @@ body {
 }
 
 .sentence-normal-default span {
-  color: #2ecc71;
+  color: #F1C40F;
   display: inline-block;
-  border: 1px solid rgba(46,204,113,0.5);
+  border: 1px solid rgba(241,196,15,0.5);
   padding: 0px 16px;
   margin: 4px;
 }
 
 .sentence-normal-button-default {
   color: white; 
-  background: #2ecc71;
+  /*background: #3498DB;*/
+  background: #34495E;
+  color: white;
 
   font-size: 18px;
 
 }
 
 .sentence-footer-button {
-  border-bottom: 4px solid #114C2A;
+  border-bottom: 4px solid #2C3E50;
   font-weight: bold;
 }
 
@@ -152,7 +154,7 @@ body {
 
 .sentence-normal-button-separator-default {
   /*color: white;
-  background: #2ecc71; */
+  background: #3498DB; */
   background: none;
   color: #888;
 
@@ -278,7 +280,7 @@ body {
 }
 
 .toggle-on {
-  background: #2ECC71;
+  background: #3498DB;
   color: white;
 }
 
@@ -596,7 +598,7 @@ body {
   background-color: #5786c1;
   color: #F5F7FA;
   font-weight: bold;
-  
+
   /*padding: 20px;*/
   font-size: 16px;
   line-height: 50px;
@@ -963,7 +965,7 @@ body {
   font-weight: bold;
   font-size: 58px;
   line-height: 60px;
-  font-family: 'Kaushan Script', cursive;
+  /*font-family: 'Kaushan Script', cursive;*/
   text-align: center;
 }
 
