@@ -168,7 +168,7 @@
     <gap:splash src="splash/ios/Default_iphone5.png" gap:platform="ios" width="640" height="1136" />
 
 
-    
+
     <!--
     <gap:plugin name="nl.x-services.plugins.launchmyapp">
         <param name="URL_SCHEME" value="ulu" />
@@ -176,7 +176,7 @@
     -->
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
-    <gap:config-file platform="android" parent="/manifest/application/activity">
+    <gap:config-file platform="android" parent="/manifest">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -185,37 +185,7 @@
       </intent-filter>
     </gap:config-file>
 
-    <gap:config-file platform="android" parent="/*/application/activity">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" android:host="uluapp2.com" />
-      </intent-filter>
-    </gap:config-file>
-
-    <gap:config-file platform="android" parent="/manifest/application">
-        <activity>
-          <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="http" android:host="uluapp3.com" />
-          </intent-filter>
-      </activity>
-    </gap:config-file>
-
-    <gap:config-file platform="android" parent="/*/application">
-        <activity>
-          <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="http" android:host="uluapp4.com" />
-          </intent-filter>
-      </activity>
-    </gap:config-file>
 
 
-    
+
 </widget>
