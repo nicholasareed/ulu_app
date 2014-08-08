@@ -231,6 +231,11 @@ define(function (require) {
                 var tmpParsed = Utils.parseUrl(url);
 
                 var pathname = tmpParsed.pathname.split('uluapp.com/');
+                console.log(pathname);
+                console.log(pathname.length);
+                console.log(pathname[0]);
+                console.log(pathname[1]);
+
 
                 var parsed = Utils.parseUrl('http://uluapp.com/' + pathname[1]);
 
