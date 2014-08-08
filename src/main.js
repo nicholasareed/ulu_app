@@ -448,7 +448,7 @@ define(function(require, exports, module) {
                 App.MainContext.add(App.Views.MainFooter);
 
             };
-            createMainFooter();
+            // createMainFooter();
 
 
             // Main Popover (keeps PageView underneath)

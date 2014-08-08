@@ -52,7 +52,7 @@ define(function(require, exports, module) {
             content: '',
             size: [undefined, undefined],
             properties: {
-                backgroundColor: 'black'
+                backgroundColor: 'white'
             }
         });
         this.contentView.BgOpacityMod = new StateModifier({
@@ -157,7 +157,7 @@ define(function(require, exports, module) {
         var optionSurface = new View(); 
         optionSurface.Surface = new Surface({
             size: [undefined, 40],
-            content: "What name do you want people to see?",
+            content: "What's your full name?",
             classes: ['welcome-page-username-default']
         });
         optionSurface.add(optionSurface.Surface);

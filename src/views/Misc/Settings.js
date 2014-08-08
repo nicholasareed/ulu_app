@@ -130,11 +130,11 @@ define(function(require, exports, module) {
         var that = this;
 
         var settings = [
-            // {
-            //     title: 'Profile Photo',
-            //     desc: 'Change your look',
-            //     href: 'photo'
-            // },
+            {
+                title: 'Welcome',
+                desc: 'run it back',
+                href: 'welcome'
+            },
 
             {
                 title: 'Profile Edit',

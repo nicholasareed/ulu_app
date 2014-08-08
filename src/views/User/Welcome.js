@@ -50,7 +50,7 @@ define(function(require, exports, module) {
             content: '',
             size: [undefined, undefined],
             properties: {
-                backgroundColor: 'black'
+                backgroundColor: 'white'
             }
         });
         this.contentView.BgOpacityMod = new StateModifier({
@@ -119,7 +119,7 @@ define(function(require, exports, module) {
         var optionSurface = new View(); 
         optionSurface.Surface = new Surface({
             size: [undefined, 180],
-            content: '<div>Welcome</div> <div>to</div> <div>DTH!</div><div><i class="icon ion-play"></i></div>',
+            content: '<div>Welcome</div> <div>to</div> <div>ulu!</div><div><i class="icon ion-play"></i></div>',
             classes: ['welcome-page-default']
         });
         optionSurface.add(optionSurface.Surface);
