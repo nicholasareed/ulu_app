@@ -31,7 +31,7 @@
     <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
-    <preference name="AndroidLaunchMode" value="singleTop" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
