@@ -17,6 +17,10 @@
 
     <access origin="*" />
 
+    <preference name="URL_SCHEME" value="http" />
+    <preference name="URL_HOST" value="uluapp.com" />
+
+
     <preference name="phonegap-version" value="3.5.0" />
 
     <!-- Android SDK Version -->
@@ -174,20 +178,21 @@
 
 
 
-    
+    <!--
     <gap:plugin name="nl.x-services.plugins.launchmyapp">
         <param name="URL_SCHEME" value="ulu" />
     </gap:plugin>
+    -->
     
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
     <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
-        <activity android:label="ulu" android:name="com.ulu.app.pub.ulu">
+        <activity android:label="@string/app_name" android:name=".ulu">
           <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="http" android:host="uluapp.com" />
+            <data android:scheme="$URL_SCHEME" android:host="$URL_HOST" />
           </intent-filter>
       </activity>
     </gap:config-file>
