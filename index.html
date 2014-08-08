@@ -90,7 +90,7 @@
                     console.log('setTimeout');
                     if(App){
                         alert('OK');
-                        App.Events.trigger('handle-open-url', url);
+                        App.Events.emit('handle-open-url', url);
                     } else {
                         handleOpenURL(url);
                     }
