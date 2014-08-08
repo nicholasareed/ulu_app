@@ -87,10 +87,11 @@
                 if(App){
                     // already open!
                     alert('already open!');
-                    App.Events.emit('handle-open-url', url);
+                    App.Events.trigger('handle-open-url', url);
                 } else {
+                    alert('not open!');
                     setTimeout(function() {
-                        App.Events.emit('handle-open-url', url);
+                        App.Events.trigger('handle-open-url', url);
                     }, 2000);
               }
             }

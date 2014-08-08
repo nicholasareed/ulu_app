@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="com.ulu.app.pub" 
-    version="0.0.1.70" 
+    version="0.0.1.71" 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
     xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
     <name>ulu</name>
     <description>
         Like Tinder for hanging out. Better than SMS'ing all your friends, or posting on Facebook.
@@ -201,7 +202,7 @@
         <param name="URL_SCHEME" value="uluapp" />
         <param name="HTTP_HOST" value="uluapp.com" />
         <param name="HTTP_PATHPREFIX" value="/" />
-        <param name="HTTPS_HOST" value="..." />
+        <param name="HTTPS_HOST" value="uluapp.com" />
         <param name="HTTPS_PATHPREFIX" value="/" />
     </gap:plugin>
 
