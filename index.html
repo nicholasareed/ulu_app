@@ -84,9 +84,12 @@
             }
 
             function handleOpenURL(url) {
+                console.log('handleOpenURL');
+                console.log(url);
                 setTimeout(function() {
-
+                    console.log('setTimeout');
                     if(App){
+                        alert('OK');
                         App.Events.trigger('handle-open-url', url);
                     } else {
                         handleOpenURL(url);
