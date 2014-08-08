@@ -94,7 +94,7 @@
                             setTimeout(function(){
                                 App.Events.emit('handle-open-url', url);
                             },1000); // give it an extra second to finish loading everything
-                        } ese {
+                        } else {
                             // no delay in launching
                             App.Events.emit('handle-open-url', url);
                         }
