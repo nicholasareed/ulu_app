@@ -186,16 +186,24 @@
     
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
-    <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
+    <!-- <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
         <activity android:label="@string/app_name" android:name=".ulu">
           <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="$URL_SCHEME" android:host="$URL_HOST" />
+            <data android:scheme="http" android:host="uluapp.com" />
           </intent-filter>
       </activity>
-    </gap:config-file>
+    </gap:config-file> -->
+
+    <gap:plugin name="com.machenmusik.plugins.launchmyapp" version="3.1.2">
+        <param name="URL_SCHEME" value="uluapp" />
+        <param name="HTTP_HOST" value="uluapp.com" />
+        <param name="HTTP_PATHPREFIX" value="/" />
+        <param name="HTTPS_HOST" value="..." />
+        <param name="HTTPS_PATHPREFIX" value="/" />
+    </gap:plugin>
 
 
 
