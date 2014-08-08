@@ -232,22 +232,21 @@ define(function (require) {
 
                 var pathname = tmpParsed.pathname.split('uluapp.com/');
                 console.log(pathname);
-                console.log(pathname.length);
-                console.log(pathname[0]);
-                console.log(pathname[1]);
-
-
-                var parsed = Utils.parseUrl('http://uluapp.com/' + pathname[1]);
+                var parsed = Utils.parseUrl('http://uluapp.com/' + pathname.pop());
 
                 console.log(parsed);
                 console.log(parsed.pathname);
                 console.log(parsed.pathname.split('/'));
                 console.log(parsed.pathname.split('/')[0]);
 
-                switch(parsed.pathname.split('/')[0]){
+                var splitPath = parsed.pathname.split('/');
+
+                switch(splitPath[0]){
                     case 'i':
                         Utils.Notification.Toast('Accepting a Friend Invite!');
 
+                        Utils.Notification.Toast(splitPath[1]);
+                        
                         // Accept via ajax!
                         // - as long as logged in...
 
