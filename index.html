@@ -84,16 +84,15 @@
             }
 
             function handleOpenURL(url) {
-                if(App){
-                    // already open!
-                    alert('already open!');
-                    App.Events.trigger('handle-open-url', url);
-                } else {
-                    alert('not open!');
-                    setTimeout(function() {
+                setTimeout(function() {
+
+                    if(App){
                         App.Events.trigger('handle-open-url', url);
-                    }, 2000);
-              }
+                    } else {
+                        handleOpenURL(url);
+                    }
+
+                }, 100);
             }
 
         </script>
