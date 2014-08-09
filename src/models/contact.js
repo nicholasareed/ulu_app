@@ -158,7 +158,8 @@ define(function (require) {
                             new Contact({
                                 id: 1,
                                 displayName: 'nick reed',
-                                phoneNumbers: ['6502068481','6027059885']
+                                name: 'nick reed',
+                                phoneNumbers: ['6502068481']
                             })];
 
 
