@@ -3,6 +3,7 @@ define(function (require) {
     "use strict";
 
     var $                   = require('jquery'),
+        _                   = require('underscore'),
         Backbone            = require('backbone-adapter'),
         Utils               = require('utils'),
         Credentials         = JSON.parse(require('text!credentials.json')),
@@ -56,14 +57,15 @@ define(function (require) {
                 setTimeout(function(){
 
                     var models = [];
-                    that.AllContacts.forEach(function(tmpContact){
+                    models = _.filter(that.AllContacts, function(tmpContact){
                         if(tmpContact.get('displayName').toLowerCase().indexOf( filter ) !== -1){
                             // Found it
 
-                            models.push(tmpContact);
+                            // models.push(tmpContact);
                             console.log('FOUD!', tmpContact);
+                            return true;
                         } else {
-                            console.error('Not found');
+                            // console.error('Not found');
                         }
                     });
 
@@ -89,6 +91,8 @@ define(function (require) {
                     options.desiredFields = ['id']; // required fields? requires a phone number?
                     var fields       = ['displayName','name'];
                     navigator.contacts.find(fields, function(contacts){
+                        console.log('Got all contacts');
+                        console.log(contacts.length);
                         that.AllContacts = contacts;
                         def.resolve();
                     }, function(err){
