@@ -89,7 +89,7 @@ define(function (require) {
                     options.filter   = "*"; // any/all contacts
                     options.multiple = true;
                     options.desiredFields = ['id']; // required fields? requires a phone number?
-                    var fields       = ['displayName','name'];
+                    var fields       = ['displayName','name','phoneNumbers'];
                     navigator.contacts.find(fields, function(contacts){
                         console.log('Got all contacts');
                         console.log(contacts.length);
