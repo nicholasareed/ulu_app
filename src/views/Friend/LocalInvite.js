@@ -378,6 +378,7 @@ define(function(require, exports, module) {
         // - todo...
         console.log(Utils.Notification.Toast(phone_number));
         console.log(phone_number);
+        console.log(JSON.stringify(phone_number));
 
         Utils.Notification.Toast('Creating code...');
 
