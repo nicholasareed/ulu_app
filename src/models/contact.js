@@ -56,12 +56,18 @@ define(function (require) {
                 setTimeout(function(){
 
                     var models = [];
-                    that.AllContacts.forEach(function(Contact){
-                        if(Contact.displayName.toLowerCase().indexOf( filter ) !== -1){
+                    that.AllContacts.forEach(function(tmpContact){
+                        if(tmpContact.get('displayName').toLowerCase().indexOf( filter ) !== -1){
                             // Found it
-                            models.push(Contact);
+
+                            models.push(tmpContact);
+                            console.log('FOUD!', tmpContact);
+                        } else {
+                            console.error('Not found');
                         }
                     });
+
+                    that.set(models);
                     def.resolve(models);
 
                 },1);
@@ -76,25 +82,42 @@ define(function (require) {
                 var def = $.Deferred();
 
                 // find all contacts
-                var options      = new ContactFindOptions();
-                options.filter   = "*"; // any/all contacts
-                options.multiple = true;
-                options.desiredFields = [navigator.contacts.fieldType.id]; // required fields? requires a phone number?
-                var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
-                navigator.contacts.find(fields, function(contacts){
-                    that.AllContacts = contacts;
-                    def.resolve();
-                }, function(err){
-                    Utils.Notification.Toast('Failed loading contacts');
-                    def.reject(err);
-                }, options);
+                if(App.Data.usePg){
+                    var options      = new ContactFindOptions();
+                    options.filter   = "*"; // any/all contacts
+                    options.multiple = true;
+                    options.desiredFields = [navigator.contacts.fieldType.id]; // required fields? requires a phone number?
+                    var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+                    navigator.contacts.find(fields, function(contacts){
+                        that.AllContacts = contacts;
+                        def.resolve();
+                    }, function(err){
+                        Utils.Notification.Toast('Failed loading contacts');
+                        def.reject(err);
+                    }, options);
+                } else {
+
+                    setTimeout(function(){
+                        that.AllContacts = [
+                            new Contact({
+                                id: 1,
+                                displayName: 'nick reed',
+                                phoneNumbers: ['6502068481','6027059885']
+                            })];
+
+
+                        def.resolve();
+                    },1);
+
+                }
 
                 return def.promise();
 
             },
 
             comparator: function(model){
-                return model.get('name').toString().toLowerCase();
+                console.log(model);
+                return model.get('displayName').toString().toLowerCase();
             },
 
         });

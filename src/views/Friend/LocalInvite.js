@@ -34,6 +34,7 @@ define(function(require, exports, module) {
 
     // Models
     var ContactModel = require('models/contact');
+    var RelationshipCodeModel = require('models/relationship_code');
 
     // Subviews
 
@@ -127,7 +128,7 @@ define(function(require, exports, module) {
 
         // Create default surfaces we'll re-use
         this.InstructionsSurface = new Surface({
-            content: '<i class="icon ion-arrow-up-a"></i> Search by typing above!',
+            content: '<i class="icon ion-arrow-up-a"></i> Search contacts to send SMS',
             size: [undefined, 200],
             properties: {
                 color: '#444',
@@ -294,7 +295,7 @@ define(function(require, exports, module) {
 
         // sort existing
         this.contentScrollView.Views = _.sortBy(this.contentScrollView.Views, function(tmpPlayerView){
-            return tmpPlayerView.Model.get('username').toLowerCase();
+            return tmpPlayerView.Model.get('displayName').toLowerCase();
         });
 
         // resequence? (happens automatically?)
@@ -308,9 +309,9 @@ define(function(require, exports, module) {
         console.log(Model.toJSON());
         console.log(JSON.stringify(Model.toJSON()));
 
-        var userView = new View(),
-            name = Model.get('profile.name') || '&nbsp;',
-            username = Model.get('username');
+        var userView = new View();
+
+        var name = Model.get('displayName');
 
         userView.Model = Model;
         userView.Surface = new Surface({
@@ -320,12 +321,66 @@ define(function(require, exports, module) {
         });
         userView.Surface.pipe(that.contentScrollView);
         userView.Surface.on('click', function(){
-            App.history.navigate('player/' + Model.get('_id'));
+            // App.history.navigate('player/' + Model.get('_id'));
+            
+            var ptns = userView.Model.get('phoneNumbers');
+
+            if(!ptns || !ptns.length){
+                Utils.Notification.Toast('No phone number!');
+                return;
+            }
+
+            if(ptns.length > 1){
+                // Multiple phone number options!
+                var optList = [];
+                ptns.forEach(function(ptn){
+                    optList.push({
+                        text: ptn,
+                        value: ptn,
+                        success: function(thisOne){
+                            that.launch_sms(thisOne.value);
+                        }
+                    });
+                });
+                Utils.Popover.List({
+                    list: optList
+                });
+                return;
+            }
+
+            // Only a single ptn
+            that.launch_sms(ptns.pop());
+
+
         });
         userView.add(userView.Surface);
 
         that.contentScrollView.Views.push(userView);
 
+    };
+
+    PageView.prototype.launch_sms = function(phone_number){
+        var that = this;
+
+        // Should pre-load an RCode
+        // - todo...
+
+        Utils.Notification.Toast('Creating code...');
+
+        // Create Model
+        var newRCode = new RelationshipCodeModel.RelationshipCode({
+            modelType: 'add_friend'
+        })
+
+        // Wait for model to be populated before loading Surfaces
+        newRCode.populated().then(function(){
+
+            var sentence = "get ulu! I'm on it now. uluapp.com/i/" + newRCode.get('code');
+            console.log(sentence);
+            window.plugins.socialsharing.shareViaSMS(sentence, phone_number, function(msg) {console.log('ok: ' + msg)}, function(msg) {Utils.Notification.Toast('error: ' + msg)})
+
+        });
+        newRCode.fetch();
     };
 
     PageView.prototype.addOne2 = function(Model) { 
