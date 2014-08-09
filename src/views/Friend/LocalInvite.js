@@ -311,13 +311,22 @@ define(function(require, exports, module) {
 
         var userView = new View();
 
-        var name = Model.get('displayName');
+        var name = Model.get('displayName'),
+            ptnCount = '';
+
+        if(!Model.get('phoneNumbers')){
+            ptnCount = '<strong>0</strong> numbers';
+        } else if(Model.get('phoneNumbers').length == 1){
+            ptnCount = '<stong>1</strong> number';
+        } else {
+            ptnCount = '<strong>' + Model.get('phoneNumbers').length + '</strong> numbers';
+        }
 
         userView.Model = Model;
         userView.Surface = new Surface({
-             content: '<div><span class="ellipsis-all">' + name + '</span></div>',
-             size: [undefined, 60],
-             classes: ['select-friends-list-item-default']
+             content: '<div><span class="ellipsis-all">' + name + '</span></div><div><span class="ellipsis-all">' + ptnCount + '</span></div>',
+             size: [undefined, true],
+             classes: ['contact-list-item-default']
         });
         userView.Surface.pipe(that.contentScrollView);
         userView.Surface.on('click', function(){
@@ -353,6 +362,9 @@ define(function(require, exports, module) {
 
 
         });
+        userView.getSize = function(){
+            return [undefined, userView.Surface._size ? userView.Surface._size[1]: undefined];
+        };
         userView.add(userView.Surface);
 
         that.contentScrollView.Views.push(userView);

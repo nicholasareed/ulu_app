@@ -241,6 +241,37 @@ body {
 }
 
 
+
+/* Friend / Contact adding list */
+
+/* Matched Sentence Friends */
+
+.contact-list-item-default {
+  line-height: 44px;
+  background: white;
+
+  padding: 0px 8px;
+
+  border-bottom: 1px dashed #ddd;
+}
+
+.contact-list-item-default > div:nth-child(1) {
+  font-size: 36px;
+  line-height: 36px;
+  color: #333;
+
+  padding-top: 10px;
+}
+
+.contact-list-item-default > div:nth-child(2) {
+  font-size: 16px;
+  line-height: 18px;
+  color: #333;
+  padding-left: 4px;
+}
+
+
+
 /* Push Notifications */
 
 .push-list-text-default {
