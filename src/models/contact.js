@@ -7,6 +7,7 @@ define(function (require) {
         Backbone            = require('backbone-adapter'),
         Utils               = require('utils'),
         Credentials         = JSON.parse(require('text!credentials.json')),
+        operative           = require('lib2/operative'),
 
         Contact = Backbone.DeepModel.extend({
 
@@ -46,6 +47,29 @@ define(function (require) {
                 }
             },
 
+            async: operative({
+                runFilter: function(all_contacts, filter, cb) {
+
+                    var models = [];
+                    console.log(all_contacts);
+                    all_contacts.forEach(function(tmpContact){
+                        // console.log(JSON.stringify(tmpContact));
+                        try {
+                            if(tmpContact.displayName.toLowerCase().indexOf( filter ) !== -1){
+                                // Found it
+
+                                models.push(tmpContact);
+                                console.log('FOUD!', tmpContact);
+                                
+                            }
+                        }catch(err){}
+
+                    });
+
+                    cb( models );
+                }
+            }),
+
             filterContacts: function(){
                 // Filter through "this.AllContacts" and return matched ones
                 var that = this;
@@ -55,25 +79,40 @@ define(function (require) {
                 var filter = that.options.filter;
 
                 setTimeout(function(){
+                    console.log(JSON.stringify(that.AllContacts));
+                    that.async.runFilter(JSON.parse(JSON.stringify(that.AllContacts)), filter, function(models){
+                        console.log(models);
+                        models.forEach(function(tmpModel){
+                            tmpModel = new Contact(tmpModel);
+                        });
+                        that.set(models);
+                        def.resolve(models);
+                    })
 
-                    var models = [];
-                    models = _.filter(that.AllContacts, function(tmpContact){
-                        console.log(JSON.stringify(tmpContact));
-                        try {
-                            if(tmpContact.get('displayName').toLowerCase().indexOf( filter ) !== -1){
-                                // Found it
 
-                                // models.push(tmpContact);
-                                console.log('FOUD!', tmpContact);
-                                return true;
-                            }
-                        }catch(err){}
-                        
-                        return false;
-                    });
 
-                    that.set(models);
-                    def.resolve(models);
+                    // var models = [];
+                    // models = _.filter(that.AllContacts, function(tmpContact){
+                    //     console.log(JSON.stringify(tmpContact));
+                    //     try {
+                    //         if(tmpContact.get('displayName').toLowerCase().indexOf( filter ) !== -1){
+                    //             // Found it
+
+                    //             // models.push(tmpContact);
+                    //             console.log('FOUD!', tmpContact);
+                    //             return true;
+                    //         }
+                    //     }catch(err){}
+
+                    //     return false;
+                    // });
+
+                    // that.calculator.add(1,2, function(result){
+                    //     // alert(result);
+                    // });
+
+                    // that.set(models);
+                    // def.resolve(models);
 
                 },1);
 
