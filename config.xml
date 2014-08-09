@@ -199,7 +199,7 @@
     </gap:config-file> -->
 
     <gap:plugin name="com.machenmusik.plugins.launchmyapp" version="3.1.2">
-        <param name="URL_SCHEME" value="uluapp" />
+        <param name="URL_SCHEME" value="ulu" />
         <param name="HTTP_HOST" value="uluapp.com" />
         <param name="HTTP_PATHPREFIX" value="/" />
         <param name="HTTPS_HOST" value="uluapp.com" />
