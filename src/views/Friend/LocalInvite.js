@@ -348,7 +348,7 @@ define(function(require, exports, module) {
 
         var userView = new View();
 
-        var name = Model.get('displayName'),
+        var name = Model.get('displayName') || Model.get('name'),
             ptnCount = '';
 
         if(!Model.get('phoneNumbers')){
