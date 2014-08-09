@@ -59,13 +59,16 @@ define(function (require) {
                     var models = [];
                     models = _.filter(that.AllContacts, function(tmpContact){
                         console.log(JSON.stringify(tmpContact));
-                        if(tmpContact.get('displayName').toLowerCase().indexOf( filter ) !== -1){
-                            // Found it
+                        try {
+                            if(tmpContact.get('displayName').toLowerCase().indexOf( filter ) !== -1){
+                                // Found it
 
-                            // models.push(tmpContact);
-                            console.log('FOUD!', tmpContact);
-                            return true;
-                        }
+                                // models.push(tmpContact);
+                                console.log('FOUD!', tmpContact);
+                                return true;
+                            }
+                        }catch(err){}
+                        
                         return false;
                     });
 
