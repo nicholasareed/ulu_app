@@ -347,7 +347,7 @@ define(function(require, exports, module) {
                         text: ptn.value + '('+ ptn.type +')',
                         value: ptn.value,
                         success: function(thisOne){
-                            that.launch_sms(thisOne.value.value);
+                            that.launch_sms(thisOne.value.value); 
                         }
                     });
                 });
