@@ -305,9 +305,9 @@ define(function(require, exports, module) {
 
     PageView.prototype.addOne = function(Model){
         var that = this;
-        console.log(Model);
-        console.log(Model.toJSON());
-        console.log(JSON.stringify(Model.toJSON()));
+        // console.log(Model);
+        // console.log(Model.toJSON());
+        // console.log(JSON.stringify(Model.toJSON()));
 
         var userView = new View();
 
