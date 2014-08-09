@@ -86,8 +86,8 @@ define(function (require) {
                     var options      = new ContactFindOptions();
                     options.filter   = "*"; // any/all contacts
                     options.multiple = true;
-                    options.desiredFields = [navigator.contacts.fieldType.id]; // required fields? requires a phone number?
-                    var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+                    options.desiredFields = ['id']; // required fields? requires a phone number?
+                    var fields       = ['displayName','name'];
                     navigator.contacts.find(fields, function(contacts){
                         that.AllContacts = contacts;
                         def.resolve();
