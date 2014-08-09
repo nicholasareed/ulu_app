@@ -332,7 +332,8 @@ define(function(require, exports, module) {
 
         // sort existing
         this.contentScrollView.Views = _.sortBy(this.contentScrollView.Views, function(tmpPlayerView){
-            return tmpPlayerView.Model.get('displayName').toLowerCase();
+            var name = tmpPlayerView.Model.get('displayName') || tmpPlayerView.Model.get('name');
+            return name.toLowerCase();
         });
 
         // resequence? (happens automatically?)
