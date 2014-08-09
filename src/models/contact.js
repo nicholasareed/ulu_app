@@ -58,8 +58,8 @@ define(function (require) {
                             if(tmpContact.displayName.toLowerCase().indexOf( filter ) !== -1){
                                 // Found it
 
+                                console.log(tmpContact.displayName.toLowerCase().indexOf( filter ), tmpContact.displayName.toLowerCase(), filter);
                                 models.push(tmpContact);
-                                // console.log('FOUD!', tmpContact);
                                 
                             }
                         }catch(err){}
@@ -165,7 +165,7 @@ define(function (require) {
             },
 
             comparator: function(model){
-                console.log(model);
+                // console.log(model);
                 return model.get('displayName').toString().toLowerCase();
             },
 
