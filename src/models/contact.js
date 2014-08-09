@@ -51,7 +51,7 @@ define(function (require) {
                 runFilter: function(all_contacts, filter, cb) {
 
                     var models = [];
-                    console.log(all_contacts);
+                    // console.log(all_contacts);
                     all_contacts.forEach(function(tmpContact){
                         // console.log(JSON.stringify(tmpContact));
                         try {
@@ -59,7 +59,7 @@ define(function (require) {
                                 // Found it
 
                                 models.push(tmpContact);
-                                console.log('FOUD!', tmpContact);
+                                // console.log('FOUD!', tmpContact);
                                 
                             }
                         }catch(err){}
