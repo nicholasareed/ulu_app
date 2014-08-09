@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="com.ulu.app.pub" 
-    version="0.0.1.71" 
+    version="0.0.1.72" 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -179,11 +179,11 @@
 
 
 
-    <!--
+    
     <gap:plugin name="nl.x-services.plugins.launchmyapp">
         <param name="URL_SCHEME" value="ulu" />
     </gap:plugin>
-    -->
+    
     
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
@@ -198,13 +198,13 @@
       </activity>
     </gap:config-file> -->
 
-    <gap:plugin name="com.machenmusik.plugins.launchmyapp" version="3.1.2">
+    <!-- <gap:plugin name="com.machenmusik.plugins.launchmyapp" version="3.1.2">
         <param name="URL_SCHEME" value="ulu" />
         <param name="HTTP_HOST" value="uluapp.com" />
         <param name="HTTP_PATHPREFIX" value="/" />
         <param name="HTTPS_HOST" value="uluapp.com" />
         <param name="HTTPS_PATHPREFIX" value="/" />
-    </gap:plugin>
+    </gap:plugin> -->
 
 
 
