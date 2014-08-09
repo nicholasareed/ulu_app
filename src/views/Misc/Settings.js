@@ -137,7 +137,19 @@ define(function(require, exports, module) {
             },
 
             {
-                title: 'Profile Edit',
+                title: 'Friends', // (' + friend_count + ')',
+                desc: 'Invite new people',
+                href: 'friend/list'
+            },
+            
+            {
+                title: 'Add Friend', // (' + friend_count + ')',
+                desc: 'Choose from contacts',
+                href: 'friend/add'
+            },
+
+            {
+                title: 'Edit Your Profile',
                 desc: 'Change your display name',
                 href: 'profile/edit'
             },
@@ -172,11 +184,11 @@ define(function(require, exports, module) {
 
         var friend_count = 0;
 
-        settings.unshift({
-            title: 'Friends', // (' + friend_count + ')',
-            desc: 'Invite new people',
-            href: 'friend/list'
-        });
+        // settings.unshift({
+        //     title: 'Friends', // (' + friend_count + ')',
+        //     desc: 'Invite new people',
+        //     href: 'friend/list'
+        // });
 
         // Get "Friends" count that are waiting on you
 
