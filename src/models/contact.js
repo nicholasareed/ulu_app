@@ -58,7 +58,9 @@ define(function (require) {
                             if(tmpContact.displayName.toLowerCase().indexOf( filter ) !== -1){
                                 // Found it
 
-                                console.log(tmpContact.displayName.toLowerCase().indexOf( filter ), tmpContact.displayName.toLowerCase(), filter);
+                                console.log(tmpContact.displayName.toLowerCase().indexOf( filter ));
+                                console.log(tmpContact.displayName.toLowerCase());
+                                console.log(filter);
                                 models.push(tmpContact);
                                 
                             }
@@ -83,7 +85,7 @@ define(function (require) {
                     that.async.runFilter(JSON.parse(JSON.stringify(that.AllContacts)), filter, function(models){
                         // console.log(models);
 
-                        if(filter != that.options.filer){
+                        if(filter != that.options.filter){
                             // def.reject();
                             return;
                         }
