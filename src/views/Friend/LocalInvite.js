@@ -376,6 +376,8 @@ define(function(require, exports, module) {
 
         // Should pre-load an RCode
         // - todo...
+        console.log(Utils.Notification.Toast(phone_number));
+        console.log(phone_number);
 
         Utils.Notification.Toast('Creating code...');
 
