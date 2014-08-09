@@ -76,12 +76,17 @@ define(function (require) {
 
                 var def = $.Deferred();
 
-                var filter = that.options.filter;
+                var filter = that.options.filter + '';
 
                 setTimeout(function(){
                     // console.log(JSON.stringify(that.AllContacts));
                     that.async.runFilter(JSON.parse(JSON.stringify(that.AllContacts)), filter, function(models){
                         // console.log(models);
+
+                        if(filter != that.options.filer){
+                            // def.reject();
+                            return;
+                        }
                         models.forEach(function(tmpModel){
                             tmpModel = new Contact(tmpModel);
                         });
