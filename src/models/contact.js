@@ -79,9 +79,9 @@ define(function (require) {
                 var filter = that.options.filter;
 
                 setTimeout(function(){
-                    console.log(JSON.stringify(that.AllContacts));
+                    // console.log(JSON.stringify(that.AllContacts));
                     that.async.runFilter(JSON.parse(JSON.stringify(that.AllContacts)), filter, function(models){
-                        console.log(models);
+                        // console.log(models);
                         models.forEach(function(tmpModel){
                             tmpModel = new Contact(tmpModel);
                         });
