@@ -250,12 +250,12 @@ define(function(require, exports, module) {
         }
 
         // Figure out which surfaces to remove/keep, re-order, etc.
-        var player_ids_to_keep = _.pluck(this.collection.toJSON(), '_id'),
+        var player_ids_to_keep = _.pluck(this.collection.toJSON(), 'id'),
             views_to_add = [];
 
         // Remove unneeded views
         this.contentScrollView.Views = _.filter(this.contentScrollView.Views, function(tmpPlayerView){
-            if(player_ids_to_keep.indexOf(tmpPlayerView.Model.get('_id')) !== -1){
+            if(player_ids_to_keep.indexOf(tmpPlayerView.Model.get('id')) !== -1){
                 return true;
             }
             return false;
@@ -263,13 +263,13 @@ define(function(require, exports, module) {
 
         // get existing, to figure out which to create
         var existing_view_player_ids = _.map(this.contentScrollView.Views, function(tmpPlayerView){
-            return tmpPlayerView.Model.get('_id');
+            return tmpPlayerView.Model.get('id');
         });
 
         // create new surfaces
         var to_create_ids = _.difference(player_ids_to_keep, existing_view_player_ids);
         this.collection.forEach(function(tmpPlayerModel){
-            if(to_create_ids.indexOf(tmpPlayerModel.get('_id')) === -1){
+            if(to_create_ids.indexOf(tmpPlayerModel.get('id')) === -1){
                 // already added!
                 return;
             }
