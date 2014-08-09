@@ -66,12 +66,49 @@ define(function(require, exports, module) {
     PageView.prototype.createHeader = function(){
         var that = this;
 
+        // Icons
+
+        // Get a code
+        this.headerContent = new View();
+        this.headerContent.CopyCode = new Surface({
+            content: '<i class="icon ion-ios7-copy-outline">',
+            size: [60, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.CopyCode.on('click', function(){
+
+            Utils.Notification.Toast('Getting Code');
+
+            // Create Model
+            var newRCode = new RelationshipCodeModel.RelationshipCode({
+                modelType: 'add_friend'
+            })
+
+            // Wait for model to be populated before loading Surfaces
+            newRCode.populated().then(function(){
+
+                Utils.Clipboard.copyTo(newRCode.get('code'));
+
+                var nada = prompt('Code has been copied',newRCode.get('code'));
+
+                // var sentence = "get ulu! I'm on it now. uluapp.com/i/" + newRCode.get('code');
+                // console.log(sentence);
+                // window.plugins.socialsharing.shareViaSMS(sentence, phone_number, function(msg) {console.log('ok: ' + msg)}, function(msg) {Utils.Notification.Toast('error: ' + msg)})
+
+            });
+            newRCode.fetch();
+        });
+
+
         // create the header
         this.header = new StandardHeader({
             content: 'Invite Friends',
             classes: ["normal-header"],
             backClasses: ["normal-header"],
-            moreContent: false
+            // moreContent: false
+            moreSurfaces: [
+                this.headerContent.CopyCode
+            ]
         }); 
         this.header._eventOutput.on('back',function(){
             App.history.back();

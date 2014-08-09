@@ -243,7 +243,7 @@ define(function (require) {
 
                 console.log('url');
                 console.log(url);
-                
+
                 var urlhost = 'ulu://',
 
                     n = url.indexOf(urlhost),
@@ -327,6 +327,23 @@ define(function (require) {
                 }
 
             }
+        },
+
+        Clipboard: {
+
+            copyTo: function(string){
+
+                try {
+                    window.plugins.clipboard.copy(string);
+                    Utils.Notification.Toast('Copied to Clipboard');
+                }catch(err){
+                    console.error('Failed1');
+                    console.error(err);
+                    Utils.Notification.Toast('Failed copying to clipboard');
+                }
+
+            }
+
         },
 
         Analytics: {
