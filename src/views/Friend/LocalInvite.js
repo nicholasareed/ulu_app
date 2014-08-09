@@ -87,9 +87,9 @@ define(function(require, exports, module) {
             // Wait for model to be populated before loading Surfaces
             newRCode.populated().then(function(){
 
-                Utils.Clipboard.copyTo(newRCode.get('code'));
+                Utils.Clipboard.copyTo('get ulu at uluapp.com/i/' + newRCode.get('code'));
 
-                var nada = prompt('Code has been copied',newRCode.get('code'));
+                // var nada = prompt('Code has been copied','get ulu at uluapp.com/i/' + newRCode.get('code'));
 
                 // var sentence = "get ulu! I'm on it now. uluapp.com/i/" + newRCode.get('code');
                 // console.log(sentence);
