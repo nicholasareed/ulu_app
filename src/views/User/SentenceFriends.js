@@ -79,14 +79,14 @@ define(function(require, exports, module) {
         this.model = new SentenceModel.Sentence();
         App.Events.on('resume', function(){
             Utils.Notification.Toast('resuming');
-            this.model.fetch();
+            that.model.fetch();
         });
         this.model.on('sync', function(){
             // sentence expired?
             if(that.model.get('expired') == true){
                 return;
             }
-            if(that.model.get('end_time') < new Date()){
+            if(moment(that.model.get('end_time')).format('X') < moment().format('X')){
                 
                 that.model.set('expired',true);
 
