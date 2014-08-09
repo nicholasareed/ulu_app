@@ -344,10 +344,10 @@ define(function(require, exports, module) {
                 var optList = [];
                 ptns.forEach(function(ptn){
                     optList.push({
-                        text: ptn,
-                        value: ptn,
+                        text: ptn.value + '('+ ptn.type +')',
+                        value: ptn.value,
                         success: function(thisOne){
-                            that.launch_sms(thisOne.value);
+                            that.launch_sms(thisOne.value.value);
                         }
                     });
                 });
@@ -358,7 +358,7 @@ define(function(require, exports, module) {
             }
 
             // Only a single ptn
-            that.launch_sms(ptns.pop());
+            that.launch_sms(ptns.pop().value);
 
 
         });
