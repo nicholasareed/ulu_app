@@ -86,9 +86,9 @@ define(function (require) {
                 // find all contacts
                 if(App.Data.usePg){
                     var options      = new ContactFindOptions();
-                    options.filter   = "*"; // any/all contacts
+                    options.filter   = ''; // any/all contacts
                     options.multiple = true;
-                    options.desiredFields = ['id']; // required fields? requires a phone number?
+                    options.desiredFields = ['id','displayName', 'name','phoneNumbers']; // required fields? requires a phone number?
                     var fields       = ['displayName','name','phoneNumbers'];
                     navigator.contacts.find(fields, function(contacts){
                         console.log('Got all contacts');
