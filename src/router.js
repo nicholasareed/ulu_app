@@ -194,8 +194,11 @@ define(function(require, exports, module) {
                 },
 
                 'friend/add' : function(){
-                    defaultRoute('FriendAdd', 'Friend/Add', arguments, {cache: false});
+                    defaultRoute('FriendInvite', 'Friend/LocalInvite', arguments, {cache: true});
                 },
+                // 'friend/add' : function(){
+                //     defaultRoute('FriendAdd', 'Friend/Add', arguments, {cache: false});
+                // },
                 
                 'profile/edit' : function(){
                     defaultRoute('ProfileEdit', 'User/ProfileEdit', arguments, {cache: false});

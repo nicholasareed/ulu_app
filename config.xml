@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="com.ulu.app.pub" 
-    version="0.0.1.72" 
+    version="0.0.1.73" 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -76,6 +76,18 @@
     <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
 
     <gap:plugin name="com.adobe.plugins.gaplugin" />
+
+
+    
+    <gap:plugin name="nl.x-services.plugins.launchmyapp">
+        <param name="URL_SCHEME" value="ulu" />
+    </gap:plugin>
+    
+    <gap:config-file platform="android" parent="/manifest/application">
+        <activity android:launchMode="singleInstance" />
+    </gap:config-file>
+
+
     
     <feature name="BarcodeScanner">
         <param name="ios-package" value="CDVBarcodeScanner" />
@@ -169,17 +181,6 @@
 
     <gap:splash src="splash.png" />
     <gap:splash src="splash/ios/Default_iphone5.png" gap:platform="ios" width="640" height="1136" />
-
-
-
-    
-    <gap:plugin name="nl.x-services.plugins.launchmyapp">
-        <param name="URL_SCHEME" value="ulu" />
-    </gap:plugin>
-    
-    <gap:config-file platform="android" parent="/manifest/application">
-        <activity android:launchMode="singleInstance" />
-    </gap:config-file>
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
     <!-- <gap:config-file platform="android" parent="/manifest/application" overwrite="false">

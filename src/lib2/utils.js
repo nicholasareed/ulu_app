@@ -225,6 +225,18 @@ define(function (require) {
             },
         },
 
+        Contacts: {
+
+            // // find all contacts with 'Bob' in any name field
+            // var options      = new ContactFindOptions();
+            // options.filter   = "Bob";
+            // options.multiple = true;
+            // options.desiredFields = [navigator.contacts.fieldType.id];
+            // var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+            // navigator.contacts.find(fields, onSuccess, onError, options);
+            
+        },
+
         Intent: {
             HandleOpenUrl: function(url){
                 // what type of a url are we looking at?
