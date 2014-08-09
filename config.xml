@@ -42,13 +42,6 @@
     <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
-    <preference name="AndroidLaunchMode" value="singleInstance" />
-    <preference name="androidlaunchmode" value="singleInstance" />
-    <preference name="android-launch-mode" value="singleInstance" />
-    <preference name="android-launchMode" value="singleInstance" />
-    <preference name="android-launchmode" value="singleInstance" />
-    <preference name="androidLaunchMode" value="singleInstance" />
-
     <gap:platform name="ios" />
     <gap:platform name="android" />
 
@@ -184,7 +177,9 @@
         <param name="URL_SCHEME" value="ulu" />
     </gap:plugin>
     
-    
+    <gap:config-file platform="android" parent="/manifest/application">
+        <activity android:launchMode="singleInstance" />
+    </gap:config-file>
 
     <!--<gap:config-file target="AndroidManifest.xml" parent="/*/application/activity">-->
     <!-- <gap:config-file platform="android" parent="/manifest/application" overwrite="false">
