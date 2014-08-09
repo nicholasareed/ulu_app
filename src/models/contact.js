@@ -93,7 +93,10 @@ define(function (require) {
                     navigator.contacts.find(fields, function(contacts){
                         console.log('Got all contacts');
                         console.log(contacts.length);
-                        that.AllContacts = contacts;
+                        var tmpContacts = _.map(contacts, function(tmp){
+                            return new Contact(tmp);
+                        });
+                        that.AllContacts = tmpContacts;
                         def.resolve();
                     }, function(err){
                         Utils.Notification.Toast('Failed loading contacts');
