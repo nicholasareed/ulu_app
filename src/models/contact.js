@@ -55,11 +55,24 @@ define(function (require) {
                     all_contacts.forEach(function(tmpContact){
                         // console.log(JSON.stringify(tmpContact));
                         try {
-                            if(tmpContact.displayName.toLowerCase().indexOf( filter ) !== -1){
+                            if(!tmpContact.displayName && !tmpContact.name){
+                                console.log('missing both displayName and name!');
+                                Utils.Notification.Toast('missing both displayName and name!');
+                                return;
+                            }
+                            if(tmpContact.displayName && tmpContact.displayName.toLowerCase().indexOf( filter ) !== -1){
                                 // Found it
 
                                 console.log(tmpContact.displayName.toLowerCase().indexOf( filter ));
                                 console.log(tmpContact.displayName.toLowerCase());
+                                console.log(filter);
+                                models.push(tmpContact);
+                                
+                            } else if(tmpContact.name && tmpContact.name.toLowerCase().indexOf( filter ) !== -1){
+                                // Found it
+
+                                console.log(tmpContact.name.toLowerCase().indexOf( filter ));
+                                console.log(tmpContact.name.toLowerCase());
                                 console.log(filter);
                                 models.push(tmpContact);
                                 
@@ -174,7 +187,11 @@ define(function (require) {
 
             comparator: function(model){
                 // console.log(model);
-                return model.get('displayName').toString().toLowerCase();
+                if(model.get('displayName')){
+                    return model.get('displayName').toString().toLowerCase();
+                } else {
+                    return model.get('name').toString().toLowerCase();
+                }
             },
 
         });
