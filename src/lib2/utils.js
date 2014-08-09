@@ -234,14 +234,17 @@ define(function (require) {
             // options.desiredFields = [navigator.contacts.fieldType.id];
             // var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
             // navigator.contacts.find(fields, onSuccess, onError, options);
-            
+
         },
 
         Intent: {
             HandleOpenUrl: function(url){
                 // what type of a url are we looking at?
 
-                var urlhost = 'uluapp.com/',
+                console.log('url');
+                console.log(url);
+                
+                var urlhost = 'ulu://',
 
                     n = url.indexOf(urlhost),
                     pathname = url.substring(n + urlhost.length),
@@ -253,6 +256,64 @@ define(function (require) {
 
                         var code = splitPath[1];
                         Utils.Notification.Toast(code);
+
+                        Utils.Popover.Buttons({
+                            title: 'Accept Friend Invite?',
+                            text: 'You have received one!',
+                            buttons: [
+                                {
+                                    text: 'Nah.'
+                                },
+                                {
+                                    text: 'Yes! We Friends',
+                                    success: function(){
+
+                                        // Check the invite code against the server
+                                        // - creates the necessary relationship also
+                                        $.ajax({
+                                            url: Credentials.server_root + 'relationships/invited',
+                                            method: 'post',
+                                            data: {
+                                                from: 'add', // if on the Player Edit / LinkUp page, we'd be using 'linkup'
+                                                code: code
+                                            },
+                                            success: function(response){
+                                                if(response.code != 200){
+                                                    if(response.msg){
+                                                        alert(response.msg);
+                                                        return;
+                                                    }
+                                                    alert('Invalid code, please try again');
+                                                    return false;
+                                                }
+
+                                                // Relationship has been created
+                                                // - either just added to a player
+                                                //      - simply go look at it
+                                                // - or am the Owner of a player now
+                                                //      - go edit the player
+
+                                                if(response.type == 'friend'){
+                                                    Utils.Notification.Toast('You have successfully added a friend!');
+
+                                                    // Update list of players
+                                                    App.Data.User.fetch();
+
+                                                    // App.history.back();
+
+                                                    return;
+                                                }
+
+                                            },
+                                            error: function(err){
+                                                alert('Failed with that code, please try again');
+                                                return;
+                                            }
+                                        });
+                                    }
+                                }
+                            ]
+                        });
 
                         // Accept via ajax!
                         // - as long as logged in...
