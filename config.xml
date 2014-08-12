@@ -38,7 +38,7 @@
     <preference name="exit-on-suspend" value="false" />
     <preference name="detect-data-types" value="false" />
 
-    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#34495E" />
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
