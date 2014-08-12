@@ -125,7 +125,7 @@ define(function(require, exports, module) {
 
             // debugger;
         });
-        this.sentenceModel.once('error', function(res, xhr, res3){
+        this.sentenceModel.once('error', function(res, xhr){
             // if(xhr.status == 404){
             //     // None found!
             //     return;

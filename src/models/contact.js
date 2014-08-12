@@ -57,27 +57,46 @@ define(function (require) {
                         try {
                             if(!tmpContact.displayName && !tmpContact.name){
                                 console.log('missing both displayName and name!');
-                                Utils.Notification.Toast('missing both displayName and name!');
+                                // Utils.Notification.Toast('Missing name!');
                                 return;
                             }
+                        }catch(err){
+
+                        }
+                        try {
                             if(tmpContact.displayName && tmpContact.displayName.toLowerCase().indexOf( filter ) !== -1){
                                 // Found it
 
-                                console.log(tmpContact.displayName.toLowerCase().indexOf( filter ));
-                                console.log(tmpContact.displayName.toLowerCase());
-                                console.log(filter);
+                                // console.log(tmpContact.displayName.toLowerCase().indexOf( filter ));
+                                // console.log(tmpContact.displayName.toLowerCase());
+                                // console.log(filter);
                                 models.push(tmpContact);
                                 
-                            } else if(tmpContact.name && tmpContact.name.toLowerCase().indexOf( filter ) !== -1){
-                                // Found it
-
-                                console.log(tmpContact.name.toLowerCase().indexOf( filter ));
-                                console.log(tmpContact.name.toLowerCase());
-                                console.log(filter);
-                                models.push(tmpContact);
-                                
+                            } else {
+                                throw NextError;
                             }
-                        }catch(err){}
+                        }catch(err){
+                            // console.log('probably ios');
+                            try {
+                                // given/formatted name (ios)
+                                if(tmpContact.name && tmpContact.name.formatted && tmpContact.name.formatted.toLowerCase().indexOf( filter ) !== -1){
+                                    // Found it
+
+                                    // console.log(tmpContact.name.formatted.toLowerCase().indexOf( filter ));
+                                    // console.log(tmpContact.name.formatted.toLowerCase());
+                                    // console.log(filter);
+                                    models.push(tmpContact);
+                                    
+                                } else {
+                                    // console.log('no match');
+                                    // console.log(tmpContact);
+                                    // console.log(tmpContact.name);
+                                }
+                            }catch(err){
+                                console.log(err);
+                            }
+
+                        }
 
                     });
 
@@ -96,7 +115,7 @@ define(function (require) {
                 setTimeout(function(){
                     // console.log(JSON.stringify(that.AllContacts));
                     that.async.runFilter(JSON.parse(JSON.stringify(that.AllContacts)), filter, function(models){
-                        // console.log(models);
+                        // console.log(models.length);
 
                         if(filter != that.options.filter){
                             // def.reject();
@@ -170,8 +189,11 @@ define(function (require) {
                         that.AllContacts = [
                             new Contact({
                                 id: 1,
-                                displayName: 'nick reed',
-                                name: 'nick reed',
+                                displayName: null, //'nick reed',
+                                name: {
+                                    given: null,
+                                    formatted: 'nick reed'
+                                },
                                 phoneNumbers: ['6502068481']
                             })];
 
@@ -190,7 +212,7 @@ define(function (require) {
                 if(model.get('displayName')){
                     return model.get('displayName').toString().toLowerCase();
                 } else {
-                    return model.get('name').toString().toLowerCase();
+                    return model.get('name.formatted').toString().toLowerCase();
                 }
             },
 

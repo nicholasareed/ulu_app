@@ -248,7 +248,10 @@ define(function(require, exports, module) {
             this.collection.filterContacts()
                 .then(function(){
                     if(val == that.SearchHeader.getValue()){
+                        console.log('triggering reset');
                         that.collection.trigger('reset');
+                    } else {
+                        console.log('nope');
                     }
                 });
         }
@@ -306,6 +309,7 @@ define(function(require, exports, module) {
         // create new surfaces
         var to_create_ids = _.difference(player_ids_to_keep, existing_view_player_ids);
         this.collection.forEach(function(tmpPlayerModel){
+            console.log('creating!');
             if(to_create_ids.indexOf(tmpPlayerModel.get('id')) === -1){
                 // already added!
                 return;
@@ -332,7 +336,7 @@ define(function(require, exports, module) {
 
         // sort existing
         this.contentScrollView.Views = _.sortBy(this.contentScrollView.Views, function(tmpPlayerView){
-            var name = tmpPlayerView.Model.get('displayName') || tmpPlayerView.Model.get('name');
+            var name = tmpPlayerView.Model.get('displayName') || tmpPlayerView.Model.get('name.formatted');
             return name.toLowerCase();
         });
 
@@ -349,7 +353,7 @@ define(function(require, exports, module) {
 
         var userView = new View();
 
-        var name = Model.get('displayName') || Model.get('name'),
+        var name = Model.get('displayName') || Model.get('name.formatted'),
             ptnCount = '';
 
         if(!Model.get('phoneNumbers')){
