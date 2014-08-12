@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="com.ulu.app.pub" 
-    version="0.0.1.74" 
+    version="0.0.1.75" 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -38,7 +38,7 @@
     <preference name="exit-on-suspend" value="false" />
     <preference name="detect-data-types" value="false" />
 
-    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarBackgroundColor" value="#34495E" />
     <preference name="StatusBarStyle" value="blacktranslucent" />
 
