@@ -155,8 +155,23 @@ define(function(require, exports, module) {
         
         // Icons
 
-        // Settings
+
+        // Invite somebody
         this.headerContent = new View();
+        this.headerContent.Invite = new Surface({
+            content: '<i class="icon ion-ios7-plus-outline">',
+            size: [60, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.Invite.on('click', function(){
+            // App.Cache.FriendListOptions = {
+            //     default: 'outgoing'
+            // };
+            // App.history.navigate('friend/list');
+            App.history.navigate('friend/add');
+        });
+
+        // Settings
         this.headerContent.Settings = new Surface({
             content: '<i class="icon ion-ios7-gear-outline"></i>',
             size: [60, undefined],
@@ -173,6 +188,7 @@ define(function(require, exports, module) {
             backContent: false,
             // backClasses: ["normal-header"],
             moreSurfaces: [
+                this.headerContent.Invite,
                 this.headerContent.Settings
             ]
         }); 
