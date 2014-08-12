@@ -103,18 +103,19 @@ define(function (require) {
                     cb( models );
                 }
             }),
-
+    
+            AllContactsJson = [],
             filterContacts: function(){
                 // Filter through "this.AllContacts" and return matched ones
                 var that = this;
 
                 var def = $.Deferred();
 
-                var filter = that.options.filter + '';
+                var filter = (that.options.filter + '').toLowerCase();
 
                 setTimeout(function(){
                     // console.log(JSON.stringify(that.AllContacts));
-                    that.async.runFilter(JSON.parse(JSON.stringify(that.AllContacts)), filter, function(models){
+                    that.async.runFilter(that.AllContactsJson), filter, function(models){
                         // console.log(models.length);
 
                         if(filter != that.options.filter){
@@ -178,6 +179,7 @@ define(function (require) {
                             return new Contact(tmp);
                         });
                         that.AllContacts = tmpContacts;
+                        that.AllContactsJson = JSON.parse(JSON.stringify(that.AllContacts);
                         def.resolve();
                     }, function(err){
                         Utils.Notification.Toast('Failed loading contacts');
@@ -197,6 +199,7 @@ define(function (require) {
                                 phoneNumbers: ['6502068481']
                             })];
 
+                        that.AllContactsJson = JSON.parse(JSON.stringify(that.AllContacts);
 
                         def.resolve();
                     },1);
