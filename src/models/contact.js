@@ -111,14 +111,15 @@ define(function (require) {
 
                 var def = $.Deferred();
 
-                var filter = (that.options.filter + '').toLowerCase();
+                var filter = that.options.filter + '';
+                filter = filter.toLowerCase();
 
                 setTimeout(function(){
                     // console.log(JSON.stringify(that.AllContacts));
                     that.async.runFilter(that.AllContactsJson, filter, function(models){
                         // console.log(models.length);
 
-                        if(filter != that.options.filter){
+                        if(filter != that.options.filter.toLowerCase()){
                             // def.reject();
                             return;
                         }
