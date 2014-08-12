@@ -40,7 +40,7 @@
 
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarBackgroundColor" value="#34495E" />
-    <preference name="StatusBarStyle" value="blackopaque" />
+    <preference name="StatusBarStyle" value="blacktranslucent" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
