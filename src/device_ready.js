@@ -106,8 +106,10 @@ define(function(require, exports, module) {
             try {
                 StatusBar.overlaysWebView(false);
                 StatusBar.backgroundColorByHexString(App.ConfigImportant.StatusBarBackgroundColor);
+                Utils.Notification.Toast('OK status bar');
             }catch(err){
                 console.log(err);
+                Utils.Notification.Toast('Failed status bar');
             }
 
             // Track.js
