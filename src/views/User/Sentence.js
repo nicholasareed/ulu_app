@@ -721,6 +721,7 @@ define(function(require, exports, module) {
         });
         this.activitiesAddSurface.pipe(this.contentScrollView);
         this.activitiesAddSurface.on('click', function(){
+
             // Choose a few activities via popup
             var tmpactivities = ['whatever','just chill','outside','competition','movie','go out','a drink or two','lets rage'];
 

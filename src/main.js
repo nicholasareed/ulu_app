@@ -196,6 +196,7 @@ define(function(require, exports, module) {
     if(App.Config.find("widget").get(0).attributes.id.value.indexOf('.pub') !== -1){
         App.Prod = true;
         App.ConfigImportant.Version = App.Config.find("widget").get(0).attributes.version.value;
+        App.ConfigImportant.StatusBarBackgroundColor = App.Config.find("widget").find('preference[name="StatusBarBackgroundColor"]').get(0).attributes.value.value;
     }
 
     // Run DeviceReady actions
