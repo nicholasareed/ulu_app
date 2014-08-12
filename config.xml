@@ -38,9 +38,9 @@
     <preference name="exit-on-suspend" value="false" />
     <preference name="detect-data-types" value="false" />
 
-    <preference name="StatusBarOverlaysWebView" value="false"/>
-    <preference name="StatusBarBackgroundColor" value="#FFFFFF"/>
-    <preference name="StatusBarStyle" value="blacktranslucent" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarBackgroundColor" value="#34495E" />
+    <preference name="StatusBarStyle" value="blackopaque" />
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
