@@ -115,7 +115,7 @@ define(function (require) {
 
                 setTimeout(function(){
                     // console.log(JSON.stringify(that.AllContacts));
-                    that.async.runFilter(that.AllContactsJson), filter, function(models){
+                    that.async.runFilter(that.AllContactsJson, filter, function(models){
                         // console.log(models.length);
 
                         if(filter != that.options.filter){
@@ -179,7 +179,7 @@ define(function (require) {
                             return new Contact(tmp);
                         });
                         that.AllContacts = tmpContacts;
-                        that.AllContactsJson = JSON.parse(JSON.stringify(that.AllContacts);
+                        that.AllContactsJson = JSON.parse(JSON.stringify(that.AllContacts));
                         def.resolve();
                     }, function(err){
                         Utils.Notification.Toast('Failed loading contacts');
@@ -199,7 +199,7 @@ define(function (require) {
                                 phoneNumbers: ['6502068481']
                             })];
 
-                        that.AllContactsJson = JSON.parse(JSON.stringify(that.AllContacts);
+                        that.AllContactsJson = JSON.parse(JSON.stringify(that.AllContacts));
 
                         def.resolve();
                     },1);
