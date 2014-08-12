@@ -104,7 +104,7 @@ define(function (require) {
                 }
             }),
     
-            AllContactsJson = [],
+            AllContactsJson: [],
             filterContacts: function(){
                 // Filter through "this.AllContacts" and return matched ones
                 var that = this;
