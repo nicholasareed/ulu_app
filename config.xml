@@ -145,6 +145,11 @@
         <param name="ios-package" value="APPLocalNotification"/>
     </feature>
 
+    <feature name="StatusBar">
+    	<param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
+
+
     <!-- Android -->
     <icon src="res/icon/android/icon.png" gap:platform="android" />
 
