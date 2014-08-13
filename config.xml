@@ -69,7 +69,7 @@
     <gap:plugin name="com.phonegap.plugins.barcodescanner" />
     <gap:plugin name="com.verso.cordova.clipboard" />
 
-    <gap:plugin name="com.plugin.datepicker" version="0.3.22" />
+    <gap:plugin name="com.plugin.datepicker" />
     <gap:plugin name="nl.x-services.plugins.socialsharing" />
     <gap:plugin name="info.asankan.phonegap.smsplugin" />
     <gap:plugin name="nl.x-services.plugins.toast" />
