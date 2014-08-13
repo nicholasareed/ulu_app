@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="com.ulu.app.pub" 
-    version="0.0.1.77" 
+    version="0.0.1.78" 
     xmlns="http://www.w3.org/ns/widgets" 
     xmlns:gap="http://phonegap.com/ns/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -69,7 +69,7 @@
     <gap:plugin name="com.phonegap.plugins.barcodescanner" />
     <gap:plugin name="com.verso.cordova.clipboard" />
 
-    <gap:plugin name="com.plugin.datepicker" />
+    <gap:plugin name="com.plugin.datepicker" version="0.3.22" />
     <gap:plugin name="nl.x-services.plugins.socialsharing" />
     <gap:plugin name="info.asankan.phonegap.smsplugin" />
     <gap:plugin name="nl.x-services.plugins.toast" />
