@@ -60,7 +60,9 @@ define(function(require, exports, module) {
         this.sentence = {
             start_time: {
                 text: 'Now',
-                value: 'now'
+                value: 'now',
+                pre_text_result: 'starting ',
+                result_text: 'now'
             },
             duration: {
                 text: '1 hour',
@@ -239,7 +241,7 @@ define(function(require, exports, module) {
                 activities: that.sentence.activities
             });
 
-            Utils.Notification.Toast('OK, Wait a Moment');
+            Utils.Notification.Toast('OK, one moment');
 
             Sentence.save()
             .then(function(result){
@@ -608,7 +610,7 @@ define(function(require, exports, module) {
 
         // at START TIME
         this.startTimeSurface = new Surface({
-            content: "At <span></span>",
+            content: "<span></span>",
             size: [undefined, true],
             classes: ['sentence-normal-default']
         });
@@ -616,13 +618,19 @@ define(function(require, exports, module) {
         this.startTimeSurface.on('click', function(){
             var timeOptions = [{
                 text: 'Now',
-                value: 'now'
+                value: 'now',
+                pre_text_result: 'starting ',
+                result_text: 'now'
             },{
                 text: '30 minutes',
-                value: moment().add('m',30)
+                value: moment().add('m',30),
+                pre_text_result: 'at ',
+                result_text: moment().add('m',30).format('h:mma')
             },{
                 text: '1 hour',
-                value: moment().add('m',60)
+                value: moment().add('m',60),
+                pre_text_result: 'at ',
+                result_text: moment().add('m',60).format('h:mma')
             },{
                 text: 'Choose time',
                 value: 'pick',
@@ -645,6 +653,8 @@ define(function(require, exports, module) {
                             alert(moment(date).format('h:mma'));
                             alert(moment(date));
                             that.sentence.start_time = {
+                                pre_text_result: 'at ',
+                                result_text: moment(date).format('h:mma'),
                                 text: moment(date).format('h:mma'),
                                 value: moment(date)
                             };
@@ -752,7 +762,19 @@ define(function(require, exports, module) {
         this.activitiesAddSurface.on('click', function(){
 
             // Choose a few activities via popup
-            var tmpactivities = ['whatever','just chill','outside','competition','movie','go out','a drink or two','lets rage'];
+            var tmpactivities = [
+                'whatever',
+                'just chill',
+                'outside',
+                'exercise',
+                'competition',
+                'movie or a show',
+                'downtown',
+                'a drink',
+                'some food',
+                "let's rage",
+                'quiet time',
+                ];
 
             var activityOptions = [];
 
@@ -822,15 +844,20 @@ define(function(require, exports, module) {
         // Update the values
 
         // Start Time
-        switch(this.sentence.start_time.value){
-            case 'now':
-                that.startTimeSurface.setContent('starting <span>now</span>');
-                break;
-            default:
-                // time chosen
-                that.startTimeSurface.setContent('at <span>'+ this.sentence.start_time.text +'</span>');
-                break;
-        }
+        that.startTimeSurface.setContent(this.sentence.start_time.pre_text_result + ' <span>'+ this.sentence.start_time.result_text +'</span>');
+        // switch(this.sentence.start_time.value){
+        //     case 'now':
+        //         that.startTimeSurface.setContent('starting <span>now</span>');
+        //         break;
+        //     default:
+        //         // time chosen
+        //         if(this.sentence.start_time.){
+        //             that.startTimeSurface.setContent('at <span>'+ this.sentence.start_time.text +'</span>');
+        //         } else {
+        //             that.startTimeSurface.setContent('in <span>'+ this.sentence.start_time.text +'</span>');
+        //         }
+        //         break;
+        // }
 
         // Duration
         switch(this.sentence.duration.value){
