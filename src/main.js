@@ -183,7 +183,7 @@ define(function(require, exports, module) {
                 size: 60
             },
             Footer: {
-                size: 60
+                size: 0
             }
         },
     };

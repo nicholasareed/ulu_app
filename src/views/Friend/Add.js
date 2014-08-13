@@ -103,7 +103,6 @@ define(function(require, exports, module) {
 
         this.header.pipe(this._eventInput);
 
-        // this._eventInput.on('menutoggle', this.menuToggle.bind(this));
         this._eventOutput.on('inOutTransition', function(args){
             this.header.inOutTransition.apply(this.header, args);
         })

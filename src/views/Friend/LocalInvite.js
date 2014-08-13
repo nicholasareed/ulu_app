@@ -16,6 +16,7 @@ define(function(require, exports, module) {
     var RenderNode         = require('famous/core/RenderNode')
 
     var Utility = require('famous/utilities/Utility');
+    var Timer = require('famous/utilities/Timer');
 
     var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
     var NavigationBar = require('famous/widgets/NavigationBar');
@@ -562,10 +563,13 @@ define(function(require, exports, module) {
 
                         // Content
                         // - extra delay for content to be gone
-                        window.setTimeout(function(){
+                        Timer.setTimeout(function(){
 
                             // Bring content back
                             that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
+
+                            // Focus on the search input!
+                            that.SearchHeader.focus();
 
                         }, delayShowing + transitionOptions.outTransition.duration);
 

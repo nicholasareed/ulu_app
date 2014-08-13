@@ -718,8 +718,10 @@ body {
   background: white;
   color: #182030;
 
-	line-height: 50px;
-	text-align: center;
+  padding-left: 8px;
+  text-align: left;
+
+	line-height: 60px;
   z-index: 10;
 }
 
@@ -733,6 +735,13 @@ body {
 .normal-header.header-more-text-button {
   border: 1px solid white;
 }
+
+.normal-header.back {
+  text-align: center;
+  padding: 0px;
+  /*border-right: 1px solid #eee;*/
+}
+
 
 
 .profile-header {
@@ -779,7 +788,7 @@ body {
 
 .header-tab-icon-text-big i {
   font-size: 30px;
-  line-height: 50px;
+  line-height: 60px;
 }
 
 
@@ -1585,32 +1594,6 @@ textarea {
   font-size: 14px;
 }
 
-
-
-/* Backgrounds */
-
-.normal-header {
-	/*background-color: black;*/
-  color: white;
-  color: #182030;
-
-  padding-left: 8px;
-  text-align: left;
-	
-	line-height: 50px;
-}
-
-.normal-header.back {
-  text-align: center;
-  padding: 0px;
-  /*border-right: 1px solid #eee;*/
-}
-
-.normal-header.nemesis-main-header {
-  font-weight: bold;
-  font-size: 40px;
-  /*font-family: 'Kaushan Script', cursive;*/
-}
 
 
 
