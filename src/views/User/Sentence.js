@@ -648,10 +648,10 @@ define(function(require, exports, module) {
                         };
 
                         datePicker.show(options, function(date){
-                            alert(date);
-                            alert(JSON.stringify(date));
-                            alert(moment(date).format('h:mma'));
-                            alert(moment(date));
+                            // alert(date); 
+                            // alert(JSON.stringify(date)); //"2014-08-34...Z"
+                            // alert(moment(date).format('h:mma')); //"11:25pm"
+                            // alert(moment(date)); // same as 'date'
                             that.sentence.start_time = {
                                 pre_text_result: 'at ',
                                 result_text: moment(date).format('h:mma'),
@@ -768,7 +768,7 @@ define(function(require, exports, module) {
                 'outside',
                 'exercise',
                 'competition',
-                'movie or a show',
+                'watch a show',
                 'downtown',
                 'a drink',
                 'some food',
