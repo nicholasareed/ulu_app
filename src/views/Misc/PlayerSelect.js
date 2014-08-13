@@ -54,8 +54,8 @@ define(function(require, exports, module) {
 
         // create the layout
         this.layout = new HeaderFooterLayout({
-            headerSize: 50,
-            footerSize: 0
+            headerSize: App.Defaults.Header.size,
+            footerSize: App.Defaults.Footer.size
         });
 
         this.createHeader();
@@ -113,7 +113,7 @@ define(function(require, exports, module) {
         // Player selection (names of current and possible)
         this.PlayerSeqLayout = new HeaderFooterLayout({
             headerSize: 70,
-            footerSize: 0
+            footerSize: App.Defaults.Footer.size
         });
 
         this.PlayerSeqLayout.header.add(this.currentPlayerSurface);

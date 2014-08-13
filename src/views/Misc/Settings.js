@@ -32,8 +32,8 @@ define(function(require, exports, module) {
 
         // create the layout
         this.layout = new HeaderFooterLayout({
-            headerSize: 50,
-            footerSize: 0
+            headerSize: App.Defaults.Header.size,
+            footerSize: App.Defaults.Footer.size
         });
 
         this.createHeader();
@@ -130,50 +130,51 @@ define(function(require, exports, module) {
         var that = this;
 
         var settings = [
-            {
-                title: 'Welcome',
-                desc: 'run it back',
-                href: 'welcome'
-            },
+
+            // {
+            //     title: 'Welcome',
+            //     desc: 'run it back',
+            //     href: 'welcome'
+            // },
 
             {
-                title: 'Friends', // (' + friend_count + ')',
+                title: '<i class="ion-android-friends"></i> Friends', // (' + friend_count + ')',
                 desc: 'Invite new people',
                 href: 'friend/list'
             },
             
             {
-                title: 'Add Friend', // (' + friend_count + ')',
+                title: '<i class="ion-ios7-plus-outline"></i> Add Friend', // (' + friend_count + ')',
                 desc: 'Choose from contacts',
                 href: 'friend/add'
             },
 
             {
-                title: 'Edit Your Profile',
+                title: '<i class="ion-edit"></i> Edit Your Profile',
                 desc: 'Change your display name',
                 href: 'profile/edit'
             },
 
             {
-                title: 'How does it work?',
+                title: '<i class="ion-ios7-help-outline"></i> How does it work?',
                 desc: 'Shoot, we hoped it was clear. our fault.',
                 href: 'misc/help'
             },
 
             {
-                title: 'Push Notifications',
+                title: '<i class="ion-alert"></i> Push Notifications',
                 desc: 'Finer control',
                 href: 'settings/push'
             },
 
             {
-                title: 'Feedback',
+                title: '<i class="ion-ios7-paper"></i> Feedback',
                 desc: 'Please tell us how to improve!' + ' v' + App.ConfigImportant.Version,
                 href: 'feedback/settings'
             },
             
             {
-                title: 'Logout and Exit',
+                title: '<i class="ion-log-out"></i> Logout',
                 desc: 'Buh-bye',
                 href: 'logout',
                 hrefOptions: {

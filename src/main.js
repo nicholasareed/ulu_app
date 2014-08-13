@@ -178,6 +178,12 @@ define(function(require, exports, module) {
                 // friction: 0.0001, // default 0.001
                 // edgeGrip: 0.05, // default 0.5
                 // speedLimit: 2.5 // default 10
+            },
+            Header: {
+                size: 60
+            },
+            Footer: {
+                size: 60
             }
         },
     };

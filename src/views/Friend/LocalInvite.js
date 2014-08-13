@@ -48,8 +48,8 @@ define(function(require, exports, module) {
 
         // create the layout
         this.layout = new HeaderFooterLayout({
-            headerSize: 50,
-            footerSize: 0
+            headerSize: App.Defaults.Header.size,
+            footerSize: App.Defaults.Footer.size
         });
 
         this.createContent();
@@ -136,8 +136,8 @@ define(function(require, exports, module) {
         // Create search box, and result list of players
 
         this.ContentLayout = new HeaderFooterLayout({
-            headerSize: 50,
-            footerSize: 0
+            headerSize: App.Defaults.Header.size,
+            footerSize: App.Defaults.Footer.size
         });
 
         // create search header

@@ -56,8 +56,12 @@ define(function(require, exports, module) {
 
         // create the layout
         this.layout = new HeaderFooterLayout({
-            headerSize: 50,
+            headerSize: App.Defaults.Header.size,
             footerSize: 60
+        });
+        this.layout = new HeaderFooterLayout({
+            headerSize: App.Defaults.Header.size,
+            footerSize: App.Defaults.Footer.size
         });
 
         this.createHeader();
