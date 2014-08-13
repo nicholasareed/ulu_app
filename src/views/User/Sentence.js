@@ -617,32 +617,45 @@ define(function(require, exports, module) {
             var timeOptions = [{
                 text: 'Now',
                 value: 'now'
-            }]
-            if(moment().hour() < 12){
-                timeOptions.push({
-                text: 'Noon',
-                value: '12'
-                });
-            }
-            if(moment().hour() < 17){
-                timeOptions.push({
-                text: '5pm',
-                value: '17'
-                });
-            }
-            if(moment().hour() < 22){
-                timeOptions.push({
-                text: '10pm',
-                value: '22'
-                });
-            }
+            },{
+                text: '30 minutes',
+                value: moment().add('m',30)
+            },{
+                text: '1 hour',
+                value: moment().add('m',60)
+            },{
+                text: 'Choose time',
+                value: 'pick',
+            }];
+
             // Launch popover/modal list of times
             Utils.Popover.List({
                 list: timeOptions,
                 type: 'scroll',
                 on_choose: function(chosen_type){
+                    if(chosen_type.value == 'pick'){
+                        var options = {
+                            date: new Date(),
+                            mode: 'time'
+                        };
+
+                        datePicker.show(options, function(date){
+                            alert(date);
+                            alert(JSON.stringify(date));
+                            alert(moment(date).format('h:mma'));
+                            alert(moment(date));
+                            that.sentence.start_time = {
+                                text: moment(date).format('h:mma'),
+                                value: moment(date)
+                            };
+                            that.update_content();
+                        });
+                        return;
+                    }
+
                     that.sentence.start_time = chosen_type;
                     that.update_content();
+                    
                 }
             });
             // App.history.navigate('modal/list', {history: false});
