@@ -172,10 +172,6 @@ define(function(require, exports, module) {
                 // 'sentence/matches' : function(){
                 //     defaultRoute('SentenceMatches', 'User/SentenceMatches', arguments, {cache: true});
                 // },
-                'friend/list' : function(){
-                    defaultRoute('FriendList', 'Friend/List', arguments, {cache: true});
-
-                },
 
                 // 'user/friend_invites' : function(){
                 //     defaultRoute('UserFriendInvites', 'User/FriendInvites', arguments, {cache: true});
@@ -193,6 +189,19 @@ define(function(require, exports, module) {
                     defaultRoute('UsersSearch', 'User/Search', arguments, { cache: true });
                 },
 
+                'friend/potential_matches/(:hash)' : function(){
+                    defaultRoute('FriendPotentialMatches', 'Friend/PotentialMatches', arguments, {cache: false});
+
+                },
+                'friend/potential' : function(){
+                    defaultRoute('FriendPotential', 'Friend/Potential', arguments, {cache: true});
+
+                },
+
+                'friend/list' : function(){
+                    defaultRoute('FriendList', 'Friend/List', arguments, {cache: true});
+
+                },
                 'friend/add' : function(){
                     defaultRoute('FriendInvite', 'Friend/LocalInvite', arguments, {cache: true});
                 },
