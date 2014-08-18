@@ -41,6 +41,7 @@ define(function(require, exports, module) {
 
     // Notifications SubView
     var AllView      = require('./Subviews/All');
+    var PotentialView      = require('./Subviews/Potential');
     var MatchedView      = require('./Subviews/Matched');
 
     // Models
@@ -88,10 +89,11 @@ define(function(require, exports, module) {
         this.model.on('sync', function(){
             // sentence expired?
             if(that.model.get('expired') == true){
+                console.info('expired_true');
                 return;
             }
             if(moment(that.model.get('end_time')).format('X') < moment().format('X')){
-                
+                console.info('expired2');
                 that.model.set('expired',true);
 
                 Utils.Notification.Toast('Expired');
@@ -111,7 +113,7 @@ define(function(require, exports, module) {
         });
         this.model.on('error', function(res, xhr, res3){
             if(xhr.status == 409){
-
+                console.info('expired3');
                 that.model.set('expired',true);
 
                 Utils.Notification.Toast('Expired');
@@ -377,7 +379,12 @@ define(function(require, exports, module) {
         this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
-            content: '<i class="icon ion-android-friends"></i><div>Select Friends</div>',
+            content: '<i class="icon ion-android-friends"></i><div>Friends</div>',
+            onClasses: ['select-friends-tabbar-default', 'on'],
+            offClasses: ['select-friends-tabbar-default', 'off']
+        });
+        this.TopTabs.Bar.defineSection('potential', {
+            content: '<i class="icon ion-android-social"></i><div>Potential</div>',
             onClasses: ['select-friends-tabbar-default', 'on'],
             offClasses: ['select-friends-tabbar-default', 'off']
         });
@@ -405,6 +412,11 @@ define(function(require, exports, module) {
                     that.TopTabs.Content.AllFriends.View.collection.fetch();
                     break;
 
+                case 'potential':
+                    that.TopTabs.Content.show(that.TopTabs.Content.PotentialFriends);
+                    that.TopTabs.Content.PotentialFriends.View.collection.fetch();
+                    break;
+
                 case 'matched':
                     that.TopTabs.Content.show(that.TopTabs.Content.MatchedFriends);
                     that.TopTabs.Content.MatchedFriends.View.collection.fetch();
@@ -425,6 +437,14 @@ define(function(require, exports, module) {
             });
             this.TopTabs.Content.AllFriends.add(this.TopTabs.Content.AllFriends.View);
             this._subviews.push(this.TopTabs.Content.AllFriends.View);
+
+            // Potential
+            this.TopTabs.Content.PotentialFriends = new View();
+            this.TopTabs.Content.PotentialFriends.View = new PotentialView({
+                model: this.model
+            });
+            this.TopTabs.Content.PotentialFriends.add(this.TopTabs.Content.PotentialFriends.View);
+            this._subviews.push(this.TopTabs.Content.PotentialFriends.View);
 
             // Matched
             this.TopTabs.Content.MatchedFriends = new View();
