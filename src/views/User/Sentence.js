@@ -121,6 +121,11 @@ define(function(require, exports, module) {
             // sentence expired?
             // - if one exists that is active, go to it!
             // - ask the user if they want to visit it, or erase the existing one? 
+            if(moment(that.sentenceModel.get('end_time')).format('X') < moment().format('X')){
+                that.sentenceModel.trigger('error');
+                return;
+            }
+
             App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
         });
         this.sentenceModel.once('sync', function(){
@@ -274,20 +279,20 @@ define(function(require, exports, module) {
             // that.DraggedOverView.position.set(that.DraggedOverView._position); 
         });
         this.footerButtonView.sync.on('end', function(e){
-            // Update position of other renderable
-            // - showing/hiding?
-            if(e.velocity[0] < -0.05 || that.DraggedOverView._position < window.innerWidth/2){
-                // that.DraggedOverView.position = 0;
-                // that.DraggedOverView._position = 0;
-            } else {
-                // that.DraggedOverView._position = window.innerWidth;
-            }
-            // that.DraggedOverView.position.set(that.DraggedOverView._position, {
-            //     method : 'spring',
-            //     period : 150,
-            //     dampingRatio: 0.9,
-            //     velocity : e.velocity
-            // });
+            // // Update position of other renderable
+            // // - showing/hiding?
+            // if(e.velocity[0] < -0.05 || that.DraggedOverView._position < window.innerWidth/2){
+            //     // that.DraggedOverView.position = 0;
+            //     // that.DraggedOverView._position = 0;
+            // } else {
+            //     // that.DraggedOverView._position = window.innerWidth;
+            // }
+            // // that.DraggedOverView.position.set(that.DraggedOverView._position, {
+            // //     method : 'spring',
+            // //     period : 150,
+            // //     dampingRatio: 0.9,
+            // //     velocity : e.velocity
+            // // });
         });
 
         this.footerButtonView.add(this.footerButtonView.Surface);
