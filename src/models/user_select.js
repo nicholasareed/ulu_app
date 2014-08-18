@@ -65,6 +65,10 @@ define(function (require) {
                   this.url = Credentials.server_root + 'sentence/users/to_select';
                 }
 
+                if(options.type == 'sentence_potential_to_select'){
+                  this.url = Credentials.server_root + 'sentence/users/potential_to_select';
+                }
+
                 if(options.type == 'sentence_matched'){
                   this.url = Credentials.server_root + 'sentence/users/matched';
                 }
