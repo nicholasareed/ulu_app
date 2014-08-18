@@ -83,7 +83,7 @@ define(function(require, exports, module) {
         //     options['$filter'] = this.options.filter;
         // }
         this.collection = new UserSelectModel.UserSelectCollection([],{
-            type: 'sentence_to_select'
+            type: 'sentence_potential_to_select'
         });
         this.collection.on("sync", that.updateCollectionStatus.bind(this), this);
         this.collection.on("add", this.addOne, this);
@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "You've invited all your friends!",
+            content: "You've invited all your potential friends!",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
@@ -130,7 +130,7 @@ define(function(require, exports, module) {
         });
         this.emptyListSurface.pipe(this._eventOutput);
         this.emptyListSurfaceNoFriends = new Surface({
-            content: "You should add some friends to hang out with!",
+            content: "",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
@@ -168,29 +168,18 @@ define(function(require, exports, module) {
             that.next_page();
         });
 
-        // Select everybody
-        this.SelectAllButton = new Surface({
+        // Find more friends, local/nearby
+        this.FindFriendsButton = new Surface({
             size: [undefined, 60],
-            content: '<div class="outward-button">' + 'Select Everybody' + '</div>',
-            classes: ['button-outwards-default'],
+            content: '<div class="outward-button">' + 'Find potential friends' + '</div>',
+            classes: ['button-outwards-default']
         });
-        this.SelectAllButton.pipe(this._eventOutput);
-        this.SelectAllButton.on('click', function(){
-            // Clear the list
-            that.collection.set([]);
+        this.FindFriendsButton.pipe(this._eventOutput);
+        this.FindFriendsButton.on('click', function(){
+            App.history.navigate('friend/potential');
+        });
 
-            // Make the request
-            var UserSelect = new UserSelectModel.UserSelect();
-            UserSelect.select('all')
-            .then(function(){
-                // App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
-                that.collection.fetch();
-            })
-            .fail(function(){
-                Utils.Notification.Toast('Failed inviting everybody');
-                that.collection.fetch();
-            });
-        });
+
     };
 
     SubView.prototype.createDefaultLightboxes = function(){
@@ -283,88 +272,6 @@ define(function(require, exports, module) {
 
     };
 
-    SubView.prototype.addOne2 = function(Message) { 
-        var that = this;
-
-        var messageView = new View();
-
-        var other_person_id;
-        // console.info(Message.get('from_user_id'), App.Data.User.get('_id'));
-        if(Message.get('from_user_id') == App.Data.User.get('_id')){
-            console.info('to', Message.get('from_user_id'), App.Data.User.get('_id'));
-            console.info('to', Message.get('to_user_id'));
-            other_person_id = Message.get('to_user_id');
-        } else {
-            console.info('from', Message.get('from_user_id'), App.Data.User.get('_id'));
-            other_person_id = Message.get('from_user_id');
-        }
-
-        var surfaceData = function(){
-            
-            var content = template({
-                message: Message.toJSON(),
-                other_person_id: other_person_id,
-                show_other_person: that.options.show_other_person,
-                ago: moment(Message.get('created')).format('h:mma - MMM Do'),
-                time_remaining: '1h 20m',
-                activities_list: [
-                    {
-                        text: 'outdoors',
-                        bold: true
-                    },
-                    {
-                        text: 'drinking',
-                        bold: false
-                    },
-                    {
-                        text: 'just chill',
-                        bold: false
-                    }
-                ]
-                // image_src: imageSrc
-            })
-
-            return {
-                content: content
-            };
-        };
-        
-        messageView.Surface = new Surface({
-            content: surfaceData().content,
-            size: [undefined, true],
-            classes: ['message-text-default']
-        });
-        Utils.dataModelReplaceOnSurface(messageView.Surface);
-
-        Message.on('change', function(){
-            messageView.Surface.setContent(surfaceData().content);
-            Utils.dataModelReplaceOnSurface(messageView.Surface);
-        });
-
-        messageView.Surface.pipe(this._eventOutput);
-        messageView.Surface.pipe(this.contentLayout);
-        messageView.Surface.Model = Message;
-        messageView.add(messageView.Surface);
-        messageView.getSize = function(){
-            if(messageView.Surface.getSize(true)){
-                return [undefined, messageView.Surface.getSize(true)[1]];
-            }
-            return [undefined, undefined];
-        };
-
-        // Splice in
-        this.contentLayout.Views.splice(this.contentLayout.Views.length-1,0,messageView);
-        this.collection.infiniteResults += 1;
-
-        // if(!this.contentLayout.isSeq){
-            // this.contentLayout.isSeq = true;
-            this.contentLayout.sequenceFrom(this.contentLayout.Views);
-        // }
-
-        console.log(this.contentLayout.Views);
-
-    };
-
     SubView.prototype.updateCollectionStatus = function() { 
         console.info('updateCollectionStatus');
 
@@ -390,9 +297,9 @@ define(function(require, exports, module) {
             this.lightboxContent.show(nextRenderable);
         }
 
-        // Splice out the lightboxButtons before sorting
-        var popped = this.contentLayout.Views.pop();
-        this.contentLayout.Views = _.without(this.contentLayout.Views, this.SelectAllButton);
+        // Splice out the lightboxButtons and "Find Friends" before sorting
+        var popped1 = this.contentLayout.Views.pop();
+        this.contentLayout.Views = _.without(this.contentLayout.Views, this.FindFriendsButton);
 
         // Resort the contentLayout.Views
         this.contentLayout.Views = _.sortBy(this.contentLayout.Views, function(v){
@@ -400,11 +307,9 @@ define(function(require, exports, module) {
             return v.Model.get('profile.name').toLowerCase();
         });
 
-        // re-add buttons
-        if(this.collection.length > 0){
-            this.contentLayout.Views.unshift(this.SelectAllButton);
-        }
-        this.contentLayout.Views.push(popped);
+        // re-add the buttons
+        this.contentLayout.Views.unshift(this.FindFriendsButton);
+        this.contentLayout.Views.push(popped1);
 
         console.log(this.contentLayout.Views);
 

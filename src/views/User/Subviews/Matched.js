@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "Friends will show up here (and you'll get a Push Notification)",
+            content: "Matches will show up here (and you'll get a Push Notification)",
             size: [undefined, true],
             classes: ['empty-list-surface-default']
         });
