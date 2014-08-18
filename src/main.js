@@ -630,6 +630,11 @@ define(function(require, exports, module) {
 
                         }
                     },
+                    error: function(err){
+                        console.error('failed login');
+                        console.error(err);
+                        Utils.Notification.Toast('Failed login');
+                    },
                     success: function(){
                         // Resolve deferred (in case anyone is listening)
                         // Store credentials
