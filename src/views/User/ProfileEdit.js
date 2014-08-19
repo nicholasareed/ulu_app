@@ -140,6 +140,14 @@ define(function(require, exports, module) {
                 border: "1px solid #444"
             }
         });
+
+        // update via model
+        if(that.model.get('profilephoto.urls')){
+            that.profileLeft.ProfileImage.Surface.setContent(that.model.get('profilephoto.urls.thumb300x300'));
+        } else {
+            that.profileLeft.ProfileImage.Surface.setContent('img/generic-profile.png');
+        }
+
         this.ProfileImage.add(this.ProfileImage.SizeMod).add(this.ProfileImage.OriginMod).add(this.ProfileImage.Surface);
         this.ProfileImage.Surface.on('click', function(){
         
