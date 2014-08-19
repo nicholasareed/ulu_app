@@ -38,8 +38,12 @@ define(function (require) {
 
                 this.url = this.urlRoot + '';
 
-                if(options.type == 'all'){
-                    // this.url = Credentials.server_root + 'mobile/users/friends';
+                if(options.type == 'friend'){
+                    this.url = this.urlRoot + '/friend';
+                }
+
+                if(options.type == 'potential'){
+                    this.url = this.urlRoot + '/potential';
                 }
             },
 

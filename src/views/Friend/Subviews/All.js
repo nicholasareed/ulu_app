@@ -25,7 +25,7 @@ define(function(require, exports, module) {
     var Backbone = require('backbone-adapter');
 
     // Models
-    var UserModel = require("models/user");
+    var FriendModel = require("models/friend");
 
     // Extras
     var Utils = require('utils');
@@ -60,8 +60,8 @@ define(function(require, exports, module) {
         // Gather data after structure built
         App.Data.User.populated().then(function(){
 
-            that.update_friend_collection();
-            App.Data.User.on('sync', that.update_friend_collection.bind(that));
+            // that.update_friend_collection();
+            // App.Data.User.on('sync', that.update_friend_collection.bind(that));
 
         });
 
@@ -80,21 +80,23 @@ define(function(require, exports, module) {
 
         // App.Data.User contains friends
 
-
-
         // Create collection of Games for player_id
         var options = {};
         // if(this.options && this.options.filter){
         //     options['$filter'] = this.options.filter;
         // }
-        this.collection = new UserModel.UserCollection();
+        this.collection = new FriendModel.FriendCollection([],{
+            type: 'friend'
+        });
         this.collection.on("sync", that.updateCollectionStatus.bind(this), this);
         this.collection.on("add", this.addOne, this);
-        // this.collection.on("remove", this.removeOne, this);
+        // this.collection.on("remove", this.removeOne, this); // todo...
         this.collection.infiniteResults = 0;
         this.collection.totalResults = 0;
 
-        this.prior_list = [];
+        this.collection.fetch();
+
+        // this.prior_list = [];
 
         // Listen for 'showing' events
         this._eventInput.on('inOutTransition', function(args){
@@ -103,44 +105,6 @@ define(function(require, exports, module) {
                 // that.collection.fetch();
             }
         });
-
-    };
-
-    SubView.prototype.update_friend_collection = function(){
-        var that = this;
-
-        var all_friends = App.Data.User.get('friends');
-
-        // App.Data.User contains our friend list
-        if(this.prior_list == all_friends){
-            this.collection.trigger('sync');
-            return;
-        }
-
-        // Get new friends
-        var new_friends = _.difference(all_friends, this.prior_list);
-        _.each(new_friends, function(friend_id){
-            var tmpModel = new UserModel.User({
-                profile_id: friend_id
-            });
-            tmpModel.populated().then(function(){
-                that.collection.add(tmpModel);
-            });
-            if(!tmpModel.hasFetched){
-                tmpModel.fetch();
-            }
-        });
-
-        // Get reductions
-        var old_friends = _.difference(this.prior_list, all_friends);
-        _.each(old_friends, function(friend_id){
-            that.collection.remove(that.collection.get(friend_id));
-        });
-
-        // update old values
-        this.prior_list = _.clone(all_friends);
-
-        this.collection.trigger('sync');
 
     };
 
@@ -259,88 +223,6 @@ define(function(require, exports, module) {
 
         this.contentLayout.Views.splice(this.contentLayout.Views.length-1, 0, userView);
         this.collection.infiniteResults += 1;
-
-    };
-
-    SubView.prototype.addOne2 = function(Message) { 
-        var that = this;
-
-        var messageView = new View();
-
-        var other_person_id;
-        // console.info(Message.get('from_user_id'), App.Data.User.get('_id'));
-        if(Message.get('from_user_id') == App.Data.User.get('_id')){
-            console.info('to', Message.get('from_user_id'), App.Data.User.get('_id'));
-            console.info('to', Message.get('to_user_id'));
-            other_person_id = Message.get('to_user_id');
-        } else {
-            console.info('from', Message.get('from_user_id'), App.Data.User.get('_id'));
-            other_person_id = Message.get('from_user_id');
-        }
-
-        var surfaceData = function(){
-            
-            var content = template({
-                message: Message.toJSON(),
-                other_person_id: other_person_id,
-                show_other_person: that.options.show_other_person,
-                ago: moment(Message.get('created')).format('h:mma - MMM Do'),
-                time_remaining: '1h 20m',
-                activities_list: [
-                    {
-                        text: 'outdoors',
-                        bold: true
-                    },
-                    {
-                        text: 'drinking',
-                        bold: false
-                    },
-                    {
-                        text: 'just chill',
-                        bold: false
-                    }
-                ]
-                // image_src: imageSrc
-            })
-
-            return {
-                content: content
-            };
-        };
-        
-        messageView.Surface = new Surface({
-            content: surfaceData().content,
-            size: [undefined, true],
-            classes: ['message-text-default']
-        });
-        Utils.dataModelReplaceOnSurface(messageView.Surface);
-
-        Message.on('change', function(){
-            messageView.Surface.setContent(surfaceData().content);
-            Utils.dataModelReplaceOnSurface(messageView.Surface);
-        });
-
-        messageView.Surface.pipe(this._eventOutput);
-        messageView.Surface.pipe(this.contentLayout);
-        messageView.Surface.Model = Message;
-        messageView.add(messageView.Surface);
-        messageView.getSize = function(){
-            if(messageView.Surface.getSize(true)){
-                return [undefined, messageView.Surface.getSize(true)[1]];
-            }
-            return [undefined, undefined];
-        };
-
-        // Splice in
-        this.contentLayout.Views.splice(this.contentLayout.Views.length-1,0,messageView);
-        this.collection.infiniteResults += 1;
-
-        // if(!this.contentLayout.isSeq){
-            // this.contentLayout.isSeq = true;
-            this.contentLayout.sequenceFrom(this.contentLayout.Views);
-        // }
-
-        console.log(this.contentLayout.Views);
 
     };
 

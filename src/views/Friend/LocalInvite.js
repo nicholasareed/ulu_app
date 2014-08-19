@@ -100,6 +100,59 @@ define(function(require, exports, module) {
             newRCode.fetch();
         });
 
+        // paste code
+        this.headerContent.EnterCode = new Surface({
+            content: '<i class="icon ion-edit">',
+            size: [60, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.EnterCode.on('click', function(){
+            Timer.setTimeout(function(){
+                var code = prompt('Enter code');
+                if(code){
+
+                    // Check the invite code against the server
+                    // - creates the necessary relationship also
+                    $.ajax({
+                        url: Credentials.server_root + 'relationships/invited',
+                        method: 'post',
+                        data: {
+                            from: 'add', // if on the Player Edit / LinkUp page, we'd be using 'linkup'
+                            code: code
+                        },
+                        success: function(response){
+                            if(response.code != 200){
+                                if(response.msg){
+                                    alert(response.msg);
+                                    return;
+                                }
+                                alert('Invalid code, please try again');
+                                return false;
+                            }
+
+                            // Relationship has been created
+                            // - either just added to a player
+                            //      - simply go look at it
+                            // - or am the Owner of a player now
+                            //      - go edit the player
+
+                            if(response.type == 'friend'){
+                                Utils.Notification.Toast('You have successfully added a friend!');
+
+                                return;
+                            }
+
+                        },
+                        error: function(err){
+                            alert('Failed with that code, please try again');
+                            return;
+                        }
+                    });
+                }
+            },350)
+        });
+
+
 
         // create the header
         this.header = new StandardHeader({
@@ -108,7 +161,8 @@ define(function(require, exports, module) {
             backClasses: ["normal-header"],
             // moreContent: false
             moreSurfaces: [
-                this.headerContent.CopyCode
+                this.headerContent.CopyCode,
+                this.headerContent.EnterCode
             ]
         }); 
         this.header._eventOutput.on('back',function(){
