@@ -536,6 +536,7 @@ define(function(require, exports, module) {
             // Test login
             $.ajaxSetup({
                 cache: false,
+                contentType: 'application/json', // need to do JSON.stringify() every .data in an $.ajax!
                 statusCode: {
                     401: function(){
                         // Redirect the to the login page.

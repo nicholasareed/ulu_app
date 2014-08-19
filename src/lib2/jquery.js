@@ -9092,8 +9092,14 @@ jQuery.extend({
         }
 
         // Convert data if not already a string
-        if ( s.data && s.processData && typeof s.data !== "string" ) {
-            s.data = jQuery.param( s.data, s.traditional );
+        if(s.contentType == 'application/json'){
+            if(typeof s.data !== "string"){
+                s.data = JSON.stringify(s.data);
+            }
+        } else {
+            if ( s.data && s.processData && typeof s.data !== "string" ) {
+                s.data = jQuery.param( s.data, s.traditional );
+            }
         }
 
         // Apply prefilters

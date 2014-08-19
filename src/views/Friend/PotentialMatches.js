@@ -96,6 +96,7 @@ define(function(require, exports, module) {
         });
 
         this.collection.infiniteResults = 0;
+        this.prior_ids_to_keep = [];
         this.collection.on("sync", that.updateCollectionStatus.bind(this), this);
         // this.collection.on("add", this.addOne, this);
         this.collection.on("error", function(){
@@ -253,24 +254,19 @@ define(function(require, exports, module) {
         // swiped left, tapped No
         var that = this;
 
-        console.log('clicked, ignoring');
-        console.log(tmpCard);
-
-        // remove from the collection
-        this.collection.remove(tmpCard.Model.get('_id'));
-
-        // transition view out
-        tmpCard.StateModifier.setTransform(Transform.translate(-1 * window.innerWidth, 0, 0), {
-            duration: 350,
-            curve: 'linear'
-        }, function(){
-            console.info('complete animation');
-        });
+        this.make_decision(tmpCard, false);
 
     };
 
     PageView.prototype.match_user = function(tmpCard) { 
         // wanted to match with this user! 
+        var that = this;
+
+        this.make_decision(tmpCard, true);
+
+    };
+
+    PageView.prototype.make_decision = function(tmpCard, decision){
         var that = this;
 
         console.log('clicked, matching');
@@ -280,13 +276,36 @@ define(function(require, exports, module) {
         this.collection.remove(tmpCard.Model.get('_id'));
 
         // transition view out
-        tmpCard.StateModifier.setTransform(Transform.translate(window.innerWidth, 0, 0), {
+        tmpCard.StateModifier.setTransform(Transform.translate((decision ? 1 : -1) * window.innerWidth, 0, 0), {
             duration: 350,
             curve: 'linear'
         }, function(){
+            // Remove from sequence
+            that.removeCard(tmpCard);
             console.info('complete animation');
         });
-        
+
+        // Ajax request
+        $.ajax({
+            url: Credentials.server_root + 'friend/potential/decision',
+            data: {
+                user_id: tmpCard.Model.get('_id'),
+                decision: decision
+            },
+            method: 'post',
+            success: function(result){
+                console.log('decision result');
+                console.log(result);
+
+                // See how many are left
+                if(that.collection.length < 5){
+                    console.info('fetching more!');
+                    that.collection.fetch();
+                }
+
+            }
+        });
+
 
     };
 
@@ -382,6 +401,13 @@ define(function(require, exports, module) {
 
     };
 
+    PageView.prototype.removeCard = function(tmpCard){
+        var that = this;
+
+        this.cardLayout.Views = _.without(this.cardLayout.Views, tmpCard);
+
+    };
+
 
     PageView.prototype.updateCollectionStatus = function() { 
 
@@ -396,10 +422,13 @@ define(function(require, exports, module) {
         this.cardLayout.Views = _.without(this.cardLayout.Views, this.noResultsView);
 
         // Clean out the beginning, and add any "new" cards to the back
-        
+
         // Figure out which surfaces to remove/keep, re-order, etc.
         var player_ids_to_keep = _.pluck(this.collection.toJSON(), '_id'),
             views_to_add = [];
+
+        this.prior_ids_to_keep = this.prior_ids_to_keep.concat(player_ids_to_keep);
+        player_ids_to_keep = this.prior_ids_to_keep;
 
         // Remove unneeded views
         this.cardLayout.Views = _.filter(this.cardLayout.Views, function(tmpPersonView, index){
