@@ -233,14 +233,30 @@ define(function(require, exports, module) {
             // Submit your sentence
             // - loading dialogue
 
-            var start_time = new Date();
+            var start_time = moment().format(),
+                end_time = moment().format();
             if(that.sentence.start_time.value != 'now'){
-                start_time = moment().hour(that.sentence.start_time.value).minute(0).second(0).millisecond(0).format();
+                start_time = moment().hour(that.sentence.start_time.value).startOf('hour').format();
+            } else {
+
             }
-            console.log(that.sentence.activities);
+            if(that.sentence.duration.value == 'today'){
+                // find the end of today (11:59pm)
+                end_time = moment().endOf('day').format(); 
+            } else {
+                end_time = moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format();
+            }
+
+            console.log('---=-=-');
+            console.log(that.sentence);
+            console.log(start_time);
+            console.info(end_time);
+            // return;
+
+            // console.log(that.sentence.activities);
             var Sentence = new SentenceModel.Sentence({
                 start_time: start_time, // Javascript new Date
-                end_time: moment(start_time).add(that.sentence.duration.value[0],that.sentence.duration.value[1]).format(),
+                end_time: end_time,
                 duration: that.sentence.duration.text, // just a string
                 location: null,
                 activities: that.sentence.activities
@@ -705,6 +721,9 @@ define(function(require, exports, module) {
             },{
                 text: '3 hours',
                 value: ['h',3]
+            },{
+                text: 'Rest of Today',
+                value: 'today'
             }];
             // Launch popover/modal list of times
             Utils.Popover.List({
@@ -867,7 +886,7 @@ define(function(require, exports, module) {
         // Duration
         switch(this.sentence.duration.value){
             case 'today':
-                that.durationSurface.setContent('for <span>tonight</span>');
+                that.durationSurface.setContent('until <span>today</span> ends');
                 break;
             default:
                 // time chosen

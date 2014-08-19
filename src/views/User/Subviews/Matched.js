@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "Matches will show up here (and you'll get a Push Notification)",
+            content: "Matches will show up here <br /> (You'll also get a Notification)",
             size: [undefined, true],
             classes: ['empty-list-surface-default']
         });
@@ -396,7 +396,7 @@ define(function(require, exports, module) {
     SubView.prototype.updateCollectionStatus = function() { 
         console.info('updateCollectionStatus');
 
-        this.collection.totalResults = App.Data.User.get('friends').length;
+        // this.collection.totalResults = App.Data.User.get('friends').length;
 
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;

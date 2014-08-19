@@ -27,6 +27,7 @@ define(function(require, exports, module) {
 
     // Models
     var SentenceModel = require("models/sentence");
+    var FriendModel = require("models/friend");
     var UserSelectModel = require("models/user_select");
 
     // Extras
@@ -85,16 +86,22 @@ define(function(require, exports, module) {
         this.collection = new UserSelectModel.UserSelectCollection([],{
             type: 'sentence_to_select'
         });
-        this.collection.on("sync", that.updateCollectionStatus.bind(this), this);
+        this.collection.on("sync", that.updateCollectionStatus.bind(this));
         this.collection.on("add", this.addOne, this);
         this.collection.on("remove", this.removeOne, this);
 
         this.collection.infiniteResults = 0;
         this.collection.totalResults = 0;
 
-        this.collection.fetch();
+        
+        this.friend_collection = new FriendModel.FriendCollection([],{
+            type: 'friend'
+        });
+        this.friend_collection.on('sync', that.updateCollectionStatus.bind(this));
 
-        this.prior_list = [];
+        
+        this.collection.fetch();
+        this.friend_collection.fetch();
 
         // Listen for 'showing' events
         this._eventInput.on('inOutTransition', function(args){
@@ -284,92 +291,10 @@ define(function(require, exports, module) {
 
     };
 
-    SubView.prototype.addOne2 = function(Message) { 
-        var that = this;
-
-        var messageView = new View();
-
-        var other_person_id;
-        // console.info(Message.get('from_user_id'), App.Data.User.get('_id'));
-        if(Message.get('from_user_id') == App.Data.User.get('_id')){
-            console.info('to', Message.get('from_user_id'), App.Data.User.get('_id'));
-            console.info('to', Message.get('to_user_id'));
-            other_person_id = Message.get('to_user_id');
-        } else {
-            console.info('from', Message.get('from_user_id'), App.Data.User.get('_id'));
-            other_person_id = Message.get('from_user_id');
-        }
-
-        var surfaceData = function(){
-            
-            var content = template({
-                message: Message.toJSON(),
-                other_person_id: other_person_id,
-                show_other_person: that.options.show_other_person,
-                ago: moment(Message.get('created')).format('h:mma - MMM Do'),
-                time_remaining: '1h 20m',
-                activities_list: [
-                    {
-                        text: 'outdoors',
-                        bold: true
-                    },
-                    {
-                        text: 'drinking',
-                        bold: false
-                    },
-                    {
-                        text: 'just chill',
-                        bold: false
-                    }
-                ]
-                // image_src: imageSrc
-            })
-
-            return {
-                content: content
-            };
-        };
-        
-        messageView.Surface = new Surface({
-            content: surfaceData().content,
-            size: [undefined, true],
-            classes: ['message-text-default']
-        });
-        Utils.dataModelReplaceOnSurface(messageView.Surface);
-
-        Message.on('change', function(){
-            messageView.Surface.setContent(surfaceData().content);
-            Utils.dataModelReplaceOnSurface(messageView.Surface);
-        });
-
-        messageView.Surface.pipe(this._eventOutput);
-        messageView.Surface.pipe(this.contentLayout);
-        messageView.Surface.Model = Message;
-        messageView.add(messageView.Surface);
-        messageView.getSize = function(){
-            if(messageView.Surface.getSize(true)){
-                return [undefined, messageView.Surface.getSize(true)[1]];
-            }
-            return [undefined, undefined];
-        };
-
-        // Splice in
-        this.contentLayout.Views.splice(this.contentLayout.Views.length-1,0,messageView);
-        this.collection.infiniteResults += 1;
-
-        // if(!this.contentLayout.isSeq){
-            // this.contentLayout.isSeq = true;
-            this.contentLayout.sequenceFrom(this.contentLayout.Views);
-        // }
-
-        console.log(this.contentLayout.Views);
-
-    };
-
     SubView.prototype.updateCollectionStatus = function() { 
         console.info('updateCollectionStatus');
 
-        this.collection.totalResults = App.Data.User.get('friends').length;
+        this.collection.totalResults = this.friend_collection.length;
 
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;
@@ -379,7 +304,7 @@ define(function(require, exports, module) {
         var nextRenderable;
         if(this.collection.length == 0){
             nextRenderable = this.emptyListSurface;
-            if(App.Data.User.get('friends').length == 0){
+            if(this.friend_collection.length == 0){
                 nextRenderable = this.emptyListSurfaceNoFriends;
             }
         } else {

@@ -130,7 +130,40 @@ define(function(require, exports, module) {
         //     size: [undefined, 4]
         // }));
 
-        // Email
+        // instructions
+        this.potentialFriendsInstructions = new View();
+        this.potentialFriendsInstructions.Surface = new Surface({
+            content: "You'll be shown potential friends that we think you'll run into (or should!)",
+            size: [undefined, true],
+            classes: ['potential-friend-instructions-room-pre']
+        });
+        this.potentialFriendsInstructions.getSize = function(){
+            return [undefined, that.potentialFriendsInstructions.Surface._size ? that.potentialFriendsInstructions.Surface._size[1] : undefined];
+        };
+        this.potentialFriendsInstructions.add(this.potentialFriendsInstructions.Surface);
+        this.contentScrollView.Views.push(this.potentialFriendsInstructions);
+
+        // spacer
+        this.contentScrollView.Views.push(new Surface({
+            size: [undefined, 8]
+        }));
+
+
+        // Submit button
+        this.submitButtonSurface = new Surface({
+            content: '<div class="outward-button">' + 'Join &amp; Browse' + '</div>',
+            classes: ['button-outwards-default'],
+            size: [undefined, 60]
+        });
+        this.contentScrollView.Views.push(this.submitButtonSurface);
+
+        // spacer
+        this.contentScrollView.Views.push(new Surface({
+            size: [undefined, 8]
+        }));
+
+
+        // hash
         this.inputHashSurface = new InputSurface({
             name: '',
             placeholder: 'default',
@@ -144,14 +177,6 @@ define(function(require, exports, module) {
         this.contentScrollView.Views.push(new Surface({
             size: [undefined, 4]
         }));
-
-        // Submit button
-        this.submitButtonSurface = new Surface({
-            content: '<div class="outward-button">' + 'Join &amp; Browse' + '</div>',
-            classes: ['button-outwards-default'],
-            size: [undefined, 60]
-        });
-        this.contentScrollView.Views.push(this.submitButtonSurface);
 
         // Events for surfaces
         this.submitButtonSurface.on('click', function(){

@@ -27,6 +27,7 @@ define(function(require, exports, module) {
 
     // Models
     var SentenceModel = require("models/sentence");
+    var FriendModel = require("models/friend");
     var UserSelectModel = require("models/user_select");
 
     // Extras
@@ -92,9 +93,15 @@ define(function(require, exports, module) {
         this.collection.infiniteResults = 0;
         this.collection.totalResults = 0;
 
-        this.collection.fetch();
+        
+        this.friend_collection = new FriendModel.FriendCollection([],{
+            type: 'potential'
+        });
+        this.friend_collection.on('sync', that.updateCollectionStatus.bind(this));
 
-        this.prior_list = [];
+
+        this.collection.fetch();
+        this.friend_collection.fetch();
 
         // Listen for 'showing' events
         this._eventInput.on('inOutTransition', function(args){
@@ -286,7 +293,7 @@ define(function(require, exports, module) {
     SubView.prototype.updateCollectionStatus = function() { 
         console.info('updateCollectionStatus');
 
-        this.collection.totalResults = App.Data.User.get('friends').length;
+        this.collection.totalResults = this.friend_collection.length;
 
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;
