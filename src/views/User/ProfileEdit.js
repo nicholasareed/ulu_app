@@ -151,7 +151,7 @@ define(function(require, exports, module) {
             // Options and details
             Utils.Popover.Buttons({
                 title: 'Take new photo',
-                text: 'text here',
+                // text: 'text here',
                 buttons: [
                     {
                         text: "Camera",
@@ -366,9 +366,9 @@ define(function(require, exports, module) {
                         //     that.layout.content.StateModifier.setTransform(Transform.translate(window.innerWidth + 100,0,0));
                         // }
                         that.layout.content.StateModifier.setTransform(Transform.translate(0,0,0));
-                        that.contentScrollView.Views.forEach(function(surf, index){
-                            surf.StateModifier.setTransform(Transform.translate(0,window.innerHeight,0));
-                        });
+                        // that.contentScrollView.Views.forEach(function(surf, index){
+                        //     surf.StateModifier.setTransform(Transform.translate(0,window.innerHeight,0));
+                        // });
 
                         // Content
                         // - extra delay for other content to be gone
@@ -379,12 +379,12 @@ define(function(require, exports, module) {
 
                             // Bring in button surfaces individually
                             that.contentScrollView.Views.forEach(function(surf, index){
-                                window.setTimeout(function(){
-                                    surf.StateModifier.setTransform(Transform.translate(0,0,0), {
-                                        duration: 750,
-                                        curve: Easing.inOutElastic
-                                    });
-                                }, index * 50);
+                                // window.setTimeout(function(){
+                                //     surf.StateModifier.setTransform(Transform.translate(0,0,0), {
+                                //         duration: 750,
+                                //         curve: Easing.inOutElastic
+                                //     });
+                                // }, index * 50);
                             });
 
                         }, delayShowing); // + transitionOptions.outTransition.duration);
