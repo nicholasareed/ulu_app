@@ -296,9 +296,9 @@ define(function(require, exports, module) {
         var nextRenderable;
         if(this.collection.length == 0){
             nextRenderable = this.emptyListSurface;
-            if(App.Data.User.get('friends').length == 0){
-                nextRenderable = this.emptyListSurfaceNoFriends;
-            }
+            // if(App.Data.User.get('friends').length == 0){
+            //     nextRenderable = this.emptyListSurfaceNoFriends;
+            // }
         } else {
             nextRenderable = this.contentLayout;
         }
