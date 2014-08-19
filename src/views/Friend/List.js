@@ -40,6 +40,7 @@ define(function(require, exports, module) {
 
     // Notifications SubView
     var AllView      = require('./Subviews/All');
+    var PotentialView      = require('./Subviews/Potential');
     var IncomingView      = require('./Subviews/Incoming');
     var OutgoingView      = require('./Subviews/Outgoing');
     
@@ -95,7 +96,7 @@ define(function(require, exports, module) {
 
         // create the header
         this.header = new StandardHeader({
-            content: "",
+            content: "Friends",
             classes: ["normal-header"],
             backClasses: ["normal-header"],
             // moreContent: false
@@ -152,7 +153,12 @@ define(function(require, exports, module) {
         this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
-            content: '<i class="icon ion-android-friends"></i><div>All Friends</div>',
+            content: '<i class="icon ion-android-friends"></i><div>All</div>',
+            onClasses: ['inbox-tabbar-default', 'on'],
+            offClasses: ['inbox-tabbar-default', 'off']
+        });
+        this.TopTabs.Bar.defineSection('potential', {
+            content: '<i class="icon ion-android-social"></i><div>Potential</div>',
             onClasses: ['inbox-tabbar-default', 'on'],
             offClasses: ['inbox-tabbar-default', 'off']
         });
@@ -179,6 +185,12 @@ define(function(require, exports, module) {
         this.TopTabs.Content.AllFriends.add(this.TopTabs.Content.AllFriends.View);
         this._subviews.push(this.TopTabs.Content.AllFriends.View);
 
+        // Potential 
+        this.TopTabs.Content.PotentialFriends = new View();
+        this.TopTabs.Content.PotentialFriends.View = new PotentialView();
+        this.TopTabs.Content.PotentialFriends.add(this.TopTabs.Content.PotentialFriends.View);
+        this._subviews.push(this.TopTabs.Content.PotentialFriends.View);
+
         // // Incoming
         // this.TopTabs.Content.IncomingInvites = new View();
         // this.TopTabs.Content.IncomingInvites.View = new IncomingView();
@@ -200,6 +212,11 @@ define(function(require, exports, module) {
 
                 case 'all':
                     that.TopTabs.Content.show(that.TopTabs.Content.AllFriends);
+                    // that.TopTabs.Content.AllFriends.View.collection.fetch();
+                    break;
+
+                case 'potential':
+                    that.TopTabs.Content.show(that.TopTabs.Content.PotentialFriends);
                     // that.TopTabs.Content.AllFriends.View.collection.fetch();
                     break;
 

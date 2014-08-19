@@ -466,6 +466,14 @@ define(function(require, exports, module) {
             this.TopTabs.Content.MatchedFriends.add(this.TopTabs.Content.MatchedFriends.View);
             this._subviews.push(this.TopTabs.Content.MatchedFriends.View);
 
+            this.TopTabs.Content.MatchedFriends.View.collection.on('sync', function(){
+                that.TopTabs.Bar.buttons[2].onSurface.setContent('<i class="icon ion-ios7-checkmark-outline"></i><div>' +that.TopTabs.Content.MatchedFriends.View.collection.length+ ' Available</div>');
+                that.TopTabs.Bar.buttons[2].offSurface.setContent('<i class="icon ion-ios7-checkmark-outline"></i><div>' +that.TopTabs.Content.MatchedFriends.View.collection.length+ ' Available</div>');
+                // debugger;
+                // this.TopTabs.Bar.defineSection('matched', {
+                // content: '<i class="icon ion-ios7-checkmark-outline"></i><div>Available</div>',
+            });
+
             // This depends on the previously selected! 
             this.TopTabs.Bar.select('all');
 

@@ -48,7 +48,8 @@ define(function (require) {
             },
 
             comparator: function(model){
-                return model.get('name').toString().toLowerCase();
+                console.log(model);
+                return model.get('profile.name').toString().toLowerCase();
             },
 
         });

@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "You've invited all your friends!",
+            content: "You've invited all your friends on ulu!",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
@@ -130,7 +130,8 @@ define(function(require, exports, module) {
         });
         this.emptyListSurface.pipe(this._eventOutput);
         this.emptyListSurfaceNoFriends = new Surface({
-            content: "You should add some friends to hang out with!",
+            // content: "You should add some friends to hang out with!",
+            content: "You've invited all your friends on ulu!",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
