@@ -137,7 +137,7 @@ define(function(require, exports, module) {
                 // backgroundColor: 'red'
             }
         });
-        this.emptyListSurface.pipe(this._eventOutput);
+        this.emptyListSurfaceNoFriends.pipe(this._eventOutput);
 
 
         // Create Loading Renderable

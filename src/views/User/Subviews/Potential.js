@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: "You've invited all your potential friends!",
+            content: 'Click the <i class="icon ion-earth"></i> icon to Find Potential Friends',
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
@@ -130,14 +130,14 @@ define(function(require, exports, module) {
         });
         this.emptyListSurface.pipe(this._eventOutput);
         this.emptyListSurfaceNoFriends = new Surface({
-            content: "",
+            content: "You should add some friends to hang out with!",
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {
                 // backgroundColor: 'red'
             }
         });
-        this.emptyListSurface.pipe(this._eventOutput);
+        this.emptyListSurfaceNoFriends.pipe(this._eventOutput);
 
 
         // Create Loading Renderable
@@ -168,18 +168,29 @@ define(function(require, exports, module) {
             that.next_page();
         });
 
-        // Find more friends, local/nearby
-        this.FindFriendsButton = new Surface({
+        // Select everybody
+        this.SelectAllButton = new Surface({
             size: [undefined, 60],
-            content: '<div class="outward-button">' + 'Find potential friends' + '</div>',
-            classes: ['button-outwards-default']
+            content: '<div class="outward-button">' + 'Select Everybody' + '</div>',
+            classes: ['button-outwards-default'],
         });
-        this.FindFriendsButton.pipe(this._eventOutput);
-        this.FindFriendsButton.on('click', function(){
-            App.history.navigate('friend/potential');
+        this.SelectAllButton.pipe(this._eventOutput);
+        this.SelectAllButton.on('click', function(){
+            // Clear the list
+            that.collection.set([]);
+
+            // Make the request
+            var UserSelect = new UserSelectModel.UserSelect();
+            UserSelect.select('all_potential')
+            .then(function(){
+                // App.history.navigate('user/sentence_friends/' + CryptoJS.SHA3(new Date().toString()));
+                that.collection.fetch();
+            })
+            .fail(function(){
+                Utils.Notification.Toast('Failed inviting everybody');
+                that.collection.fetch();
+            });
         });
-
-
     };
 
     SubView.prototype.createDefaultLightboxes = function(){
@@ -279,9 +290,9 @@ define(function(require, exports, module) {
 
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;
-        this.infinityShowMoreSurface.setContent(amount_left + ' more');
-        this.infinityLoadedAllSurface.setContent(this.collection.totalResults + ' total');
-
+        // this.infinityShowMoreSurface.setContent(amount_left + ' more');
+        // this.infinityLoadedAllSurface.setContent(this.collection.totalResults + ' total');
+        console.log('what');
         var nextRenderable;
         if(this.collection.length == 0){
             nextRenderable = this.emptyListSurface;
@@ -297,9 +308,9 @@ define(function(require, exports, module) {
             this.lightboxContent.show(nextRenderable);
         }
 
-        // Splice out the lightboxButtons and "Find Friends" before sorting
-        var popped1 = this.contentLayout.Views.pop();
-        this.contentLayout.Views = _.without(this.contentLayout.Views, this.FindFriendsButton);
+        // Splice out the lightboxButtons before sorting
+        var popped = this.contentLayout.Views.pop();
+        this.contentLayout.Views = _.without(this.contentLayout.Views, this.SelectAllButton);
 
         // Resort the contentLayout.Views
         this.contentLayout.Views = _.sortBy(this.contentLayout.Views, function(v){
@@ -307,9 +318,11 @@ define(function(require, exports, module) {
             return v.Model.get('profile.name').toLowerCase();
         });
 
-        // re-add the buttons
-        this.contentLayout.Views.unshift(this.FindFriendsButton);
-        this.contentLayout.Views.push(popped1);
+        // re-add buttons
+        if(this.collection.length > 0){
+            this.contentLayout.Views.unshift(this.SelectAllButton);
+        }
+        this.contentLayout.Views.push(popped);
 
         console.log(this.contentLayout.Views);
 

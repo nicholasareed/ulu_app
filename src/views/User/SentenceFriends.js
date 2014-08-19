@@ -147,7 +147,7 @@ define(function(require, exports, module) {
         this.headerContent = new View();
         this.headerContent.Invite = new Surface({
             content: '<i class="icon ion-ios7-plus-outline">',
-            size: [60, undefined],
+            size: [50, undefined],
             classes: ['header-tab-icon-text-big']
         });
         this.headerContent.Invite.on('click', function(){
@@ -161,7 +161,7 @@ define(function(require, exports, module) {
         // Settings
         this.headerContent.Settings = new Surface({
             content: '<i class="icon ion-ios7-gear-outline"></i>',
-            size: [60, undefined],
+            size: [50, undefined],
             classes: ['header-tab-icon-text-big']
         });
         this.headerContent.Settings.on('click', function(){
@@ -171,7 +171,7 @@ define(function(require, exports, module) {
         // Send SMS
         this.headerContent.SendSms = new Surface({
             content: '<i class="icon ion-ios7-chatboxes-outline"></i>',
-            size: [60, undefined],
+            size: [50, undefined],
             classes: ['header-tab-icon-text-big']
         });
         this.headerContent.SendSms.on('click', function(){
@@ -276,6 +276,17 @@ define(function(require, exports, module) {
             // App.history.navigate('settings');
         });
 
+
+        // Find Friends
+        this.headerContent.PotentialFriends = new Surface({
+            content: '<i class="icon ion-earth"></i>',
+            size: [50, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.PotentialFriends.on('click', function(){
+            App.history.navigate('friend/potential');
+        });
+
         
 
         // create the header
@@ -286,6 +297,7 @@ define(function(require, exports, module) {
             backContent: '<i class="icon ion-close-round"></i>',
             moreClasses: ["normal-header"],
             moreSurfaces: [
+                this.headerContent.PotentialFriends,
                 this.headerContent.SendSms,
                 this.headerContent.Invite,
                 this.headerContent.Settings

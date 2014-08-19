@@ -135,8 +135,9 @@ define(function(require, exports, module) {
             name: '',
             placeholder: 'default',
             type: 'text',
-            size: [undefined, 50],
-            value: ''
+            size: [undefined, 80],
+            value: '',
+            classes: ['input-room-name']
         });
         this.contentScrollView.Views.push(this.inputHashSurface);
 
