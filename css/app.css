@@ -271,6 +271,20 @@ body {
 }
 
 
+/* Potential Friends Instructions */
+
+.potential-friend-instructions-room-pre {
+
+  padding: 20px 20px;
+  text-align: center;
+
+  line-height: 32px;
+  font-size: 24px;
+
+
+}
+
+
 
 /* Push Notifications */
 
@@ -1212,12 +1226,18 @@ input[type="text"].input-room-name {
 
   color: #111;
 
-  font-size: 36px;
-  line-height: 80px;
+  text-align: center;
+
+  font-size: 16px;
+  line-height: 40px;
 
   border-radius: 0px;
   -webkit-border-radius: 0px;
 }
+
+
+
+
 
 
 /* Footer */
