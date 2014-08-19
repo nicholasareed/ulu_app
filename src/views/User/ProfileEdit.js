@@ -143,9 +143,9 @@ define(function(require, exports, module) {
 
         // update via model
         if(that.model.get('profilephoto.urls')){
-            that.profileLeft.ProfileImage.Surface.setContent(that.model.get('profilephoto.urls.thumb300x300'));
+            that.ProfileImage.Surface.setContent(that.model.get('profilephoto.urls.thumb300x300'));
         } else {
-            that.profileLeft.ProfileImage.Surface.setContent('img/generic-profile.png');
+            that.ProfileImage.Surface.setContent('img/generic-profile.png');
         }
 
         this.ProfileImage.add(this.ProfileImage.SizeMod).add(this.ProfileImage.OriginMod).add(this.ProfileImage.Surface);
