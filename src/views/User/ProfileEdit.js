@@ -167,6 +167,8 @@ define(function(require, exports, module) {
                         success: function(){
                             Utils.takePicture('camera', {}, that.uploadProfileImage.bind(that), function(message){
                                 // failed taking a picture
+                                console.log(message);
+                                console.log(JSON.stringify(message));
                                 Utils.Notification.Toast('Failed picture');
                             });
                         }
@@ -177,6 +179,8 @@ define(function(require, exports, module) {
                         success: function(){
                             Utils.takePicture('gallery', {}, that.uploadProfileImage.bind(that), function(message){
                                 // failed taking a picture
+                                console.log(message);
+                                console.log(JSON.stringify(message));
                                 Utils.Notification.Toast('Failed picture');
                             });
                         }
@@ -268,7 +272,7 @@ define(function(require, exports, module) {
 
     PageView.prototype.uploadProfileImage = function(imageURI){
         var that = this;
-        
+
         Utils.Notification.Toast('Uploading');
 
         console.log('uploading...');
