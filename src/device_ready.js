@@ -210,10 +210,12 @@ define(function(require, exports, module) {
 
             // Resume
             // - coming back to application
-            document.addEventListener("resume", function(){
+            document.addEventListener("resume", function(resume_data){
                 // Gather existing Push Notifications and see if we should summarize them, or show individually (confirm, etc.)
                     
                 App.Events.trigger('resume');
+                console.log('resuming');
+                console.log(resume_data);
 
                 App.Data.paused = false;
                 App.Data.was_paused = true;
