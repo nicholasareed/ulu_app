@@ -292,11 +292,9 @@ define(function(require, exports, module) {
         });
 
 
-        console.info('skipping decision');
-        Utils.Notification.Toast('skipping decision');
-        return;
-
-
+        // console.info('skipping decision');
+        // Utils.Notification.Toast('skipping decision');
+        // return;
 
 
         // Ajax request
@@ -508,10 +506,29 @@ define(function(require, exports, module) {
             // console.log('update sync');
 
             var currentPosition = dragElement.position.get();
+
             dragElement.position.set([
                 currentPosition[0] + e.delta[0],
                 currentPosition[1] + e.delta[1]
             ]);
+
+            // var status = that.drag_status(e, currentPosition);
+            // switch(status){
+            //     case null:
+            //         //dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
+            //         break;
+            //     case 1:
+            //         tmpCard.YesSurface.setClasses(['approve-option-button-default','approve-deny-option-button-default']);
+            //         tmpCard.NoSurface.setClasses(['deny-option-button-default','approve-deny-option-button-default', 'approve-deny-option-button-grayout-default']);
+            //         break;
+            //     case -1:
+            //         tmpCard.YesSurface.setClasses(['approve-option-button-default','approve-deny-option-button-default', 'approve-deny-option-button-grayout-default']);
+            //         tmpCard.NoSurface.setClasses(['deny-option-button-default','approve-deny-option-button-default']);
+            //         break;
+            //     default:
+            //         Utils.Notification.Toast('Unknown status type');
+            //         break;
+            // }
 
             // dragElement.position[0] += e.delta[0];
             // dragElement.position[1] += e.delta[1];
@@ -532,31 +549,27 @@ define(function(require, exports, module) {
 
             // Dragged/swiped far enough? 
             var currentPosition = dragElement.position.get();
-            var x = currentPosition[0];
 
             console.log(e.velocity[0]);
             Utils.Notification.Toast(e.velocity[0]);
 
-            dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
 
-            return;
-
-            if(x > 0){
-                // swipe right (Yes)
-
-                // dragged enough?
-                // - high enough velocity? (also needs to match the sign)
-                if(e.velocity[0]){
-
-                }
-            } else {
-                // swipe left (No)
-
+            var status = that.drag_status(e, currentPosition);
+            switch(status){
+                case null:
+                    dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
+                    break;
+                case 1:
+                case -1:
+                    dragElement.position.set([window.innerWidth * status,0], {curve : 'easeOutBounce', duration : 300});
+                    break;
+                default:
+                    Utils.Notification.Toast('Unknown status type');
+                    break;
             }
 
 
-            dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
-
+            // drag out of view
             
 
             // // Update position of other renderable
@@ -575,6 +588,45 @@ define(function(require, exports, module) {
             // });
         });
 
+
+    };
+
+    PageView.prototype.drag_status = function(e, currentPosition){
+
+        var currentXPosition = currentPosition[0];
+
+        var nVelocity = Math.abs(e.velocity[0]);
+        var sign = 1;
+        var velocitySign = 1;
+
+        if(currentXPosition < 0){
+            // swipe left (no)
+            sign = -1;
+        }
+
+        // same sign?
+        // - velocity in same direction as drag position (on the right, swiped right)
+        if(e.velocity[0] < 0){
+            velocitySign = -1
+        }
+        if(sign != velocitySign){
+            // swiped back a different direction
+            return null;
+        }
+
+        // dragged enough?
+        if(Math.abs(currentXPosition) < 20){
+            // not far enough
+            return null;
+        }
+
+        // - high enough velocity? (also needs to match the sign)
+        if(nVelocity < 0.3){
+            // Not enough velocity
+            return null;
+        }
+
+        return sign;
 
     };
 

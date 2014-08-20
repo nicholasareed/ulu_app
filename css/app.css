@@ -354,6 +354,10 @@ body {
   -webkit-border-radius: 8px;
 }
 
+.approve-deny-option-button-grayout-default {
+  background: blue;
+}
+
 .approve-option-button-default div {
   background: #2ECC71;
 
