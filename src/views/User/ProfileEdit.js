@@ -271,7 +271,7 @@ define(function(require, exports, module) {
         console.log(this.player_id);
         console.log({
             token : App.Data.UserToken,
-            player_id : this.player_id,
+            // player_id : this.player_id,
             extra: {
                 "description": "Uploaded from my phone testing 234970897"
             }
@@ -286,7 +286,7 @@ define(function(require, exports, module) {
         options.chunkedMode = false;
         options.params = {
             token : App.Data.UserToken,
-            player_id : this.player_id,
+            // player_id : this.player_id,
             extra: {
                 "description": "Uploaded from my phone testing 193246"
             }
