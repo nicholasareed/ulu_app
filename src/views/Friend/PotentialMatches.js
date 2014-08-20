@@ -16,6 +16,12 @@ define(function(require, exports, module) {
     var Matrix = require('famous/core/Transform');
     var RenderNode         = require('famous/core/RenderNode')
 
+    // Mouse/touch
+    var GenericSync = require('famous/inputs/GenericSync');
+    var MouseSync = require('famous/inputs/MouseSync');
+    var TouchSync = require('famous/inputs/TouchSync');
+    GenericSync.register({'mouse': MouseSync, 'touch': TouchSync});
+
     var Utility = require('famous/utilities/Utility');
 
     // Helpers
@@ -285,6 +291,14 @@ define(function(require, exports, module) {
             console.info('complete animation');
         });
 
+
+        // console.info('skipping decision');
+        // Utils.Notification.Toast('skipping decision');
+        // return;
+
+
+
+
         // Ajax request
         $.ajax({
             url: Credentials.server_root + 'friend/potential/decision',
@@ -338,11 +352,39 @@ define(function(require, exports, module) {
         // Profile photo
         // Profile Image
         tmpCard.ProfileImage = new View();
+        tmpCard.ProfileImage._position = [0,0];
+        tmpCard.ProfileImage.position = new Transitionable(tmpCard.ProfileImage._position);
+        tmpCard.ProfileImage.PositionMod = new Modifier({
+            transform: function(){
+                var currentPosition = tmpCard.ProfileImage.position.get();
+                return Transform.translate(currentPosition[0], currentPosition[1], 0);
+                // return Transform.translate(tmpCard.ProfileImage.position[0], tmpCard.ProfileImage.position[1], 0);
+            }
+        });
+
+        tmpCard.ProfileImage.SkewMod = new Modifier({
+            transform: function(){
+                var currentPosition = tmpCard.ProfileImage.position.get();
+                var w = window.innerWidth;
+                // var ratio = w 
+                var cp = currentPosition[0] / (w / 2)
+                var w2 = Math.PI * cp;
+                // console.log(w2);
+                // console.log(currentPosition[0]);
+                return Transform.rotateX(Math.abs(w2)); //-Math.PI);
+                // return Transform.translate(tmpCard.ProfileImage.position[0], tmpCard.ProfileImage.position[1], 0);
+            }
+        });
+        
         tmpCard.ProfileImage.SizeMod = new StateModifier({
             size: [undefined, 200]
         });
         tmpCard.ProfileImage.OriginMod = new StateModifier({
             origin: [0.5, 0.5]
+        });
+        tmpCard.ProfileImage.SyncSurfaceOverlay = new Surface({
+            content: '',
+            size: [undefined, undefined]
         });
         tmpCard.ProfileImage.Surface = new ImageSurface({
             content: Model.get('profilephoto.urls.thumb300x300'),
@@ -363,7 +405,12 @@ define(function(require, exports, module) {
         // });
         // Model.trigger('sync');
 
-        tmpCard.ProfileImage.add(tmpCard.ProfileImage.SizeMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
+        // tmpCard.ProfileImage.add(tmpCard.ProfileImage.PositionMod).add(tmpCard.ProfileImage.SkewMod).add(tmpCard.ProfileImage.SizeMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
+        tmpCard.ProfileImageNode = tmpCard.ProfileImage.add(tmpCard.ProfileImage.SizeMod);
+        tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.SyncSurfaceOverlay);
+        tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.PositionMod).add(tmpCard.ProfileImage.SkewMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
+
+        this.drag_init(tmpCard.ProfileImage);
 
 
         // Options (grid)
@@ -420,6 +467,81 @@ define(function(require, exports, module) {
         this.cardLayout.Views.push(tmpCard);
 
         this._subviews.push(tmpCard);
+
+    };
+
+    PageView.prototype.drag_init = function(dragElement){
+        var that = this;
+
+        // dragElement.position = [0,0];
+        
+        // // overwriting positionMod
+        // dragElement.PositionMod = new Modifier({
+        //     transform: function(){
+        //         return Transform.translate(dragElement.position[0], dragElement.position[1], 0);
+        //     }
+        // });
+
+        // Different sync for each messageView! (instead of a Sequentail/ScrollView-wide one)
+        dragElement.sync = new GenericSync(['mouse', 'touch']);
+
+        dragElement.SyncSurfaceOverlay.pipe(dragElement.sync);
+
+        dragElement.sync.on('start', function(e){
+        });
+        dragElement.sync.on('update', function(e){
+            // console.log('update');
+            // console.log(e);
+            // Update position of other renderable
+            // that.DraggedOverView.position += e.delta[0];
+            // if(that.DraggedOverView.position > window.innerWidth){
+            //     that.DraggedOverView.position = window.innerWidth;
+            // }
+            // console.log
+
+            // console.log('update sync');
+
+            var currentPosition = dragElement.position.get();
+            dragElement.position.set([
+                currentPosition[0] + e.delta[0],
+                currentPosition[1] + e.delta[1]
+            ]);
+
+            // dragElement.position[0] += e.delta[0];
+            // dragElement.position[1] += e.delta[1];
+
+            // positionMod.setTransform(Transform.translate());
+            // that.DraggedOverView.position.set(that.DraggedOverView._position); 
+
+
+            // , {
+            //     method : 'spring',
+            //     period : 150,
+            //     dampingRatio: 0.9,
+            //     velocity : e.velocity
+            // });
+        });
+
+        dragElement.sync.on('end', function(e){
+
+            dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
+
+            // // Update position of other renderable
+            // // - showing/hiding?
+            // if(e.velocity[0] < -0.05 || that.DraggedOverView._position < window.innerWidth/2){
+            //     // that.DraggedOverView.position = 0;
+            //     that.DraggedOverView._position = 0;
+            // } else {
+            //     that.DraggedOverView._position = window.innerWidth;
+            // }
+            // that.DraggedOverView.position.set(that.DraggedOverView._position, {
+            //     method : 'spring',
+            //     period : 150,
+            //     dampingRatio: 0.9,
+            //     velocity : e.velocity
+            // });
+        });
+
 
     };
 
