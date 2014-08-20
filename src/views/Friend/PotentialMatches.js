@@ -353,11 +353,13 @@ define(function(require, exports, module) {
         // Profile Image
         tmpCard.ProfileImage = new View();
         tmpCard.ProfileImage._position = [0,0];
+        tmpCard.ProfileImage._zposition = 0;
         tmpCard.ProfileImage.position = new Transitionable(tmpCard.ProfileImage._position);
         tmpCard.ProfileImage.PositionMod = new Modifier({
             transform: function(){
                 var currentPosition = tmpCard.ProfileImage.position.get();
-                return Transform.translate(currentPosition[0], currentPosition[1], 0);
+                // console.log(tmpCard.ProfileImage._zposition);
+                return Transform.translate(currentPosition[0], 0, 0); //tmpCard.ProfileImage._zposition);
                 // return Transform.translate(tmpCard.ProfileImage.position[0], tmpCard.ProfileImage.position[1], 0);
             }
         });
@@ -367,11 +369,11 @@ define(function(require, exports, module) {
                 var currentPosition = tmpCard.ProfileImage.position.get();
                 var w = window.innerWidth;
                 // var ratio = w 
-                var cp = currentPosition[0] / (w / 2)
+                var cp = currentPosition[0] / (w / 1);
                 var w2 = Math.PI * cp;
                 // console.log(w2);
                 // console.log(currentPosition[0]);
-                return Transform.rotateX(Math.abs(w2)); //-Math.PI);
+                return Transform.rotateZ(w2); //-Math.PI);
                 // return Transform.translate(tmpCard.ProfileImage.position[0], tmpCard.ProfileImage.position[1], 0);
             }
         });
@@ -382,10 +384,6 @@ define(function(require, exports, module) {
         tmpCard.ProfileImage.OriginMod = new StateModifier({
             origin: [0.5, 0.5]
         });
-        tmpCard.ProfileImage.SyncSurfaceOverlay = new Surface({
-            content: '',
-            size: [undefined, undefined]
-        });
         tmpCard.ProfileImage.Surface = new ImageSurface({
             content: Model.get('profilephoto.urls.thumb300x300'),
             size: [190,190],
@@ -394,6 +392,20 @@ define(function(require, exports, module) {
                 border: "1px solid #444"
             }
         });
+        tmpCard.ProfileImage.SyncSurfaceOverlay = new Surface({
+            content: '',
+            size: [undefined, undefined],
+            properties: {
+                // backgroundColor: 'black'
+            }
+        });
+        tmpCard.ProfileImage.SyncSurfaceOverlay.ZMod = new Modifier({
+            // opacity: 0.8,
+            transform: function(){
+                return Transform.translate(0, 0, 0.001);
+            }
+        });
+        tmpCard.ProfileImage.Surface.pipe(tmpCard.ProfileImage.SyncSurfaceOverlay);
 
         // // update via model
         // Model.on('sync', function(){
@@ -407,8 +419,8 @@ define(function(require, exports, module) {
 
         // tmpCard.ProfileImage.add(tmpCard.ProfileImage.PositionMod).add(tmpCard.ProfileImage.SkewMod).add(tmpCard.ProfileImage.SizeMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
         tmpCard.ProfileImageNode = tmpCard.ProfileImage.add(tmpCard.ProfileImage.SizeMod);
-        tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.SyncSurfaceOverlay);
-        tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.PositionMod).add(tmpCard.ProfileImage.SkewMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
+        tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.SyncSurfaceOverlay.ZMod).add(tmpCard.ProfileImage.SyncSurfaceOverlay);
+        tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.PositionMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.SkewMod).add(tmpCard.ProfileImage.Surface);
 
         this.drag_init(tmpCard.ProfileImage);
 
