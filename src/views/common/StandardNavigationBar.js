@@ -10,6 +10,7 @@
 define(function(require, exports, module) {
     var Scene = require('famous/core/Scene');
     var Surface = require('famous/core/Surface');
+    var RenderNode = require('famous/core/RenderNode');
     var Transform = require('famous/core/Transform');
     var View = require('famous/core/View');
 
@@ -37,6 +38,7 @@ define(function(require, exports, module) {
      * @param {String} [options.moreContent=(&#x271a;)] Content of the more button.
      */
     function NavigationBar(options) {
+        var that = this;
         View.apply(this, arguments);
 
         this.title = new Surface({
@@ -78,7 +80,21 @@ define(function(require, exports, module) {
                 // ratios: _.map(_.range(this.options.moreSurfaces.length), function(){return true;}) // [true, true, ...]
             });
             this.more.add(this.more.Grid);
-            this.more.Grid.sequenceFrom(this.options.moreSurfaces);
+
+            // prepend each item in sequence with a StateModifier
+            this._moreSurfaces = [];
+            this.options.moreSurfaces.forEach(function(tmpView){
+                var tmpNode = new RenderNode();
+                tmpNode.Mod = new StateModifier({
+                    opacity: 0,
+                    transform: Transform.translate(0,-100,0)
+                });
+                tmpNode.add(tmpNode.Mod).add(tmpView);
+                that._moreSurfaces.push(tmpNode);
+            });
+            // this.more.Grid.sequenceFrom(this.options.moreSurfaces);
+            this.more.Grid.sequenceFrom(this._moreSurfaces);
+
         } else if(this.options.more){
             this.more = this.options.more;
         } else {

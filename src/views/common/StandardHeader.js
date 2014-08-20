@@ -92,6 +92,23 @@ define(function(require, exports, module) {
                                 curve: 'easeIn'
                             });
 
+
+                            // Icons
+                            if(that.navBar._moreSurfaces){
+                                that.navBar._moreSurfaces.forEach(function(tmpView, index){
+                                    Timer.setTimeout(function(){
+                                        tmpView.Mod.setOpacity(0, {
+                                            duration: transitionOptions.outTransition.duration,
+                                            curve: 'easeIn'
+                                        });
+                                        tmpView.Mod.setTransform(Transform.translate(0,-100,0), {
+                                            duration: transitionOptions.outTransition.duration,
+                                            curve: 'easeIn'
+                                        });
+                                    }, index * 100);
+                                });
+                            }
+
                         }, delayShowing);
 
                         break;
@@ -136,6 +153,13 @@ define(function(require, exports, module) {
                             }
                         }
 
+                        // Icons (starting hidden)
+                        if(that.navBar._moreSurfaces){
+                            that.navBar._moreSurfaces.forEach(function(tmpView){
+                                tmpView.Mod.setTransform(Transform.translate(0,-100,0));
+                            });
+                        }
+
 
                         // Header
                         // - no extra delay
@@ -172,6 +196,23 @@ define(function(require, exports, module) {
                                 duration: transitionOptions.outTransition.duration,
                                 curve: 'easeIn'
                             });
+
+                            // Icons (starting hidden)
+                            if(that.navBar._moreSurfaces){
+                                that.navBar._moreSurfaces.forEach(function(tmpView, index){
+                                    Timer.setTimeout(function(){
+                                        tmpView.Mod.setOpacity(1, {
+                                            duration: transitionOptions.outTransition.duration,
+                                            curve: 'easeIn'
+                                        });
+                                        tmpView.Mod.setTransform(Transform.translate(0,0,0), {
+                                            duration: transitionOptions.outTransition.duration,
+                                            curve: 'easeIn'
+                                        });
+                                    },index*100);
+                                });
+                            }
+
 
 
                         }, delayShowing);
