@@ -50,8 +50,8 @@
     <gap:plugin name="org.apache.cordova.contacts" version="0.2.9" />
     <gap:plugin name="org.apache.cordova.file" />
     <gap:plugin name="org.apache.cordova.file-transfer" />
-    <!-- <gap:plugin name="org.apache.cordova.camera" /> -->
-    <gap:plugin name="co.mwater.foregroundcameraplugin" version="0.1.1" />
+    <gap:plugin name="org.apache.cordova.camera" />
+    <!-- <gap:plugin name="co.mwater.foregroundcameraplugin" version="0.1.1" /> -->
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="org.apache.cordova.geolocation" />
     <gap:plugin name="org.apache.cordova.globalization" />
@@ -70,9 +70,9 @@
 
 
     <!-- Android SingleInstance LaunchMode -->
-    <gap:config-file platform="android" parent="/manifest/application">
+    <!-- <gap:config-file platform="android" parent="/manifest/application">
         <activity android:launchMode="singleInstance" />
-    </gap:config-file>
+    </gap:config-file> -->
 
     
     <gap:plugin name="nl.x-services.plugins.launchmyapp">
