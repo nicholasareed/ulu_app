@@ -40,7 +40,7 @@ define(function(require, exports, module) {
         this.options = options;
 
         // Have a profile photo?
-        if(!App.Data.User.get('profilephoto.urls.thumb300x300__')){
+        if(!App.Data.User.get('profilephoto.urls.thumb300x300')){
             Utils.Notification.Toast('Need a picture of you!');
             this.doNotShow = true;
             App.history.eraseLast();
