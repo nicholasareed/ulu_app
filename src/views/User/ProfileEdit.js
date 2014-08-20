@@ -16,6 +16,7 @@ define(function(require, exports, module) {
     var RenderNode         = require('famous/core/RenderNode')
 
     var Utility = require('famous/utilities/Utility');
+    var Timer = require('famous/utilities/Timer');
 
     var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
     var NavigationBar = require('famous/widgets/NavigationBar');
@@ -42,6 +43,8 @@ define(function(require, exports, module) {
         View.apply(this, arguments);
         this.options = options;
 
+        this._showing = false;
+
         // create the layout
         this.layout = new HeaderFooterLayout({
             headerSize: App.Defaults.Header.size,
@@ -62,7 +65,14 @@ define(function(require, exports, module) {
 
         // Wait for model to get populated, then add the input surfaces
         // - model should be ready immediately!
-        this.model.populated().then(this.addSurfaces.bind(this));
+        this.model.populated().then(function(){
+            that.addSurfaces();
+            Timer.setInterval(function(){
+                if(that._showing){
+                    that.model.fetch();
+                }
+            },10000);
+        });
 
 
     }
@@ -242,6 +252,7 @@ define(function(require, exports, module) {
             success: function(response){
                 // console.log(response);
                 // debugger;
+                this.model.fetch();
                 App.history.back();//.history.go(-1);
                 // App.history.navigate('driver/' + that.model._id, {trigger: true});
             }
@@ -345,6 +356,7 @@ define(function(require, exports, module) {
 
         switch(direction){
             case 'hiding':
+                this._showing = false;
                 switch(otherViewName){
 
                     default:
@@ -364,6 +376,7 @@ define(function(require, exports, module) {
 
                 break;
             case 'showing':
+                this._showing = true;
                 if(this._refreshData){
                     // window.setTimeout(that.refreshData.bind(that), 1000);
                 }
