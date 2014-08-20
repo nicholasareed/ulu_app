@@ -387,7 +387,7 @@ define(function(require, exports, module) {
         // Yes
         tmpCard.YesSurface = new Surface({
             content: '<div><i class="ion-checkmark-round"></i></div>',
-            size: [undefined, undefined],,
+            size: [undefined, undefined],
             classes: ['approve-option-button-default','approve-deny-option-button-default']
         });
         tmpCard.YesSurface.on('click', function(){
