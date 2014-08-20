@@ -292,9 +292,9 @@ define(function(require, exports, module) {
         });
 
 
-        // console.info('skipping decision');
-        // Utils.Notification.Toast('skipping decision');
-        // return;
+        console.info('skipping decision');
+        Utils.Notification.Toast('skipping decision');
+        return;
 
 
 
@@ -368,11 +368,8 @@ define(function(require, exports, module) {
             transform: function(){
                 var currentPosition = tmpCard.ProfileImage.position.get();
                 var w = window.innerWidth;
-                // var ratio = w 
                 var cp = currentPosition[0] / (w / 1);
                 var w2 = Math.PI * cp;
-                // console.log(w2);
-                // console.log(currentPosition[0]);
                 return Transform.rotateZ(w2); //-Math.PI);
                 // return Transform.translate(tmpCard.ProfileImage.position[0], tmpCard.ProfileImage.position[1], 0);
             }
@@ -399,11 +396,8 @@ define(function(require, exports, module) {
                 // backgroundColor: 'black'
             }
         });
-        tmpCard.ProfileImage.SyncSurfaceOverlay.ZMod = new Modifier({
-            // opacity: 0.8,
-            transform: function(){
-                return Transform.translate(0, 0, 0.001);
-            }
+        tmpCard.ProfileImage.SyncSurfaceOverlay.ZMod = new StateModifier({
+            transform: Transform.translate(0, 0, 0.001)
         });
         tmpCard.ProfileImage.Surface.pipe(tmpCard.ProfileImage.SyncSurfaceOverlay);
 
@@ -536,7 +530,34 @@ define(function(require, exports, module) {
 
         dragElement.sync.on('end', function(e){
 
+            // Dragged/swiped far enough? 
+            var currentPosition = dragElement.position.get();
+            var x = currentPosition[0];
+
+            console.log(e.velocity[0]);
+            Utils.Notification.Toast(e.velocity[0]);
+
             dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
+
+            return;
+
+            if(x > 0){
+                // swipe right (Yes)
+
+                // dragged enough?
+                // - high enough velocity? (also needs to match the sign)
+                if(e.velocity[0]){
+
+                }
+            } else {
+                // swipe left (No)
+
+            }
+
+
+            dragElement.position.set([0,0], {curve : 'easeOutBounce', duration : 300});
+
+            
 
             // // Update position of other renderable
             // // - showing/hiding?
