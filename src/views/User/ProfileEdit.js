@@ -152,11 +152,14 @@ define(function(require, exports, module) {
         });
 
         // update via model
-        if(that.model.get('profilephoto.urls')){
-            that.ProfileImage.Surface.setContent(that.model.get('profilephoto.urls.thumb300x300'));
-        } else {
-            that.ProfileImage.Surface.setContent('img/generic-profile.png');
-        }
+        that.model.on('sync', function(){
+            if(that.model.get('profilephoto.urls')){
+                that.ProfileImage.Surface.setContent(that.model.get('profilephoto.urls.thumb300x300'));
+            } else {
+                that.ProfileImage.Surface.setContent('img/generic-profile.png');
+            }
+        });
+        that.model.trigger('sync');
 
         this.ProfileImage.add(this.ProfileImage.SizeMod).add(this.ProfileImage.OriginMod).add(this.ProfileImage.Surface);
         this.ProfileImage.Surface.on('click', function(){
