@@ -217,6 +217,8 @@ define(function(require, exports, module) {
                 console.log('resuming');
                 console.log(resume_data);
 
+                console.log(JSON.stringify(resume_data));
+
                 App.Data.paused = false;
                 App.Data.was_paused = true;
 
