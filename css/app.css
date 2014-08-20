@@ -831,6 +831,10 @@ body {
   text-transform: uppercase;
 }
 
+.header-tab-icon-text-big {
+  text-align: center;
+}
+
 .header-tab-icon-text-big i {
   font-size: 30px;
   line-height: 60px;
