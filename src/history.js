@@ -163,6 +163,47 @@ define(function(require, exports, module) {
 
             // historyObj.navigate.apply(RouterContext, lastArgs);
         };
+        historyObj.eraseLast = function(numToErase){
+            numToErase = numToErase || 1;
+
+            // // debugger;
+            // historyObj.data.reverse();
+            
+            _.each(_.range(numToErase), function(){
+                historyObj.data.pop();
+            });
+
+            // var continueErasing = true;
+            // historyObj.data = _.filter(historyObj.data, function(args){
+            //     // check options for tag that matches
+            //     if(continueErasing !== true){
+            //         return true;
+            //     }
+            //     if(args.length < 2){
+            //         return false;
+            //     }
+            //     if(!args[1].tag){
+            //         return false;
+            //     }
+            //     if(typeof args[1].tag == "string" && args[1].tag != tag){
+            //         return false
+            //     }
+            //     if(typeof args[1].tag === typeof [] && args[1].tag.indexOf(tag) === -1){
+            //         return false;
+            //     }
+            //     console.log('FOUND tag in eraseUntilTag');
+            //     // debugger;
+            //     continueErasing = false;
+            //     if(eraseLast === true){
+            //         return false;
+            //     } else {
+            //         return true;
+            //     }
+
+            // });
+
+            // historyObj.data.reverse();
+        };
         historyObj.eraseUntilTag = function(tag, eraseLast){
             // Erase entries up until the last tag
             // - and including the last tag! (if included, by default, ERASE)

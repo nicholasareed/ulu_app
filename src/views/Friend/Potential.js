@@ -39,6 +39,15 @@ define(function(require, exports, module) {
         View.apply(this, arguments);
         this.options = options;
 
+        // Have a profile photo?
+        if(!App.Data.User.get('profilephoto.urls.thumb300x300__')){
+            Utils.Notification.Toast('Need a picture of you!');
+            this.doNotShow = true;
+            App.history.eraseLast();
+            App.history.navigate('profile/edit');
+            return;
+        }
+
         // Models
 
         // create the layout
