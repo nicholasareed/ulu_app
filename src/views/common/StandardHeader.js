@@ -99,11 +99,11 @@ define(function(require, exports, module) {
                                     Timer.setTimeout(function(){
                                         tmpView.Mod.setOpacity(0, {
                                             duration: transitionOptions.outTransition.duration,
-                                            curve: 'easeIn'
+                                            curve: 'easeOut'
                                         });
                                         tmpView.Mod.setTransform(Transform.translate(0,-100,0), {
                                             duration: transitionOptions.outTransition.duration,
-                                            curve: 'easeIn'
+                                            curve: 'easeOut'
                                         });
                                     }, index * 100);
                                 });
@@ -153,12 +153,12 @@ define(function(require, exports, module) {
                             }
                         }
 
-                        // Icons (starting hidden)
-                        if(that.navBar._moreSurfaces){
-                            that.navBar._moreSurfaces.forEach(function(tmpView){
-                                tmpView.Mod.setTransform(Transform.translate(0,-100,0));
-                            });
-                        }
+                        // // Icons (starting hidden)
+                        // if(that.navBar._moreSurfaces){
+                        //     that.navBar._moreSurfaces.forEach(function(tmpView){
+                        //         tmpView.Mod.setTransform(Transform.translate(0,-100,0));
+                        //     });
+                        // }
 
 
                         // Header
@@ -203,11 +203,11 @@ define(function(require, exports, module) {
                                     Timer.setTimeout(function(){
                                         tmpView.Mod.setOpacity(1, {
                                             duration: transitionOptions.outTransition.duration,
-                                            curve: 'easeIn'
+                                            curve: 'easeOut'
                                         });
                                         tmpView.Mod.setTransform(Transform.translate(0,0,0), {
                                             duration: transitionOptions.outTransition.duration,
-                                            curve: 'easeIn'
+                                            curve: 'easeOut'
                                         });
                                     },index*100);
                                 });
