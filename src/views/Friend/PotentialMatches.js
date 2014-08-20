@@ -324,16 +324,47 @@ define(function(require, exports, module) {
         tmpCard.SeqLayout = new SequentialLayout();
         tmpCard.SeqLayout.Views = [];
 
-        // Name Surface
-        tmpCard.NameSurface = new Surface({
-            content: Model.get('name'),
-            size: [undefined, 80],
-            classes: [],
+        // // Name Surface
+        // tmpCard.NameSurface = new Surface({
+        //     content: Model.get('name'),
+        //     size: [undefined, 80],
+        //     classes: [],
+        //     properties: {
+        //         textAlign: 'center',
+        //         background: '#fefefe'
+        //     }
+        // });
+
+        // Profile photo
+        // Profile Image
+        tmpCard.ProfileImage = new View();
+        tmpCard.ProfileImage.SizeMod = new StateModifier({
+            size: [undefined, 200]
+        });
+        tmpCard.ProfileImage.OriginMod = new StateModifier({
+            origin: [0.5, 0.5]
+        });
+        tmpCard.ProfileImage.Surface = new ImageSurface({
+            content: 'img/generic-profile.png',
+            size: [190,190],
             properties: {
-                textAlign: 'center',
-                background: '#fefefe'
+                borderRadius: "50%",
+                border: "1px solid #444"
             }
         });
+
+        // update via model
+        Model.on('sync', function(){
+            if(Model.get('profilephoto.urls')){
+                tmpCard.ProfileImage.Surface.setContent(Model.get('profilephoto.urls.thumb300x300'));
+            } else {
+                tmpCard.ProfileImage.Surface.setContent('img/generic-profile.png');
+            }
+        });
+        Model.trigger('sync');
+
+        tmpCard.ProfileImage.add(tmpCard.ProfileImage.SizeMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
+
 
         // Options (grid)
         tmpCard.OptionGridView = new View();
@@ -344,14 +375,9 @@ define(function(require, exports, module) {
 
         // No
         tmpCard.NoSurface = new Surface({
-            content: 'No',
+            content: '<div><i class="ion-close-round"></i></div>',
             size: [undefined, undefined],
-            classes: [],
-            properties: {
-                textAlign: 'center',
-                background: 'red',
-                color: 'white'
-            }
+            classes: ['deny-option-button-default','approve-deny-option-button-default']
         });
         tmpCard.NoSurface.on('click', function(){
             that.ignore_user(tmpCard);
@@ -360,14 +386,9 @@ define(function(require, exports, module) {
 
         // Yes
         tmpCard.YesSurface = new Surface({
-            content: 'Yes',
-            size: [undefined, undefined],
-            classes: [],
-            properties: {
-                textAlign: 'center',
-                background: 'green',
-                color: 'white'
-            }
+            content: '<div><i class="ion-checkmark-round"></i></div>',
+            size: [undefined, undefined],,
+            classes: ['approve-option-button-default','approve-deny-option-button-default']
         });
         tmpCard.YesSurface.on('click', function(){
             that.match_user(tmpCard);
@@ -382,7 +403,8 @@ define(function(require, exports, module) {
         tmpCard.OptionGridView.add(tmpCard.OptionGrid.SizeMod).add(tmpCard.OptionGrid);
 
         // SequentialLayout push
-        tmpCard.SeqLayout.Views.push(tmpCard.NameSurface);
+        // tmpCard.SeqLayout.Views.push(tmpCard.NameSurface);
+        tmpCard.SeqLayout.Views.push(tmpCard.ProfileImage);
         tmpCard.SeqLayout.Views.push(tmpCard.OptionGridView);
 
         // tmpCard.getSize = function(){

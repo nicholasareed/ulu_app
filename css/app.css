@@ -335,6 +335,35 @@ body {
 }
 
 
+/* Approve / Deny buttons */
+
+.approve-deny-option-button-default {
+  padding: 0px 8px;
+}
+
+.approve-deny-option-button-default div {
+
+  font-weight: bold;
+  color: white;
+
+  line-height: 60px;
+
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+}
+
+.approve-option-button-default div {
+  background: #2ECC71;
+
+}
+
+.deny-option-button-default div {
+    
+  background: #E67E22;
+
+}
+
+
 
 /* Waiting list */
 
