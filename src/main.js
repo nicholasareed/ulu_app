@@ -180,11 +180,14 @@ define(function(require, exports, module) {
                 // speedLimit: 2.5 // default 10
             },
             Header: {
-                size: 60
+                Icon: {
+                    w: 60 // width
+                },
+                size: 60 // height, width always undefined width
             },
             Footer: {
-                size: 0
-            }
+                size: 0 // height, width always undefined
+            },
         },
     };
 

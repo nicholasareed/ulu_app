@@ -93,20 +93,22 @@ define(function(require, exports, module) {
             // attachFastClick.attach(document.body);
 
             // Android or iOS stylesheet?
-            var devicePlatform = 'android';
+            App.Config.devicePlatform = 'android';
             try {
-                devicePlatform = device.platform.toLowerCase();
+                App.Config.devicePlatform = device.platform.toLowerCase();
             }catch(err){}
-            $('head').append('<link rel="stylesheet" href="css/'+ devicePlatform +'.css" type="text/css" />');
+            $('head').append('<link rel="stylesheet" href="css/'+ App.Config.devicePlatform +'.css" type="text/css" />');
 
             // Resolve deferred
             this.readyDeferred.resolve();
 
             // Status bar colors
             try {
-                StatusBar.overlaysWebView(false);
-                StatusBar.backgroundColorByHexString(App.ConfigImportant.StatusBarBackgroundColor);
-                Utils.Notification.Toast('OK status bar');
+                if(App.Config.devicePlatform == 'ios'){
+                    StatusBar.overlaysWebView(false);
+                    StatusBar.backgroundColorByHexString(App.ConfigImportant.StatusBarBackgroundColor);
+                    // Utils.Notification.Toast('OK status bar');
+                }
             }catch(err){
                 console.log(err);
                 Utils.Notification.Toast('Failed status bar');
