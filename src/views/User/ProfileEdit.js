@@ -268,7 +268,7 @@ define(function(require, exports, module) {
 
     PageView.prototype.uploadProfileImage = function(imageURI){
         var that = this;
-
+        
         Utils.Notification.Toast('Uploading');
 
         console.log('uploading...');

@@ -394,14 +394,17 @@ define(function (require) {
             // Take a picture using the camera or select one from the library
             var that = this;
 
-            var options = {
-                quality: 80,
+            var options = { 
+                quality : 80,
+                destinationType : Camera.DestinationType.FILE_URI,
+                sourceType : null, //Camera.PictureSourceType.CAMERA,
+                allowEdit : true,
+                encodingType: Camera.EncodingType.JPEG,
                 targetWidth: 1000,
                 targetHeight: 1000,
-                destinationType: Camera.DestinationType.FILE_URI,
-                encodingType: Camera.EncodingType.JPEG,
-                sourceType: null // Camera.PictureSourceType.CAMERA
-            };
+                popoverOptions: CameraPopoverOptions,
+                saveToPhotoAlbum: false 
+              };
 
             switch(camera_type_short){
                 case 'gallery':
