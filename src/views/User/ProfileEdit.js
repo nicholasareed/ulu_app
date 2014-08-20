@@ -255,7 +255,7 @@ define(function(require, exports, module) {
             success: function(response){
                 // console.log(response);
                 // debugger;
-                this.model.fetch();
+                that.model.fetch();
                 App.history.back();//.history.go(-1);
                 // App.history.navigate('driver/' + that.model._id, {trigger: true});
             }
