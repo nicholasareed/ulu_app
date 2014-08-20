@@ -315,7 +315,7 @@ define(function(require, exports, module) {
                 console.log('not computable?, increment');
             }
         };
-        ft.upload(imageURI, Credentials.server_root + "/media/profilephoto",
+        ft.upload(imageURI, Credentials.server_root + "media/profilephoto",
             function (e) {
                 // getFeed();
                 // alert('complete');
