@@ -345,7 +345,7 @@ define(function(require, exports, module) {
             origin: [0.5, 0.5]
         });
         tmpCard.ProfileImage.Surface = new ImageSurface({
-            content: 'img/generic-profile.png',
+            content: Model.get('profilephoto.urls.thumb300x300'),
             size: [190,190],
             properties: {
                 borderRadius: "50%",
@@ -353,15 +353,15 @@ define(function(require, exports, module) {
             }
         });
 
-        // update via model
-        Model.on('sync', function(){
-            if(Model.get('profilephoto.urls')){
-                tmpCard.ProfileImage.Surface.setContent(Model.get('profilephoto.urls.thumb300x300'));
-            } else {
-                tmpCard.ProfileImage.Surface.setContent('img/generic-profile.png');
-            }
-        });
-        Model.trigger('sync');
+        // // update via model
+        // Model.on('sync', function(){
+        //     if(Model.get('profilephoto.urls')){
+        //         tmpCard.ProfileImage.Surface.setContent(Model.get('profilephoto.urls.thumb300x300'));
+        //     } else {
+        //         tmpCard.ProfileImage.Surface.setContent('img/generic-profile.png');
+        //     }
+        // });
+        // Model.trigger('sync');
 
         tmpCard.ProfileImage.add(tmpCard.ProfileImage.SizeMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.Surface);
 
