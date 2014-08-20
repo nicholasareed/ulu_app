@@ -278,11 +278,20 @@ define(function(require, exports, module) {
         console.log('clicked, matching');
         console.log(tmpCard);
 
+        // Move the card out the way
+        tmpCard.ProfileImage.position.set([window.innerWidth * (decision ? 1 : -1),0], {curve : 'easeOutBounce', duration : 300});
+
         // remove from the collection
         this.collection.remove(tmpCard.Model.get('_id'));
 
+        // transition out the option buttons
+        tmpCard.OptionGrid.OpacityMod.setOpacity(0, {
+            curve : 'easeOutBounce', 
+            duration : 300
+        });
+
         // transition view out
-        tmpCard.StateModifier.setTransform(Transform.translate((decision ? 1 : -1) * window.innerWidth, 0, 0), {
+        tmpCard.StateModifier.setTransform(Transform.translate(0, 0, 0), {
             duration: 350,
             curve: 'linear'
         }, function(){
@@ -290,7 +299,6 @@ define(function(require, exports, module) {
             that.removeCard(tmpCard);
             console.info('complete animation');
         });
-
 
         // console.info('skipping decision');
         // Utils.Notification.Toast('skipping decision');
@@ -414,7 +422,7 @@ define(function(require, exports, module) {
         tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.SyncSurfaceOverlay.ZMod).add(tmpCard.ProfileImage.SyncSurfaceOverlay);
         tmpCard.ProfileImageNode.add(tmpCard.ProfileImage.PositionMod).add(tmpCard.ProfileImage.OriginMod).add(tmpCard.ProfileImage.SkewMod).add(tmpCard.ProfileImage.Surface);
 
-        this.drag_init(tmpCard.ProfileImage);
+        this.drag_init(tmpCard.ProfileImage, tmpCard);
 
 
         // Options (grid)
@@ -446,12 +454,15 @@ define(function(require, exports, module) {
         });
         tmpCard.OptionGrid.Views.push(tmpCard.YesSurface);
 
+        tmpCard.OptionGrid.OpacityMod = new StateModifier({
+            opacity: 1
+        });
         tmpCard.OptionGrid.SizeMod = new StateModifier({
             size: [undefined, 60]
         });
 
         tmpCard.OptionGrid.sequenceFrom(tmpCard.OptionGrid.Views);
-        tmpCard.OptionGridView.add(tmpCard.OptionGrid.SizeMod).add(tmpCard.OptionGrid);
+        tmpCard.OptionGridView.add(tmpCard.OptionGrid.SizeMod).add(tmpCard.OptionGrid.OpacityMod).add(tmpCard.OptionGrid);
 
         // SequentialLayout push
         // tmpCard.SeqLayout.Views.push(tmpCard.NameSurface);
@@ -470,11 +481,13 @@ define(function(require, exports, module) {
         // Add to cards model
         this.cardLayout.Views.push(tmpCard);
 
+        this._tmpCard = tmpCard;
+
         this._subviews.push(tmpCard);
 
     };
 
-    PageView.prototype.drag_init = function(dragElement){
+    PageView.prototype.drag_init = function(dragElement, tmpCard){
         var that = this;
 
         // dragElement.position = [0,0];
@@ -561,7 +574,9 @@ define(function(require, exports, module) {
                     break;
                 case 1:
                 case -1:
-                    dragElement.position.set([window.innerWidth * status,0], {curve : 'easeOutBounce', duration : 300});
+                    // thrown enough!
+                    that.make_decision(tmpCard, dragElement, status === -1 ? false : true);
+                    // dragElement.position.set([window.innerWidth * status,0], {curve : 'easeOutBounce', duration : 300});
                     break;
                 default:
                     Utils.Notification.Toast('Unknown status type');
