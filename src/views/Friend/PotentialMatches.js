@@ -564,7 +564,7 @@ define(function(require, exports, module) {
             var currentPosition = dragElement.position.get();
 
             console.log(e.velocity[0]);
-            Utils.Notification.Toast(e.velocity[0]);
+            // Utils.Notification.Toast(e.velocity[0]);
 
 
             var status = that.drag_status(e, currentPosition);
