@@ -512,7 +512,7 @@ define(function(require, exports, module) {
                         that.ContentStateModifier.setOpacity(0);
 
                         // Hide/move elements
-                        window.setTimeout(function(){
+                        Timer.setTimeout(function(){
                             
                             // // Fade header
                             // that.header.StateModifier.setOpacity(0, transitionOptions.outTransition);
@@ -547,11 +547,12 @@ define(function(require, exports, module) {
                         // } else {
                         //     that.ContentStateModifier.setTransform(Transform.translate(window.innerWidth + 100,0,0));
                         // }
-                        that.ContentStateModifier.setOpacity(0);
+                        that.ContentStateModifier.setTransform(Transform.translate(100,0,0));
+                        that.ContentStateModifier.setOpacity(0.1);
 
                         // Header
                         // - no extra delay
-                        window.setTimeout(function(){
+                        Timer.setTimeout(function(){
 
                             // // Change header opacity
                             // that.header.StateModifier.setOpacity(1, transitionOptions.outTransition);
@@ -560,10 +561,10 @@ define(function(require, exports, module) {
 
                         // Content
                         // - extra delay for content to be gone
-                        window.setTimeout(function(){
+                        Timer.setTimeout(function(){
 
-                            // Bring map content back
-                            that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
+                            // // Bring map content back
+                            // that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
 
                         }, delayShowing + transitionOptions.outTransition.duration);
 

@@ -49,20 +49,6 @@ define(function(require, exports, module) {
      * @return {EventHandler} this
      */
    EventEmitter.prototype.on = function on(type, handler) {
-        var that = this;
-        if(type instanceof Array){
-            type.forEach(function(tmpType){
-                that.on(tmpType, handler);
-            });
-            return this;
-        }
-        var split = type.split(' ');
-        if(split.length > 1){
-            split.forEach(function(tmpType){
-                that.on(tmpType, handler);
-            });
-            return this;
-        }
         if (!(type in this.listeners)) this.listeners[type] = [];
         var index = this.listeners[type].indexOf(handler);
         if (index < 0) this.listeners[type].push(handler);
@@ -86,8 +72,11 @@ define(function(require, exports, module) {
      * @return {EventEmitter} this
      */
     EventEmitter.prototype.removeListener = function removeListener(type, handler) {
-        var index = this.listeners[type].indexOf(handler);
-        if (index >= 0) this.listeners[type].splice(index, 1);
+        var listener = this.listeners[type];
+        if (listener !== undefined) {
+            var index = listener.indexOf(handler);
+            if (index >= 0) listener.splice(index, 1);
+        }
         return this;
     };
 

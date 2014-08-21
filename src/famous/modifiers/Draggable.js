@@ -87,10 +87,10 @@ define(function(require, exports, module) {
         return [tx, ty];
     }
 
-    function _handleStart(event) {
+    function _handleStart() {
         if (!this._active) return;
         if (this._positionState.isActive()) this._positionState.halt();
-        this.eventOutput.emit('start', {position : this.getPosition(), event: event});
+        this.eventOutput.emit('start', {position : this.getPosition()});
     }
 
     function _handleMove(event) {
@@ -121,23 +121,17 @@ define(function(require, exports, module) {
             pos[1] = _clamp(pos[1], yRange);
         }
 
-        this.eventOutput.emit('update', {position : pos, event: event});
+        this.eventOutput.emit('update', {position : pos});
     }
 
-    function _handleLeave(event) {
+    function _handleEnd() {
         if (!this._active) return;
-        this.eventOutput.emit('leave', {position : this.getPosition(), event: event});
-    }
-
-    function _handleEnd(event) {
-        if (!this._active) return;
-        this.eventOutput.emit('end', {position : this.getPosition(), event: event});
+        this.eventOutput.emit('end', {position : this.getPosition()});
     }
 
     function _bindEvents() {
         this.sync.on('start', _handleStart.bind(this));
         this.sync.on('update', _handleMove.bind(this));
-        this.sync.on('leave', _handleLeave.bind(this));
         this.sync.on('end', _handleEnd.bind(this));
     }
 
@@ -157,7 +151,12 @@ define(function(require, exports, module) {
                 if (proj.indexOf(val) !== -1) currentOptions.projection |= _direction[val];
             });
         }
-        if (options.scale  !== undefined) currentOptions.scale  = options.scale;
+        if (options.scale  !== undefined) {
+            currentOptions.scale  = options.scale;
+            this.sync.setOptions({
+                scale: options.scale
+            });
+        }
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
