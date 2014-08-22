@@ -44,7 +44,6 @@ define(function(require, exports, module) {
     var IncomingView      = require('./Subviews/Incoming');
     var OutgoingView      = require('./Subviews/Outgoing');
     
-
     // Models
     var MediaModel = require('models/media');
 
@@ -84,7 +83,7 @@ define(function(require, exports, module) {
         this.headerContent = new View();
         this.headerContent.Invite = new Surface({
             content: '<i class="icon ion-ios7-plus-outline"></i>',
-            size: [60, undefined],
+            size: [App.Defaults.Header.Icon.w, undefined],
             classes: ['header-tab-icon-text-big']
         });
         this.headerContent.Invite.on('click', function(){
@@ -93,6 +92,17 @@ define(function(require, exports, module) {
             // };
             App.history.navigate('friend/add');
         });
+
+        // Find Friends
+        this.headerContent.PotentialFriends = new Surface({
+            content: '<i class="icon ion-earth"></i>',
+            size: [App.Defaults.Header.Icon.w, undefined],
+            classes: ['header-tab-icon-text-big']
+        });
+        this.headerContent.PotentialFriends.on('click', function(){
+            App.history.navigate('friend/potential');
+        });
+
 
         // create the header
         this.header = new StandardHeader({
@@ -103,6 +113,7 @@ define(function(require, exports, module) {
             // backContent: false,
             // moreClasses: ["normal-header"],
             moreSurfaces: [
+                this.headerContent.PotentialFriends,
                 this.headerContent.Invite
             ]
             // moreContent: "New", //'<span class="icon ion-navicon-round"></span>'
@@ -145,22 +156,22 @@ define(function(require, exports, module) {
         this.TopTabs = new View();
         this.TopTabs.Bar = new TabBar();
         this.TopTabs.BarSizeMod = new StateModifier({
-            size: [undefined, 50]
+            size: [undefined, 80]
         });
         this.TopTabs.getSize = function(){
-            return [undefined, 50];
+            return [undefined, 80];
         };
-        this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
+        this.TopTabs.add(Utils.usePlane('contentTabs')).add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
             content: '<i class="icon ion-android-friends"></i><div>All</div>',
-            onClasses: ['inbox-tabbar-default', 'on'],
-            offClasses: ['inbox-tabbar-default', 'off']
+            onClasses: ['friend-list-tabbar-default', 'on'],
+            offClasses: ['friend-list-tabbar-default', 'off']
         });
         this.TopTabs.Bar.defineSection('potential', {
             content: '<i class="icon ion-android-social"></i><div>Potential</div>',
-            onClasses: ['inbox-tabbar-default', 'on'],
-            offClasses: ['inbox-tabbar-default', 'off']
+            onClasses: ['friend-list-tabbar-default', 'on'],
+            offClasses: ['friend-list-tabbar-default', 'off']
         });
         // this.TopTabs.Bar.defineSection('incoming', {
         //     content: '<i class="icon ion-arrow-down-a"></i><div>Incoming</div>',

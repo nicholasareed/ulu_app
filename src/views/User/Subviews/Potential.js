@@ -128,7 +128,7 @@ define(function(require, exports, module) {
         });
         this.loadingSurface.pipe(this._eventOutput);
         this.emptyListSurface = new Surface({
-            content: 'Click the <i class="icon ion-earth"></i> icon to Find Potential Friends',
+            content: 'Tap the <i class="icon ion-earth"></i> icon to find Potential Friends',
             size: [undefined, 100],
             classes: ['empty-list-surface-default'],
             properties: {

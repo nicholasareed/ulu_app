@@ -229,7 +229,7 @@ define(function(require, exports, module) {
     SubView.prototype.updateCollectionStatus = function() { 
         console.info('updateCollectionStatus');
 
-        this.collection.totalResults = App.Data.User.get('friends').length;
+        this.collection.totalResults = this.collection.length; // App.Data.User.get('friends').length;
 
         // Update amounts left
         var amount_left = this.collection.totalResults - this.collection.infiniteResults;

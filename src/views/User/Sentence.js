@@ -591,9 +591,6 @@ define(function(require, exports, module) {
 
         // link endpoints of layout to widgets
 
-        // Scrollview (Sentence)
-        this.contentScrollView.sequenceFrom(this.scrollSurfaces);
-
         // Content Modifiers
         this.ContentStateModifier = new StateModifier();
 
@@ -759,6 +756,9 @@ define(function(require, exports, module) {
 
         this.createActivities();
 
+        
+        // Scrollview (Sentence)
+        this.contentScrollView.sequenceFrom(this.scrollSurfaces);
 
     };
 

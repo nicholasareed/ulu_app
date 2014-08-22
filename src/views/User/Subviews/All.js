@@ -88,12 +88,6 @@ define(function(require, exports, module) {
         });
         this.collection.on("sync", that.updateCollectionStatus.bind(this));
         this.collection.on("add", this.addOne, this);
-        this.collection.on("add", this.addOne, this);
-        this.collection.on("add", this.addOne, this);
-        this.collection.on("add", this.addOne, this);
-        this.collection.on("add", this.addOne, this);
-        this.collection.on("add", this.addOne, this);
-        this.collection.on("add", this.addOne, this);
 
         this.collection.on("remove", this.removeOne, this);
 
@@ -251,7 +245,7 @@ define(function(require, exports, module) {
 
     SubView.prototype.addOne = function(Model){
         var that = this;
-
+        
         var userView = new View(),
             name = Model.get('profile.name') || '&nbsp;none';
 
