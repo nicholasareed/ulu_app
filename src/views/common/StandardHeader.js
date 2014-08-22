@@ -8,6 +8,8 @@ define(function(require, exports, module) {
     var ScrollView         = require('famous/views/Scrollview');
 
     var Timer         = require('famous/utilities/Timer');
+
+    var Utils = require('utils');
     
     var NavigationBar = require('famous/widgets/NavigationBar');
     var StandardNavigationBar = require('views/common/StandardNavigationBar');
@@ -33,9 +35,9 @@ define(function(require, exports, module) {
 
         // add to tree
         this.HeaderNode = new RenderNode();
-        this.HeaderNode.add(this.background);
+        this.HeaderNode.add(Utils.usePlane('header')).add(this.background);
         // this.HeaderNode.add(new StateModifier({transform: Transform.translate(0,0,1.0)})).add(this.OpacityModifier).add(this.PositionModifier).add(this.navBar);
-        this.HeaderNode.add(this.navBar);
+        this.HeaderNode.add(Utils.usePlane('header',1)).add(this.navBar);
 
         this.add(this.HeaderNode);
 

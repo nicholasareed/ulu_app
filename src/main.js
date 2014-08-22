@@ -189,6 +189,13 @@ define(function(require, exports, module) {
                 size: 0 // height, width always undefined
             },
         },
+        Planes: {
+            content: 100,
+            contentTabs: 400,
+            header: 500,
+            footer: 500,
+            popover: 1000
+        }
     };
 
     // Update body stylesheet

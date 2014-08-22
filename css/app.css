@@ -86,7 +86,8 @@ body {
 .select-friends-tabbar-default {
   /*border-top: 2px solid #444;*/
   border-bottom: 1px solid #ddd;
-  background: white;
+  /*background: white;*/
+  background: rgba(255,255,255,0.5);
   text-align: center;
   line-height: 15px;
   font-size: 12px;
@@ -757,14 +758,14 @@ body {
 /* Header */
 
 .header-bg-default {
-  background: white; /*#182030;*/
+  background: rgba(255,255,255,0.5);
   z-index: -10;
 }
 
 .normal-header {
 	/*background: #182030;
 	color: white;*/
-  background: white;
+  /*background: white;*/
   color: #182030;
 
   padding-left: 8px;

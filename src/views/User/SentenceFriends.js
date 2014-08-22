@@ -369,12 +369,12 @@ define(function(require, exports, module) {
     PageView.prototype.createContent = function(){
         var that = this;
 
-        // this.contentScrollView = new ScrollView(App.Defaults.ScrollView);
-        this.contentScrollView = new FlexibleLayout({
+        // this.contentFlexibleLayout = new ScrollView(App.Defaults.ScrollView);
+        this.contentFlexibleLayout = new FlexibleLayout({
             direction: FlexibleLayout.DIRECTION_Y,
             ratios: [true, 1]
         });
-        this.contentScrollView.Views = [];
+        this.contentFlexibleLayout.Views = [];
 
         // Content
         this.ContentStateModifier = new StateModifier();
@@ -388,7 +388,7 @@ define(function(require, exports, module) {
         this.TopTabs.getSize = function(){
             return [undefined, 80];
         };
-        this.TopTabs.add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
+        this.TopTabs.add(Utils.usePlane('contentTabs')).add(this.TopTabs.BarSizeMod).add(this.TopTabs.Bar);
 
         this.TopTabs.Bar.defineSection('all', {
             content: '<i class="icon ion-android-friends"></i><div>Friends</div>',
@@ -407,13 +407,13 @@ define(function(require, exports, module) {
         });
 
         // Add tabs to sequence
-        this.contentScrollView.Views.push(this.TopTabs);
+        this.contentFlexibleLayout.Views.push(this.TopTabs);
 
         // Tab content
         this.TopTabs.Content = new RenderController();
 
         // Add Lightbox to sequence
-        this.contentScrollView.Views.push(this.TopTabs.Content);
+        this.contentFlexibleLayout.Views.push(this.TopTabs.Content);
 
         // Listeners for Tabs
         this.TopTabs.Bar.on('select', function(result){
@@ -479,11 +479,11 @@ define(function(require, exports, module) {
 
         }).bind(this));
 
-        this.layout.content.add(this.ContentStateModifier).add(this.contentScrollView);
+        this.layout.content.add(this.ContentStateModifier).add(this.contentFlexibleLayout);
 
         // Flexible Layout sequencing
-        console.log(this.contentScrollView.Views);
-        this.contentScrollView.sequenceFrom(this.contentScrollView.Views);
+        console.log(this.contentFlexibleLayout.Views);
+        this.contentFlexibleLayout.sequenceFrom(this.contentFlexibleLayout.Views);
 
     };
 

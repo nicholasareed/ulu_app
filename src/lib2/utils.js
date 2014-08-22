@@ -10,6 +10,9 @@ define(function (require) {
     require('lib2/leaflet/leaflet.iconlabel');
     require('lib2/leaflet/tile.stamen');
 
+    var Transform = require('famous/core/Transform');
+    var StateModifier = require('famous/modifiers/StateModifier');
+
     var Credentials = JSON.parse(require('text!credentials.json'));
     var Crypto = require('lib2/crypto');
 
@@ -234,6 +237,22 @@ define(function (require) {
             // options.desiredFields = [navigator.contacts.fieldType.id];
             // var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
             // navigator.contacts.find(fields, onSuccess, onError, options);
+
+        },
+
+        usePlane: function(plane_name, add){
+            // return new StateModifier();
+
+            add = add || 0;
+            if(!App.Planes[plane_name]){
+                // key doesn't exist, use 'content'
+                plane_name = 'content';
+            }
+            console.log(App.Planes[plane_name] + add);
+            console.log(0.001 + (App.Planes[plane_name] + add)/1000000);
+            return new StateModifier({
+                transform: Transform.translate(0,0, 0.001 + (App.Planes[plane_name] + add)/1000000)
+            });
 
         },
 

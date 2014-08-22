@@ -88,6 +88,13 @@ define(function(require, exports, module) {
         });
         this.collection.on("sync", that.updateCollectionStatus.bind(this));
         this.collection.on("add", this.addOne, this);
+        this.collection.on("add", this.addOne, this);
+        this.collection.on("add", this.addOne, this);
+        this.collection.on("add", this.addOne, this);
+        this.collection.on("add", this.addOne, this);
+        this.collection.on("add", this.addOne, this);
+        this.collection.on("add", this.addOne, this);
+
         this.collection.on("remove", this.removeOne, this);
 
         this.collection.infiniteResults = 0;
@@ -99,7 +106,7 @@ define(function(require, exports, module) {
         });
         this.friend_collection.on('sync', that.updateCollectionStatus.bind(this));
 
-        
+
         this.collection.fetch();
         this.friend_collection.fetch();
 
