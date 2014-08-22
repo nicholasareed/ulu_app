@@ -83,7 +83,7 @@ define(function(require, exports, module) {
 
         this.model = new SentenceModel.Sentence();
         App.Events.on('resume', function(){
-            Utils.Notification.Toast('resuming');
+            Utils.Notification.Toast('Refreshing');
             that.model.fetch();
         });
         this.model.on('sync', function(){
