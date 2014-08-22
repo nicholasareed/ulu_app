@@ -609,9 +609,15 @@ define(function(require, exports, module) {
         this.loadingView.add(this.loadingView.OriginMod).add(this.loadingView.Surface);
 
         // this.contentContainer.show(this.loadingView);
+        var tmpBackground = new Surface({
+            size: [undefined, undefined]
+        });
+        tmpBackground.pipe(this.contentScrollView);
 
         // Now add content
-        this.layout.content.add(this.ContentStateModifier).add(this.contentContainer);
+        var ContentNode = this.layout.content.add(this.ContentStateModifier);
+        ContentNode.add(Utils.usePlane('content',-1)).add(tmpBackground);
+        ContentNode.add(Utils.usePlane('content')).add(this.contentContainer);
 
 
     };
@@ -756,7 +762,7 @@ define(function(require, exports, module) {
 
         this.createActivities();
 
-        
+
         // Scrollview (Sentence)
         this.contentScrollView.sequenceFrom(this.scrollSurfaces);
 
