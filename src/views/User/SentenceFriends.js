@@ -482,6 +482,7 @@ define(function(require, exports, module) {
         this.layout.content.add(this.ContentStateModifier).add(this.contentScrollView);
 
         // Flexible Layout sequencing
+        console.log(this.contentScrollView.Views);
         this.contentScrollView.sequenceFrom(this.contentScrollView.Views);
 
     };
@@ -513,9 +514,6 @@ define(function(require, exports, module) {
 
                         // Hide/move elements
                         Timer.setTimeout(function(){
-                            
-                            // // Fade header
-                            // that.header.StateModifier.setOpacity(0, transitionOptions.outTransition);
 
                             // Slide content down
                             that.ContentStateModifier.setOpacity(1, transitionOptions.outTransition);
@@ -538,33 +536,14 @@ define(function(require, exports, module) {
                         // No animation by default
                         transitionOptions.inTransform = Transform.identity;
 
-                        // // Default header opacity
-                        // that.header.StateModifier.setOpacity(0);
-
-                        // // Default position
-                        // if(goingBack){
-                        //     that.ContentStateModifier.setTransform(Transform.translate(window.innerWidth * -1,0,0));
-                        // } else {
-                        //     that.ContentStateModifier.setTransform(Transform.translate(window.innerWidth + 100,0,0));
-                        // }
-                        that.ContentStateModifier.setTransform(Transform.translate(100,0,0));
-                        that.ContentStateModifier.setOpacity(0.1);
-
-                        // Header
-                        // - no extra delay
-                        Timer.setTimeout(function(){
-
-                            // // Change header opacity
-                            // that.header.StateModifier.setOpacity(1, transitionOptions.outTransition);
-
-                        }, delayShowing);
+                        that.ContentStateModifier.setOpacity(0);
 
                         // Content
                         // - extra delay for content to be gone
                         Timer.setTimeout(function(){
 
-                            // // Bring map content back
-                            // that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
+                            // Bring map content back
+                            that.ContentStateModifier.setOpacity(1, transitionOptions.inTransition);
 
                         }, delayShowing + transitionOptions.outTransition.duration);
 
@@ -583,7 +562,7 @@ define(function(require, exports, module) {
 
     PageView.DEFAULT_OPTIONS = {
         header: {
-            size: [undefined, 50],
+            size: [undefined, 520],
         },
         footer: {
             size: [0,0]

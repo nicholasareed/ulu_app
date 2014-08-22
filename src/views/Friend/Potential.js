@@ -142,7 +142,7 @@ define(function(require, exports, module) {
         // instructions
         this.potentialFriendsInstructions = new View();
         this.potentialFriendsInstructions.Surface = new Surface({
-            content: "You'll be shown potential friends that we think you'll run into (or should!)",
+            content: "You'll be shown potential friends that we think you'll run into",
             size: [undefined, true],
             classes: ['potential-friend-instructions-room-pre']
         });

@@ -15,6 +15,7 @@ define(function(require, exports, module) {
     var RenderNode         = require('famous/core/RenderNode')
 
     var Utility = require('famous/utilities/Utility');
+    var Timer = require('famous/utilities/Timer');
 
     // Views
     var StandardHeader = require('views/common/StandardHeader');
@@ -56,7 +57,9 @@ define(function(require, exports, module) {
             classes: ["normal-header"],
             backClasses: ["normal-header"],
             // backContent: false,
-            moreContent: false
+            // moreContent: false,
+            // moreContent: 'more',
+            moreClasses: ["normal-header"],
         }); 
         this.header.navBar.title.on('click', function(){
             App.history.back();
@@ -71,6 +74,33 @@ define(function(require, exports, module) {
         this.layout.header.add(this.header);
 
     };
+
+    // PageView.prototype.createHeader = function(){
+    //     var that = this;
+
+    //     // create the header bar
+    //     this.header = new StandardHeader({
+    //         content: 'Settings',
+    //         classes: ["normal-header"],
+    //         backClasses: ["normal-header"],
+    //         // backContent: false,
+    //         // moreContent: false,
+    //         // moreContent: 'more',
+    //         moreClasses: ["normal-header"],
+    //     }); 
+    //     this.header.navBar.title.on('click', function(){
+    //         App.history.back();
+    //     });
+    //     this.header.on('back', function(){
+    //         App.history.back();//.history.go(-1);
+    //     });
+    //     this._eventOutput.on('inOutTransition', function(args){
+    //         this.header.inOutTransition.apply(this.header, args);
+    //     })
+
+    //     this.layout.header.add(this.header);
+
+    // };
 
     PageView.prototype.createContent = function(){
         var that = this;
@@ -234,7 +264,7 @@ define(function(require, exports, module) {
                         transitionOptions.outTransform = Transform.identity;
 
                         // Hide/move elements
-                        window.setTimeout(function(){
+                        Timer.setTimeout(function(){
                             
                             // // Fade header
                             // that.header.StateModifier.setOpacity(0, transitionOptions.outTransition);
@@ -271,18 +301,10 @@ define(function(require, exports, module) {
                         // }
                         that.layout.content.StateModifier.setTransform(Transform.translate(0, window.innerHeight, 0));
 
-                        // Header
-                        // - no extra delay
-                        window.setTimeout(function(){
-
-                            // // Change header opacity
-                            // that.header.StateModifier.setOpacity(1, transitionOptions.outTransition);
-
-                        }, delayShowing);
 
                         // Content
                         // - extra delay for content to be gone
-                        window.setTimeout(function(){
+                        Timer.setTimeout(function(){
 
                             // Bring map content back
                             that.layout.content.StateModifier.setTransform(Transform.translate(0,0,0), transitionOptions.inTransition);

@@ -87,7 +87,7 @@ define(function(require, exports, module) {
         });
 
         var frontMod = new StateModifier({
-            transform: Transform.inFront
+            transform: Transform.translate(0,0,1.1)
         });
         this.contentView.add(this.contentView.BgOpacityMod).add(this.contentView.BgSurface);
         // this.contentView.add(frontMod).add(this.lightbox);
@@ -230,6 +230,9 @@ define(function(require, exports, module) {
                 classes: ['modal-option-buttons-title-default']
             });
             this.titleView.add(this.titleView.Surface);
+            this.titleView.getSize = function(){
+                return [undefined, 60];
+            };
             this.titleView.Surface.pipe(that.contentScrollView.SeqLayout);
             this.titleView.Surface.on('click', function(){
                 // debugger;
@@ -246,13 +249,16 @@ define(function(require, exports, module) {
         // Text
         if(this.modalOptions.text){
 
-            this.textView = new View(); 
+            this.textView = new View();
             this.textView.Surface = new Surface({
-                size: [undefined, 60],
+                size: [undefined, true],
                 content: this.modalOptions.text,
                 classes: ['modal-option-buttons-text-default']
             });
             this.textView.add(this.textView.Surface);
+            this.textView.getSize = function(){
+                return [undefined, that.textView._size ? that.textView._size[1] : 60];
+            };
             this.textView.Surface.pipe(that.contentScrollView.SeqLayout);
             this.textView.Surface.on('click', function(){
                 // debugger;

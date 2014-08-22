@@ -168,12 +168,12 @@ define(function(require, exports, module) {
         },
         Defaults: {
             ScrollView: {
-                friction: 0.001,
-                drag: 0.0001,
-                edgeGrip: 0.5,
-                edgePeriod: 500, //300,
-                edgeDamp: 1,
-                speedLimit: 2
+                // friction: 0.001,
+                // drag: 0.0001,
+                // edgeGrip: 0.5,
+                // edgePeriod: 500, //300,
+                // edgeDamp: 1,
+                // speedLimit: 2
 
                 // friction: 0.0001, // default 0.001
                 // edgeGrip: 0.05, // default 0.5

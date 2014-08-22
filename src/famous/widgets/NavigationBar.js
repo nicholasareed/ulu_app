@@ -116,7 +116,7 @@ define(function(require, exports, module) {
     NavigationBar.prototype.constructor = NavigationBar;
 
     NavigationBar.DEFAULT_OPTIONS = {
-        size: [undefined, 50],
+        size: [undefined, 510],
         backClasses: ['back'],
         backContent: '&#x25c0;',
         classes: ['navigation'],

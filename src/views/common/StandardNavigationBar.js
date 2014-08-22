@@ -50,6 +50,9 @@ define(function(require, exports, module) {
         this.title.OpacityModifier = new StateModifier();
         this.title.View.add(this.title.PositionModifier).add(this.title.OpacityModifier).add(this.title);
 
+        // console.log(this.options.size[1]);
+        // debugger;
+
         if(this.options.back){
             this.back = this.options.back;
         } else {
@@ -60,6 +63,9 @@ define(function(require, exports, module) {
             });
         }
         this.back.View = new View();
+        this.back.View.getSize = function(){
+            return [20, that.options.size[1]];
+        };
         this.back.PositionModifier = new StateModifier();
         this.back.OpacityModifier = new StateModifier();
         this.back.View.add(this.back.PositionModifier).add(this.back.OpacityModifier).add(this.back);
@@ -73,12 +79,17 @@ define(function(require, exports, module) {
 
         // How to layout the icons?
         if(this.options.moreSurfaces){
-            // array of surfaces, create a FlexibleLayout to hold them
+            // array of surfaces, create a SequentialLayout to hold them
             this.more = new View();
             this.more.Grid = new SequentialLayout({
+                defaultItemSize: [this.options.size[1], this.options.size[1]], // bah, this sucks
                 direction: 0,
                 // ratios: _.map(_.range(this.options.moreSurfaces.length), function(){return true;}) // [true, true, ...]
             });
+            this.more.getSize = function(){
+                console.log(that.more.Grid.getSize());
+                return that.more.Grid.getSize() ? that.more.Grid.getSize() : [undefined, undefined];
+            };
             this.more.add(this.more.Grid);
 
             // prepend each item in sequence with a StateModifier
@@ -89,6 +100,11 @@ define(function(require, exports, module) {
                     opacity: 0,
                     transform: Transform.translate(0,-100,0)
                 });
+                tmpNode.getSize = function(){
+                    // console.log(tmpView.getSize());
+                    // debugger;
+                    return tmpView.getSize();   
+                }
                 tmpNode.add(tmpNode.Mod).add(tmpView);
                 that._moreSurfaces.push(tmpNode);
             });
@@ -115,6 +131,10 @@ define(function(require, exports, module) {
         this.more.PositionModifier = new StateModifier();
         this.more.OpacityModifier = new StateModifier();
         this.more.View.add(this.more.PositionModifier).add(this.more.OpacityModifier).add(this.more);
+        this.more.View.getSize = function(){
+            console.log(that.more.getSize());
+            return that.more.getSize() ? that.more.getSize() : [undefined,undefined];
+        };
 
         // this.layout = new Scene({
         //     id: 'master',
@@ -149,6 +169,8 @@ define(function(require, exports, module) {
         this._add(this.layout);
 
         this._optionsManager.on('change', function(event) {
+            debugger;
+            return;
             var key = event.id;
             var data = event.value;
             if (key === 'size') {
@@ -184,7 +206,7 @@ define(function(require, exports, module) {
     NavigationBar.prototype.constructor = NavigationBar;
 
     NavigationBar.DEFAULT_OPTIONS = {
-        size: [undefined, 50],
+        size: [undefined, 60],
         backClasses: ['back'],
         // backContent: '&#x25c0;',
         backContent: '<i class="icon ion-android-arrow-back"></i>',

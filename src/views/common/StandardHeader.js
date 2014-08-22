@@ -34,7 +34,8 @@ define(function(require, exports, module) {
         // add to tree
         this.HeaderNode = new RenderNode();
         this.HeaderNode.add(this.background);
-        this.HeaderNode.add(this.OpacityModifier).add(this.PositionModifier).add(this.navBar);
+        // this.HeaderNode.add(new StateModifier({transform: Transform.translate(0,0,1.0)})).add(this.OpacityModifier).add(this.PositionModifier).add(this.navBar);
+        this.HeaderNode.add(this.navBar);
 
         this.add(this.HeaderNode);
 
@@ -113,16 +114,6 @@ define(function(require, exports, module) {
 
                         break;
 
-                        // that.OpacityModifier.setOpacity(1);
-
-                        // // Hide/move elements
-                        // window.setTimeout(function(){
-                        //     // Fade header
-                        //     that.OpacityModifier.setOpacity(0, transitionOptions.outTransition);
-
-                        // }, delayShowing);
-
-                        // break;
                 }
 
                 break;

@@ -161,6 +161,9 @@ define(function(require, exports, module) {
             that.collection.fetch();
         });
         this.noResultsView.add(this.noResultsView.ZMod).add(this.noResultsView.Surface);
+        this.noResultsView.getSize = function(){
+            return [undefined, that.noResultsView._size ? that.noResultsView._size[1] : undefined];
+        };
         this.noResultsView.Surface.pipe(this._eventOutput);
 
     };

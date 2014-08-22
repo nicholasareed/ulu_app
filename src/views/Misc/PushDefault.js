@@ -303,8 +303,11 @@ define(function(require, exports, module) {
 
             pushOpt.Right = new Surface({
                 content: '',
-                size: [10,undefined]
+                size: [10,10]
             });
+            pushOpt.Right.getSize = function(){
+                return [10, 10];
+            };
 
             pushOpt.Layout.sequenceFrom([
                 pushOpt.Left,
