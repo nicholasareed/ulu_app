@@ -137,7 +137,7 @@ define(function(require, exports, module) {
     var Utils = require('utils');
 
     // Models
-    var PreloadModels = require('models/_preload');
+    var PreloadModels = require('models/preload');
     var UserModel = require('models/user');
 
     console.info('Loaded main.js');
